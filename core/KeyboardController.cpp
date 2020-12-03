@@ -4,9 +4,10 @@
 #include <iostream>
 #include <time.h>
 #include <chrono>
+#include <functional>
+
 #include <Windows.h>
 #include <conio.h>      // for _kbhit() and _getch()
-#include <functional>
 
 using namespace std;
 

@@ -14,6 +14,18 @@ namespace tetris
 
 			void awake();
 
+			// Determines if a move will keep the falling piece inbounds. 
+			// Does not consider other pieces on the board.
+			// Can be used to check bounds of any sides of the board.
+			// ex:
+			//  using namespace tetris::core;
+			//	tetris::core::Game g;
+			//	tetris::core::Move m;
+			//
+			//	// Check to see if move will keep falling piece under top boarder and
+			//  // between left and right boarders.
+			//  // But doesn't consider bottom boarder.
+			//	bool isIn = g.isInBounds(m, Board::TOP | Board::LEFT | Board::RIGHT);
 			bool isInBounds(const Move& move, uint8_t edges = Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT) const;
 
 			// Only call this method if move will not cause piece to be out of bounds
@@ -26,11 +38,14 @@ namespace tetris
 
 			void loadNextPiece();
 
+			// Swaps the fallingpiece with the held piece
+			// Places piece at the top 
 			void swapPieces();
 
 			// Returns true iff a piece has been placed on the top row
 			bool isGameOver() const;
 
+			// Clears all full rows
 			void clearFullRows();
 
 			// Make sure falling piece is inbounds from left to right before calling this method

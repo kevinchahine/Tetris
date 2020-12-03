@@ -9,6 +9,7 @@
 #include <opencv2/highgui.hpp>
 #pragma warning ( pop )
 
+
 using namespace std;
 
 int main(int* argc, char** argv)

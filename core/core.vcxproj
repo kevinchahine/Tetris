@@ -59,15 +59,19 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\..\..\..\code\libraries\iocolor.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\..\..\..\code\libraries\iocolor.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\..\..\..\code\libraries\iocolor.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\..\..\..\code\libraries\iocolor.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -158,19 +162,64 @@
     <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="ColoredConsoleDisplay.h" />
+    <ClInclude Include="ControllerBase.h" />
+    <ClInclude Include="Controllers.hpp" />
     <ClInclude Include="core.h" />
+    <ClInclude Include="DisplayBase.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GraphicalDisplay.h" />
+    <ClInclude Include="KeyboardController.h" />
+    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Move.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="RandomizedBag.h" />
+    <ClInclude Include="ScoreKeeper.h" />
+    <ClInclude Include="TetrisCore.h" />
+    <ClInclude Include="TetrominoBase.h" />
+    <ClInclude Include="TetrominoI.h" />
+    <ClInclude Include="TetrominoJ.h" />
+    <ClInclude Include="TetrominoL.h" />
+    <ClInclude Include="TetrominoO.h" />
+    <ClInclude Include="TetrominoS.h" />
+    <ClInclude Include="Tetrominos.hpp" />
+    <ClInclude Include="TetrominoT.h" />
+    <ClInclude Include="TetrominoZ.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="ColoredConsoleDisplay.cpp" />
+    <ClCompile Include="ControllerBase.cpp" />
     <ClCompile Include="core.cpp" />
+    <ClCompile Include="DisplayBase.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GraphicalDisplay.cpp" />
+    <ClCompile Include="KeyboardController.cpp" />
+    <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Move.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RandomizedBag.cpp" />
+    <ClCompile Include="ScoreKeeper.cpp" />
+    <ClCompile Include="TetrisCore.cpp" />
+    <ClCompile Include="TetrominoBase.cpp" />
+    <ClCompile Include="TetrominoI.cpp" />
+    <ClCompile Include="TetrominoJ.cpp" />
+    <ClCompile Include="TetrominoL.cpp" />
+    <ClCompile Include="TetrominoO.cpp" />
+    <ClCompile Include="TetrominoS.cpp" />
+    <ClCompile Include="TetrominoT.cpp" />
+    <ClCompile Include="TetrominoZ.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

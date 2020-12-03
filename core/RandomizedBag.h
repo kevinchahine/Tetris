@@ -1,6 +1,8 @@
 #pragma once
 
+#pragma warning (push, 3)
 #include <boost/container/static_vector.hpp>
+#pragma warning (pop)
 
 #include "TetrominoBase.h"
 

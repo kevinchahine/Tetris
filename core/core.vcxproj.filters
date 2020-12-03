@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Display">
+      <UniqueIdentifier>{54e51eae-86f8-4a23-b7ea-d052dbb50549}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{5d23d89c-91b0-448b-afdf-2d47ceb31f3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pieces">
+      <UniqueIdentifier>{0d237909-d3d8-4ef2-b5fe-f8be4a293baf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controller">
+      <UniqueIdentifier>{d0a2643f-5dc6-45c6-aca4-e937de321d59}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -27,6 +39,72 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ColoredConsoleDisplay.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplayBase.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicalDisplay.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrominoZ.h">
+      <Filter>Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrominoBase.h">
+      <Filter>Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrominoI.h">
+      <Filter>Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrominoJ.h">
+      <Filter>Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrominoL.h">
+      <Filter>Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrominoO.h">
+      <Filter>Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrominoS.h">
+      <Filter>Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="Tetrominos.hpp">
+      <Filter>Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrominoT.h">
+      <Filter>Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrisCore.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreKeeper.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomizedBag.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers.hpp">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerBase.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp">
@@ -38,5 +116,70 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColoredConsoleDisplay.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayBase.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicalDisplay.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrominoBase.cpp">
+      <Filter>Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrominoI.cpp">
+      <Filter>Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrominoJ.cpp">
+      <Filter>Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrominoL.cpp">
+      <Filter>Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrominoO.cpp">
+      <Filter>Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrominoS.cpp">
+      <Filter>Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrominoT.cpp">
+      <Filter>Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrominoZ.cpp">
+      <Filter>Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrisCore.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreKeeper.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomizedBag.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Move.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerBase.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes.txt">
+      <Filter>Display</Filter>
+    </Text>
   </ItemGroup>
 </Project>
