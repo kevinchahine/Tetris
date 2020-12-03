@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core.h"
 #include "Board.h"
 #include "Move.h"
 #include "RandomizedBag.h"
@@ -8,7 +9,7 @@ namespace tetris
 {
 	namespace core
 	{
-		class Game
+		class CORE_API Game
 		{
 		public:
 

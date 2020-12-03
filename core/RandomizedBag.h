@@ -1,5 +1,7 @@
 #pragma once
 
+#include "core.h"
+
 #pragma warning (push, 3)
 #include <boost/container/static_vector.hpp>
 #pragma warning (pop)
@@ -10,7 +12,7 @@ namespace tetris
 {
 	namespace core
 	{
-		class RandomizedBag
+		class CORE_API RandomizedBag
 		{
 		public:
 			const TetrominoBase& nextTetromino();

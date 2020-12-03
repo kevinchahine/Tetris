@@ -1,11 +1,13 @@
 #pragma once
+
+#include "core.h"
 #include "TetrominoBase.h"
 
 namespace tetris
 {
 	namespace core
 	{
-		class TetrominoS :
+		class CORE_API TetrominoS :
 			public TetrominoBase
 		{
 		public:

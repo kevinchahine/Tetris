@@ -1,12 +1,13 @@
 #pragma once
 
+#include "core.h"
 #include "DisplayBase.h"
 
 namespace tetris
 {
 	namespace core
 	{
-		class ColoredConsoleDisplay : public DisplayBase
+		class CORE_API ColoredConsoleDisplay : public DisplayBase
 		{
 		public:
 

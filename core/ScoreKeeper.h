@@ -1,5 +1,7 @@
 #pragma once
 
+#include "core.h"
+
 #include <iostream>
 
 #include <iocolor/iocolor.h>
@@ -8,7 +10,7 @@ namespace tetris
 {
 	namespace core
 	{
-		class ScoreKeeper
+		class CORE_API ScoreKeeper
 		{
 		public:
 			void add(int points);

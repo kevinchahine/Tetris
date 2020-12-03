@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core.h"
 #include "Matrix.h"
 #include "TetrominoBase.h"
 
@@ -7,7 +8,7 @@ namespace tetris
 {
 	namespace core
 	{
-		class Board : public Matrix
+		class CORE_API Board : public Matrix
 		{
 		public:
 			static const uint8_t TOP = 0b0000'0001;

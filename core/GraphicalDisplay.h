@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "core.h"
 #include "DisplayBase.h"
 
 #pragma warning ( push, 3 )
@@ -12,7 +13,7 @@ namespace tetris
 {
 	namespace core
 	{
-		class GraphicalDisplay : public DisplayBase
+		class CORE_API GraphicalDisplay : public DisplayBase
 		{
 		public:
 

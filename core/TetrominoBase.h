@@ -1,8 +1,9 @@
 #pragma once
 
-#include <stdint.h>
-
+#include "core.h"
 #include "Matrix.h"
+
+#include <stdint.h>
 
 namespace tetris
 {
@@ -13,7 +14,7 @@ namespace tetris
 		// element values:
 		//	0 - empty cell
 		//	x - shape identifier as a uint8_t (x is non zero)
-		class TetrominoBase : public Matrix
+		class CORE_API TetrominoBase : public Matrix
 		{
 		public:
 			TetrominoBase();

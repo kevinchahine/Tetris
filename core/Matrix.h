@@ -1,5 +1,7 @@
 #pragma once
 
+#include "core.h"
+
 #include <iostream>
 
 #pragma warning( push, 3 )
@@ -10,7 +12,7 @@ namespace tetris
 {
 	namespace core
 	{
-		class Matrix : public cv::Mat
+		class CORE_API Matrix : public cv::Mat
 		{
 		public:
 			const static uint8_t EMPTY = 0;

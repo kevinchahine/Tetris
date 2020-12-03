@@ -1,12 +1,14 @@
 #pragma once
 
+#include "core.h"
+
 #include <iostream>
 
 namespace tetris
 {
 	namespace core
 	{
-		class Move
+		class CORE_API Move
 		{
 		public:
 			static const char SPIN = 'w';

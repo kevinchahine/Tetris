@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core.h"
 #include "ControllerBase.h"
 
 #include <thread>
@@ -8,7 +9,7 @@ namespace tetris
 {
 	namespace core
 	{
-		class KeyboardController : public ControllerBase
+		class CORE_API KeyboardController : public ControllerBase
 		{
 		public:
 			KeyboardController();
