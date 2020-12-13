@@ -100,7 +100,7 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Matrix.h">
-      <Filter>Game</Filter>
+      <Filter>Pieces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -168,12 +168,10 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Matrix.cpp">
-      <Filter>Game</Filter>
+      <Filter>Pieces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Notes.txt">
-      <Filter>Display</Filter>
-    </Text>
+    <Text Include="Notes.txt" />
   </ItemGroup>
 </Project>

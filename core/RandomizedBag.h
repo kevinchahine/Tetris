@@ -1,12 +1,17 @@
 #pragma once
 
+#pragma warning (disable: 4251)
+
 #include "core.h"
+#include "TetrominoBase.h"
+
+#include <iostream>
+#include <random>
+#include <chrono>
 
 #pragma warning (push, 3)
 #include <boost/container/static_vector.hpp>
 #pragma warning (pop)
-
-#include "TetrominoBase.h"
 
 namespace tetris
 {
@@ -28,7 +33,7 @@ namespace tetris
 
 		private:
 
-			// Indicies of tetrominoes
+			// Indicies of tetrominoes in our bag
 			boost::container::static_vector<int, 7> indicies;
 		};
 	}

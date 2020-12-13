@@ -13,6 +13,9 @@ namespace tetris
 {
 	namespace core
 	{
+		// Global for now. Should be static members of class RandomizedBag 
+		std::default_random_engine randomEngine(std::chrono::system_clock::now().time_since_epoch().count());
+
 		const TetrominoBase& RandomizedBag::nextTetromino()
 		{
 			if (this->empty()) {
@@ -38,15 +41,15 @@ namespace tetris
 
 		void RandomizedBag::fillAndShuffle()
 		{
-			// Initialize with 1, 2, 3, ..., 6
+			// Initialize with 0, 1, 2, 3, ..., 6
 			indicies.resize(7);
 
 			for (int i = 0; i < indicies.size(); i++) {
 				indicies.at(i) = i;
 			}
 
-			// Shuffle
-			random_shuffle(indicies.data(), indicies.data() + indicies.size());
+			// Shuffle 
+			shuffle(indicies.data(), indicies.data() + indicies.size(), randomEngine);
 		}
 
 		void RandomizedBag::clear()

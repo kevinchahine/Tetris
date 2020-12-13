@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "ScoreKeeper.h"
 
+#include <iocolor/iocolor.h>
+
+using namespace std;
+
 namespace tetris
 {
 	namespace core
@@ -13,9 +17,17 @@ namespace tetris
 			return os;
 		}
 
-		void ScoreKeeper::add(int points)
+		void ScoreKeeper::nLinesCleared(int nLinesCleared)
 		{
-			score += points;
+			switch (nLinesCleared)
+			{
+			case 0:					break;
+			case 1: score += 40	 ;	break;
+			case 2:	score += 100 ;	break;
+			case 3:	score += 300 ;	break;
+			case 4:	score += 1200;	break;
+			default:	cout << "You can't possibly clear " << nLinesCleared << " lines in a single turn.\n"; break;
+			}
 		}
 	}
 }

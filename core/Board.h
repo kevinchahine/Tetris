@@ -25,36 +25,36 @@ namespace tetris
 			Board& operator=(const Board&) = default;
 			Board& operator=(Board&&) noexcept = default;
 
+			// Determines if tetromino is out of bounds at the specified boundaries
+			// Default is all boundaries.
+			// Does not consider occpancy of board cells
 			bool isInBounds(
-				int row,
-				int col,
 				const TetrominoBase& tetromino,
 				uint8_t edges = Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT) const;
 
-			bool isInBounds(
-				const cv::Point& pos,
+			// Determines if tetromino overlaps an occupied cell on the board.
+			// Considers boundary of board. 
+			// Returns false if any part of tetromino is out of bounds
+			// Returns true if all tetromino cells are not out of bounds and do not overlap occupied cells
+			// on the board.
+			bool overlaps(
 				const TetrominoBase& tetromino,
 				uint8_t edges = Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT) const;
 
-			bool fitsAt(
-				int row,
-				int col,
-				const TetrominoBase& tetromino,
-				uint8_t edges = Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT) const;
+			// Copies cells in tetromino onto the board.
+			// Does not clear full rows.
+			// Call Board::clearRows() after calling this method.
+			void pasteAt(const TetrominoBase& tetromino);
 
-			bool fitsAt(
-				const cv::Point& pos,
-				const TetrominoBase& tetromino,
-				uint8_t edges = Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT) const;
-
-			void pasteAt(int row, int col, const TetrominoBase& tetromino);
-
-			void pasteAt(const cv::Point& pos, const TetrominoBase& tetromino);
-
+			// Removes all cells at the specified row regardless of whether they 
+			// it is a full row or not.
+			// Cells above this row will slide down.
 			void clearRow(int row);
-
+			
+			// Not implemented
 			void clearRows(int rowBegin, int rowEnd);
 
+			// Removes all cells on the board
 			void clear();
 		};
 	}

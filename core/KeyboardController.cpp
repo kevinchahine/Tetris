@@ -6,8 +6,12 @@
 #include <chrono>
 #include <functional>
 
+#ifdef _WIN32
 #include <Windows.h>
 #include <conio.h>      // for _kbhit() and _getch()
+#else
+#pragma warning ("KeyboardController only works on windows. Do no use KeyboardController if not on windows")
+#endif
 
 using namespace std;
 
@@ -17,7 +21,7 @@ namespace tetris
 	{
 		KeyboardController::KeyboardController()
 		{
-			initAsyncOp();
+			startAsyncOp();
 		}
 
 		KeyboardController::~KeyboardController() noexcept
@@ -28,7 +32,7 @@ namespace tetris
 
 		void KeyboardController::reset()
 		{
-			// No nothing
+			// Nothing to do here
 		}
 
 		Move KeyboardController::getInput()
@@ -44,18 +48,23 @@ namespace tetris
 		{
 			// When thread reads this in its loop, it will return and close itself
 			stopFlag = true;
+			//myThread.join();
 		}
 
-		void KeyboardController::initAsyncOp()
+		void KeyboardController::startAsyncOp()
 		{
-			std::function<void()> promptUserInput = [&]() {
+			stopFlag = false;
+
+			// Define input operation (this will be called on a separate thread)
+			function<void()> promptUserInput = [&]() {
 				// Prompt user for keybord hit
-				std::cout << "\nEnter move (wasd) (x to exit):\n";
+				//cout << "\Enter move (wasd q) (x to exit):";
 
 				// Keep accepting user inputs until user enters an 'x'
 				// Or the stopFlag is set to true
 				do
 				{
+#ifdef _WIN32	
 					// Check to see if user hit the keyboard (non-blocking)
 					if (_kbhit()) {
 						// What key did user hit (_getch() is blocking)
@@ -63,17 +72,20 @@ namespace tetris
 
 						bool isValid = this->input.setMove(ch);
 
-						// Prompt user for keyboard hit
-						//std::cout << "Enter move (wasd) (x to exit):\n";
+						if (isValid && m_callback != nullptr) {
+							m_callback(this->input);
+						}
 					}
+#else
+					throw std::exception("conio only works on windows. See KeyboardController.cpp");
+#endif
+					this_thread::sleep_for(chrono::milliseconds(33));  // No more work to be done here
 
-					//this_thread::sleep_for(chrono::milliseconds(100));  // No more work to be done here
-
-				} while (this->input.getMove() == Move::EXIT || stopFlag == false);
-
-				// Kick off thread
-				myThread = std::thread{ promptUserInput };
+				} while (stopFlag == false);
 			};
+
+			// Kick off thread
+			myThread = std::thread{ promptUserInput };
 		}
 	}
 }

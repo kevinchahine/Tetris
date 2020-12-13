@@ -4,6 +4,9 @@
 #include "Board.h"
 #include "Move.h"
 #include "RandomizedBag.h"
+#include "ScoreKeeper.h"
+
+#pragma warning (disable: 4251)
 
 namespace tetris
 {
@@ -14,6 +17,8 @@ namespace tetris
 		public:
 
 			void awake();
+
+			void update(const tetris::core::Move& move);
 
 			// Determines if a move will keep the falling piece inbounds. 
 			// Does not consider other pieces on the board.
@@ -27,15 +32,20 @@ namespace tetris
 			//  // between left and right boarders.
 			//  // But doesn't consider bottom boarder.
 			//	bool isIn = g.isInBounds(m, Board::TOP | Board::LEFT | Board::RIGHT);
-			bool isInBounds(const Move& move, uint8_t edges = Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT) const;
+			// 
+			// WARNING: Only use for regular moves: SPIN, LEFT, RIGHT, DOWN
+			//			Do not use for SWAP.
+			bool isSafe(const Move& move) const;
 
-			// Only call this method if move will not cause piece to be out of bounds
-			// from the side or top.
-			// If piece is out of bounds on the side or top, then piece will be placed
-			// where it is.
-			void applyMove(const Move& move);
+			// Moves falling piece even if it ends up off the edge of the board
+			// or overlapping an occupied space
+			// Only call this method if move will not cause piece to move out of bounds
+			void moveFast(const Move& move);
 
-			bool applyMoveIfInBounds(const Move& move);
+			// Moves falling piece according to move
+			// But only if the move will keep the piece inside the board
+			// Does not accound for the top boarder
+			bool moveSafe(const Move& move);
 
 			void loadNextPiece();
 
@@ -47,12 +57,18 @@ namespace tetris
 			bool isGameOver() const;
 
 			// Clears all full rows
+			// And keeps score
 			void clearFullRows();
 
+			// Determines if the piece can move down without overlaping any occupied
+			// cells or falling below the bottom boarder
 			// Make sure falling piece is inbounds from left to right before calling this method
 			// Its ok if piece goes above top row or below bottom row
-			bool pieceCanMoveDown() const;
+			bool isLaying() const;
 
+			// Places the falling piece where it is on the board.
+			// After calling this method, next falling piece needs to 
+			// be recreated by calling .loadNextPiece()
 			void placePiece();
 
 			// ------------------------ ACCESSORS ---------------------------------------
@@ -63,26 +79,27 @@ namespace tetris
 			TetrominoBase& fallingPiece() { return m_fallingPiece; }
 			const TetrominoBase& fallingPiece() const { return m_fallingPiece; }
 
-			cv::Point& fallingPiecePos() { return m_fallingPiecePos; }
-			const cv::Point& fallingPiecePos() const { return m_fallingPiecePos; }
-
 			TetrominoBase& nextPiece() { return m_nextPiece; }
 			const TetrominoBase& nextPiece() const { return m_nextPiece; }
 
 			TetrominoBase& heldPiece() { return m_heldPiece; }
 			const TetrominoBase& heldPiece() const { return m_heldPiece; }
 
+			ScoreKeeper& scoreKeeper() { return m_scoreKeeper; }
+			const ScoreKeeper& scoreKeeper() const { return m_scoreKeeper; }
+
 		protected:
 			Board m_board;
 
 			TetrominoBase m_fallingPiece;
-			cv::Point m_fallingPiecePos;
 
 			TetrominoBase m_nextPiece;
 
 			TetrominoBase m_heldPiece;
 
 			RandomizedBag bag;
+
+			ScoreKeeper m_scoreKeeper;
 		};
 	}
 }

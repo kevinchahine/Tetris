@@ -9,6 +9,8 @@
 #include <opencv2/core/mat.hpp>
 #pragma warning ( pop )
 
+#pragma warning (disable: 4251)
+
 namespace tetris
 {
 	namespace core
@@ -16,23 +18,53 @@ namespace tetris
 		class CORE_API GraphicalDisplay : public DisplayBase
 		{
 		public:
-
 			virtual void rasterize(const Game& game) override;
 
 			virtual void show() override;
 
+			cv::Size& cellSize() { return m_cellSize; }
+			const cv::Size & cellSize() const { return m_cellSize; }
+
 		protected:
+			// Sets all cv::Mat fields (i.e. m_heldPiece, m_nextPiece, m_board) to be sub matricies
+			// of m_fullImage. It adjusts its size to the size of the board determined by the call to
+			// .setBoardSize()
+			void resetSubImages();
 
+			void drawHeldPieceBox(const Game& game);
+
+			void drawBoardBox(const Game& game);
+
+			void drawScoreBox(const Game& game);
+
+			void drawNextPieceBox(const Game& game);
+
+			void drawTetromino(cv::Mat& m_img, const TetrominoBase& piece, bool isGhost = false);
+
+		protected:
+			
 			// Size of cell in pixels (length and width)
-			cv::Size cellSize = cv::Size{ 30, 30 };
+			cv::Size m_cellSize = cv::Size{ 30, 30 };
 
-			cv::Mat m_base = cv::Mat::zeros(512, 512, CV_8UC3);
+			// Stores full image that everythings gets copied to 
+			// This is what gets shown when calling .show()
+			cv::Mat m_fullImage;
 
-			cv::Mat m_heldPiece = cv::Mat::zeros(cellSize * 4, CV_8UC3);
+			// Box showing the held piece
+			// Submatrix of m_fullImage
+			cv::Mat m_heldPieceBox;
 
-			cv::Mat m_nextPiece = cv::Mat::zeros(cellSize * 4, CV_8UC3);
+			// Box showing all the placed pieces and the falling piece
+			// Submatrix of m_fullImage
+			cv::Mat m_boardBox;
 
-			cv::Mat m_image = cv::Mat::zeros(512, 512, CV_8UC3);
+			// Box showing score
+			// Submatrix of m_fullImage
+			cv::Mat m_scoreBox;
+
+			// Box showing the next piece generated
+			// Submatrix of m_fullImage
+			cv::Mat m_nextPieceBox;
 		};
 	}
 }

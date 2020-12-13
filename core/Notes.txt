@@ -3,3 +3,9 @@ For KeyboardController
 	Try gainput api which is an event driven c++ keyboard input library
 	http://gainput.johanneskuhlmann.de/api/page_start.html
 
+Display:
+	add a ghost image of where the piece would fall if it was pushed down
+	show score on display
+	
+Game:
+	Fix Game::isGameOver()

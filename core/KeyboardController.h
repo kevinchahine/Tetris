@@ -23,7 +23,7 @@ namespace tetris
 			// Stops ongoing thread
 			void stopAsyncOp();
 
-			void initAsyncOp();
+			void startAsyncOp();
 
 		private:
 			std::thread myThread;

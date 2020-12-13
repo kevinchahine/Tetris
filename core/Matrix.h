@@ -8,6 +8,9 @@
 #include <opencv2/core/mat.hpp>
 #pragma warning( pop )
 
+#pragma warning (disable: 4251)
+#pragma warning (disable: 4275)
+
 namespace tetris
 {
 	namespace core

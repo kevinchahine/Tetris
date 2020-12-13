@@ -17,13 +17,10 @@ namespace tetris
 			return *this;
 		}
 
-		bool Move::operator==(char move) const
-		{
-			return this->move == move;
-		}
-
 		bool Move::setMove(char move)
 		{
+			move = tolower(move);
+
 			switch (move)
 			{
 			case Move::SPIN:    this->move = move;  return true;

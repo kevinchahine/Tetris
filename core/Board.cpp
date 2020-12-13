@@ -23,8 +23,12 @@ namespace tetris
 		{
 		}
 
-		bool Board::isInBounds(int row, int col, const TetrominoBase& tetromino, uint8_t edges) const
+		bool Board::isInBounds(const TetrominoBase& tetromino, uint8_t edges) const
 		{
+			register int row = tetromino.position().y;
+			register int col = tetromino.position().x;
+
+			// Break down the bit map
 			const bool top = edges & TOP;
 			const bool bottom = edges & BOTTOM;
 			const bool left = edges & LEFT;
@@ -55,13 +59,11 @@ namespace tetris
 			return true;
 		}
 
-		bool Board::isInBounds(const cv::Point& pos, const TetrominoBase& tetromino, uint8_t edges) const
+		bool Board::overlaps(const TetrominoBase& tetromino, uint8_t edges) const
 		{
-			return isInBounds(pos.y, pos.x, tetromino, edges);
-		}
+			register int row = tetromino.position().y;
+			register int col = tetromino.position().x;
 
-		bool Board::fitsAt(int row, int col, const TetrominoBase& tetromino, uint8_t edges) const
-		{
 			const bool top = edges & TOP;
 			const bool bottom = edges & BOTTOM;
 			const bool left = edges & LEFT;
@@ -79,17 +81,16 @@ namespace tetris
 							(left && colOnBoard >= 0) &&			// Is cell right of left boarder?
 							(right && colOnBoard < this->cols))		// Is cell left of right boarder?)
 						{
-							// Cell is inside the board. But does it overlap a cell thats 
-							// already on the board.
+							// Cell is inside the board. But does it overlap an occupied cell on the board?
 
 							// Is board cell empty or does it have something in it?
 							if (this->at(rowOnBoard, colOnBoard) != TetrominoBase::EMPTY) {
 								// Cell is not empty.
-								return false;	// There is an overlap, therefore tetromino does not fit where it is.
+								return true;	// There is an overlap, therefore tetromino does not fit where it is.
 							}
 						}
 						else {
-							return false;	// Cell is out of bounds and in that case also doesn't fit where it is.
+							return true;		// Cell is out of bounds. So in a way, it overlaps outside the board.
 						}
 					}
 				}
@@ -97,16 +98,14 @@ namespace tetris
 
 			// Tetromino does not have any cells that are out of bounds or overlap any pieces
 			// that are already on the board.
-			return true;	// So it fits
+			return false;	// So no overlap
 		}
 
-		bool Board::fitsAt(const cv::Point& pos, const TetrominoBase& tetromino, uint8_t edges) const
+		void Board::pasteAt(const TetrominoBase& tetromino)
 		{
-			return fitsAt(pos.y, pos.x, tetromino, edges);
-		}
+			register int row = tetromino.position().y;
+			register int col = tetromino.position().x;
 
-		void Board::pasteAt(int row, int col, const TetrominoBase& tetromino)
-		{
 			for (int r = 0; r < tetromino.size().height; r++) {
 				for (int c = 0; c < tetromino.size().width; c++) {
 					if (tetromino.at(r, c) != TetrominoBase::EMPTY) {
@@ -122,11 +121,6 @@ namespace tetris
 					}
 				}
 			}
-		}
-
-		void Board::pasteAt(const cv::Point& pos, const TetrominoBase& tetromino)
-		{
-			pasteAt(pos.y, pos.x, tetromino);
 		}
 
 		void Board::clearRow(int row)

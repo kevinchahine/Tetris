@@ -1,7 +1,10 @@
 #include "pch.h"
 #include "Game.h"
-
 #include "Tetrominos.hpp"
+
+#include <iocolor/iocolor.h>
+
+#include <algorithm>
 
 using namespace std;
 
@@ -15,130 +18,172 @@ namespace tetris
 
 			m_heldPiece = bag.nextTetromino();
 
+			m_nextPiece = bag.nextTetromino();
+
 			loadNextPiece();
 		}
 
-		bool Game::isInBounds(const Move& move, uint8_t edges) const
+		void Game::update(const tetris::core::Move& move)
 		{
-			cv::Point nextPos = m_fallingPiecePos;
+			bool isSafe = this->moveSafe(move);
+			//if (this->isSafe(move)) {
+			//	this->moveFast(move);
+			//}
+			m_scoreKeeper.incrementTurnCount();
 
-			TetrominoBase falling = m_fallingPiece;
+			cout << "Move is " << (isSafe ? "Safe" : " Unsafe") << '\t';
 
-			switch (move.getMove())
-			{
-			case Move::SPIN:
-				falling.spin();
-
-				while (m_board.isInBounds(nextPos, falling, Board::LEFT) == false) {
-					nextPos.x++;
+			static int layingCount = 0;
+			if (this->isLaying()) {
+				layingCount++;
+				cout << "Laying " << layingCount << "\t";
+				
+				if (layingCount >= 2) {
+					this->placePiece();
+					this->clearFullRows();
+					this->loadNextPiece();
+					layingCount = 0;
 				}
-
-				while (m_board.isInBounds(nextPos, falling, Board::RIGHT) == false) {
-					nextPos.x--;
-				}
-				break;
-			case Move::DOWN:    nextPos.y++;	break;
-			case Move::LEFT:    nextPos.x--;	break;
-			case Move::RIGHT:   nextPos.x++;	break;
-			case Move::NONE:    nextPos.y++;	break;	// same as DOWN
-			default:			nextPos.y++;	break;	// same as DOWN
-			}
-
-			return m_board.isInBounds(nextPos, falling, edges);
-		}
-
-		void Game::applyMove(const Move& move)
-		{
-			TetrominoBase falling = m_fallingPiece;
-
-			cv::Point nextPos = m_fallingPiecePos;
-
-			switch (move.getMove())
-			{
-			case Move::SPIN:
-				falling.spin();
-
-				while (m_board.isInBounds(nextPos, falling, Board::LEFT) == false) {
-					nextPos.x++;
-				}
-
-				while (m_board.isInBounds(nextPos, falling, Board::RIGHT) == false) {
-					nextPos.x--;
-				}
-				break;
-			case Move::DOWN:    nextPos.y++;	break;
-			case Move::LEFT:    nextPos.x--;	break;
-			case Move::RIGHT:   nextPos.x++;	break;
-			case Move::NONE:    nextPos.y++;	break;	// same as DOWN
-			case Move::SWAP:
-				swap(m_heldPiece, m_fallingPiece);
-
-				m_fallingPiecePos = cv::Point{ 4, -1 };
-
-				while (m_board.isInBounds(m_fallingPiecePos, falling, Board::TOP) == false) {
-					m_fallingPiecePos.y++;
-
-					return;
-				}
-			default:			nextPos.y++;	break;	// same as DOWN
-			}
-
-			// Did piece reach the bottom or overlap another piece
-			if (m_board.fitsAt(nextPos, falling)) {
-				m_fallingPiece = falling;
-
-				m_fallingPiecePos = nextPos;
-			}
-		}
-
-		bool Game::applyMoveIfInBounds(const Move& move)
-		{
-			if (move == Move::SWAP || isInBounds(move, Board::BOTTOM | Board::LEFT | Board::RIGHT)) {
-				applyMove(move);
-
-				return true;
 			}
 			else {
-				return false;
+				layingCount = 0;
+			}
+
+			if (this->isGameOver()) {
+				cout << iocolor::push()
+					<< iocolor::setfg(iocolor::RED)
+					<< "Game Over!!!\n"
+					<< iocolor::pop();
+			}
+			cout << '\n';
+		}
+
+		bool Game::isSafe(const Move& move) const
+		{
+			if (move != Move::SWAP) {
+				// Save the state of the falling piece so that we can restore it later
+				TetrominoBase currFallingPiece = m_fallingPiece;
+
+				// Apply the move the falling piece
+				const_cast<Game&>(*this).moveFast(move);
+
+				// See if the falling piece is out of bounds or overlapping an occupied cell
+				bool overlaps = m_board.overlaps(m_fallingPiece, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
+
+				// Restore previous state of the falling piece
+				const_cast<TetrominoBase&>(m_fallingPiece) = currFallingPiece;
+
+				// As long as the move won't make the falling piece overlap, then the move is a safe move.
+				return !overlaps;
+			}
+			else {
+				return true;
+			}
+		}
+
+		void Game::moveFast(const Move& move)
+		{
+			switch (move.getMove())
+			{
+			case Move::NONE:    m_fallingPiece.moveDown();	break;	// same as DOWN
+			case Move::DOWN:    m_fallingPiece.moveDown();	break;
+			case Move::LEFT:    m_fallingPiece.moveLeft();	break;
+			case Move::RIGHT:   m_fallingPiece.moveRight();	break;
+			case Move::SPIN:
+				m_fallingPiece.spin();
+
+				while (m_board.isInBounds(m_fallingPiece, Board::LEFT) == false) {
+					m_fallingPiece.moveRight();
+				}
+
+				while (m_board.isInBounds(m_fallingPiece, Board::RIGHT) == false) {
+					m_fallingPiece.moveLeft();
+				}
+				break;
+			case Move::SWAP:	swapPieces();				break;
+			default:			throw Move::BadMove();		break;
+			}
+		}
+
+		bool Game::moveSafe(const Move& move)
+		{
+			if (move != Move::SWAP) {
+				// Save the state of the falling piece so that we can restore it later
+				TetrominoBase currFallingPiece = m_fallingPiece;
+
+				// Apply the move the falling piece
+				const_cast<Game&>(*this).moveFast(move);
+
+				// See if the falling piece is out of bounds or overlapping an occupied cell
+				bool overlaps = m_board.overlaps(m_fallingPiece, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
+
+				// Was the move safe?
+				if (overlaps == true) {
+					// Move was not safe, we need to restore the previous state.
+					// Restore previous state of the falling piece
+					const_cast<TetrominoBase&>(m_fallingPiece) = currFallingPiece;
+
+					return false;	// Unsafe move
+				}
+				else {
+					return true;	// Safe move
+				}
+			}
+			else {
+				moveFast(move);		
+
+				return true;		// Swap is always a safe move
 			}
 		}
 
 		void Game::loadNextPiece()
 		{
-			m_fallingPiece = bag.nextTetromino();
+			m_fallingPiece = m_nextPiece;
 
-			m_fallingPiecePos = cv::Point{ 4, -1 };
+			// Place falling piece at very top of board
+			m_fallingPiece.position() = cv::Point{ 4, -1 };
 
-			while (m_board.isInBounds(m_fallingPiecePos, m_fallingPiece, Board::TOP) == false) {
-				m_fallingPiecePos.y++;
+			// Move down falling piece until it is completely below top boarder
+			while (m_board.isInBounds(m_fallingPiece, Board::TOP) == false) {
+				m_fallingPiece.moveDown();
 			}
+
+			m_nextPiece = bag.nextTetromino();
 		}
 
 		void Game::swapPieces()
 		{
+			m_heldPiece.print();
+			m_fallingPiece.print();
+
 			swap(m_heldPiece, m_fallingPiece);
 
-			m_fallingPiecePos = cv::Point{ 4, -1 };
+			// Place falling piece at very top of board
+			m_fallingPiece.position() = cv::Point{ 4, -1 };
 
-			while (m_board.isInBounds(m_fallingPiecePos, m_fallingPiece, Board::TOP) == false) {
-				m_fallingPiecePos.y++;
+			// Move down falling piece until it is completely below top boarder
+			while (m_board.isInBounds(m_fallingPiece, Board::TOP) == false) {
+				m_fallingPiece.moveDown();
 			}
+
+			m_heldPiece.position() = cv::Point{ 0, 0 };
 		}
 
 		bool Game::isGameOver() const
 		{
-			for (int c = 0; c < m_board.cols; c++) {
-				// Is a piece placed on the top row
-				if (m_board.at(0, c) != TetrominoBase::EMPTY) {
-					return true;	// Game over
-				}
-			}
-
-			return false; // Still alive 
+			bool gameOver = any_of(
+				&m_board.at(0, 0), 
+				&m_board.at(0, 0) + m_board.cols, 
+				[](uint8_t cell) {return cell != TetrominoBase::EMPTY; }
+			);
+			
+			return gameOver;
 		}
 
 		void Game::clearFullRows()
 		{
+			int nLinesCleared = 0;
+
 			for (int r = 0; r < m_board.rows; r++) {
 
 				bool containsEmptyCell = false;
@@ -152,42 +197,34 @@ namespace tetris
 
 				if (containsEmptyCell == false) {
 					m_board.clearRow(r);
+
+					nLinesCleared++;
 				}
 			}
+
+			// Increment score
+			m_scoreKeeper.nLinesCleared(nLinesCleared);
 		}
 
-		bool Game::pieceCanMoveDown() const
+		bool Game::isLaying() const
 		{
-			auto fallingPos = m_fallingPiecePos;
-
-			fallingPos.y++;
-
-			for (int r = 0; r < m_fallingPiece.rows; r++) {
-				for (int c = 0; c < m_fallingPiece.cols; c++) {
-					if (m_fallingPiece.at(r, c) != Matrix::EMPTY) {
-						int rowInBoard = fallingPos.y + r;
-						int colInBoard = fallingPos.x + c;
-
-						if (rowInBoard >= 0) {
-							if (rowInBoard < m_board.rows) {
-								if (m_board.at(rowInBoard, colInBoard) != Matrix::EMPTY) {
-									return false;
-								}
-							}
-							else {
-								return false;
-							}
-						}
-					}
-				}
-			}
-
-			return true;
+			// Move falling piece down temporarilly
+			const_cast<TetrominoBase&>(m_fallingPiece).moveDown();
+			
+			// See if the falling piece overlaps any occupied cells
+			bool overlaps = m_board.overlaps(m_fallingPiece);
+			
+			// Move falling piece back up to where it was before
+			const_cast<TetrominoBase&>(m_fallingPiece).moveUp();
+			
+			// If moving down causes no overlaps, then falling piece can
+			// move down	
+			return overlaps;
 		}
 
 		void Game::placePiece()
 		{
-			m_board.pasteAt(m_fallingPiecePos, m_fallingPiece);
+			m_board.pasteAt(m_fallingPiece);
 		}
 	}
 }

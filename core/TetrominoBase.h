@@ -7,9 +7,32 @@
 
 namespace tetris
 {
-
 	namespace core
 	{	
+		const cv::Scalar RED{ 0, 0, 255 };
+		const cv::Scalar PURPLE{ 255, 0, 255 };
+		const cv::Scalar BLUE{ 255, 0, 0 };
+		const cv::Scalar CYAN{ 255, 255, 128 };
+		const cv::Scalar GREEN{ 0, 255, 0 };
+		const cv::Scalar YELLOW{ 0, 255, 255 };
+		const cv::Scalar ORANGE{ 64, 128, 255 };
+		const cv::Scalar GRAY{ 128, 128, 128 };
+		const cv::Scalar WHITE{ 255, 255, 255 };
+		const cv::Scalar BLACK{ 0, 0, 0 };
+
+		const cv::Scalar shades[] = {
+			BLACK,
+			CYAN,
+			RED,
+			PURPLE,
+			BLUE,
+			GREEN,
+			YELLOW,
+			ORANGE,
+			GRAY,
+			WHITE
+		};
+
 		// 4x4 cv::Mat 
 		// element values:
 		//	0 - empty cell
@@ -29,6 +52,21 @@ namespace tetris
 
 			void unSpin();
 
+			void moveDown();
+
+			void moveLeft();
+
+			void moveRight();
+
+			void moveUp();
+
+			void show(const std::string& windowName = "Tetromino") const;
+
+			cv::Point& position() { return m_position; }
+			const cv::Point& position() const { return m_position; }
+
+		protected:
+			cv::Point m_position;
 		};
 	}
 }
