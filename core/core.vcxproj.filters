@@ -25,6 +25,9 @@
     <Filter Include="Controller">
       <UniqueIdentifier>{d0a2643f-5dc6-45c6-aca4-e937de321d59}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{1a811a11-6dcd-4548-acf0-e26c7c6d5a89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -102,6 +105,15 @@
     <ClInclude Include="Matrix.h">
       <Filter>Pieces</Filter>
     </ClInclude>
+    <ClInclude Include="AiController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveGenerator.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveStatePair.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp">
@@ -169,6 +181,15 @@
     </ClCompile>
     <ClCompile Include="Matrix.cpp">
       <Filter>Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="AiController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveGenerator.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveStatePair.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

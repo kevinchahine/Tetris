@@ -75,6 +75,9 @@ namespace tetris
 						if (isValid && m_callback != nullptr) {
 							m_callback(this->input);
 						}
+						else {
+							cout << ch << " is an invalid entry\n";
+						}
 					}
 #else
 					throw std::exception("conio only works on windows. See KeyboardController.cpp");

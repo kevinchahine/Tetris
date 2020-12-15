@@ -3,6 +3,7 @@
 #include "core.h"
 #include "Board.h"
 #include "Move.h"
+#include "TetrominoBase.h"
 #include "RandomizedBag.h"
 #include "ScoreKeeper.h"
 
@@ -37,15 +38,32 @@ namespace tetris
 			//			Do not use for SWAP.
 			bool isSafe(const Move& move) const;
 
+			// See comments of overload
+			bool isSafe(const TetrominoBase& fallingPiece) const;
+
 			// Moves falling piece even if it ends up off the edge of the board
 			// or overlapping an occupied space
 			// Only call this method if move will not cause piece to move out of bounds
 			void moveFast(const Move& move);
 
+			// See comments of overload
+			void moveFast(TetrominoBase&& fallingPiece);
+
 			// Moves falling piece according to move
 			// But only if the move will keep the piece inside the board
 			// Does not accound for the top boarder
 			bool moveSafe(const Move& move);
+
+			// See comments of overload
+			void moveSafe(TetrominoBase&& fallingPiece);
+
+			// Generates all valid moves from the current state excluding swap
+			// Stores them in a MoveStatePair so that both the move and the destination state can be saved
+			// The state is represented by the falling tetromino piece only.
+			// C is to be a container class that that stores MoveStatePairs and has a push_back function
+			// ex: std::vector<tetris::core::MoveStatePair>
+			template<typename C>
+			void generateMoves(C & dstContainer, bool leaveOutSwap = false) const;
 
 			void loadNextPiece();
 
@@ -69,7 +87,7 @@ namespace tetris
 			// Places the falling piece where it is on the board.
 			// After calling this method, next falling piece needs to 
 			// be recreated by calling .loadNextPiece()
-			void placePiece();
+			void placeFallingPiece();
 
 			// ------------------------ ACCESSORS ---------------------------------------
 
@@ -101,5 +119,63 @@ namespace tetris
 
 			ScoreKeeper m_scoreKeeper;
 		};
+
+		// ------------------------ Template Definitions ----------------------------
+		template<typename C>
+		void Game::generateMoves(C & dstContainer, bool leaveOutSwap) const
+		{
+			using namespace std;
+			
+			back_insert_iterator<C> backIter(dstContainer);
+			bool overlaps;
+			TetrominoBase falling;
+			
+			// --- DOWN ---
+			falling = m_fallingPiece;
+			falling.moveDown();
+			overlaps = m_board.overlaps(falling, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
+			if (!overlaps) {
+				backIter = std::move(falling);
+			}
+			
+			// --- LEFT ---
+			falling = m_fallingPiece;
+			falling.moveLeft();
+			overlaps = m_board.overlaps(falling, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
+			if (!overlaps) {
+				backIter = move(falling);
+			}
+			
+			// --- RIGHT ---
+			falling = m_fallingPiece;
+			falling.moveRight();
+			overlaps = m_board.overlaps(falling, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
+			if (!overlaps) {
+				backIter = move(falling);
+			}
+			
+			// --- SPIN ---
+			falling = m_fallingPiece;
+			falling.spin();
+			
+			while (m_board.isInBounds(falling, Board::LEFT) == false) {
+				falling.moveRight();
+			}
+			
+			while (m_board.isInBounds(falling, Board::RIGHT) == false) {
+				falling.moveLeft();
+			}
+			overlaps = m_board.overlaps(falling, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
+			if (!overlaps) {
+				backIter = move(falling);
+			}
+			
+			// --- SWAP ---
+			if (leaveOutSwap == true) {
+				// swap is always valid move
+				falling = m_fallingPiece;
+				backIter = move(falling);
+			}
+		}
 	}
 }

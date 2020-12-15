@@ -162,6 +162,7 @@
     <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AiController.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="ColoredConsoleDisplay.h" />
     <ClInclude Include="ControllerBase.h" />
@@ -174,6 +175,8 @@
     <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Move.h" />
+    <ClInclude Include="MoveGenerator.h" />
+    <ClInclude Include="MoveStatePair.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RandomizedBag.h" />
     <ClInclude Include="ScoreKeeper.h" />
@@ -188,6 +191,7 @@
     <ClInclude Include="TetrominoZ.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AiController.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="ColoredConsoleDisplay.cpp" />
     <ClCompile Include="ControllerBase.cpp" />
@@ -199,6 +203,8 @@
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Move.cpp" />
+    <ClCompile Include="MoveGenerator.cpp" />
+    <ClCompile Include="MoveStatePair.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

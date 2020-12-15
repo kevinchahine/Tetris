@@ -6,6 +6,8 @@
 
 #include <algorithm>
 
+#include <opencv2/highgui.hpp>
+
 using namespace std;
 
 namespace tetris
@@ -26,20 +28,21 @@ namespace tetris
 		void Game::update(const tetris::core::Move& move)
 		{
 			bool isSafe = this->moveSafe(move);
-			//if (this->isSafe(move)) {
-			//	this->moveFast(move);
-			//}
+			///if (this->isSafe(move)) {
+			///	this->moveFast(move);
+			///}
+
 			m_scoreKeeper.incrementTurnCount();
-
+			
 			cout << "Move is " << (isSafe ? "Safe" : " Unsafe") << '\t';
-
+			
 			static int layingCount = 0;
 			if (this->isLaying()) {
 				layingCount++;
 				cout << "Laying " << layingCount << "\t";
 				
 				if (layingCount >= 2) {
-					this->placePiece();
+					this->placeFallingPiece();
 					this->clearFullRows();
 					this->loadNextPiece();
 					layingCount = 0;
@@ -48,7 +51,7 @@ namespace tetris
 			else {
 				layingCount = 0;
 			}
-
+			
 			if (this->isGameOver()) {
 				cout << iocolor::push()
 					<< iocolor::setfg(iocolor::RED)
@@ -79,6 +82,11 @@ namespace tetris
 			else {
 				return true;
 			}
+		}
+
+		bool Game::isSafe(const TetrominoBase& fallingPiece) const
+		{
+			return false;
 		}
 
 		void Game::moveFast(const Move& move)
@@ -222,7 +230,7 @@ namespace tetris
 			return overlaps;
 		}
 
-		void Game::placePiece()
+		void Game::placeFallingPiece()
 		{
 			m_board.pasteAt(m_fallingPiece);
 		}

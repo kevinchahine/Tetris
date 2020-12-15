@@ -5,10 +5,16 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "driver", "driver\driver.vcxproj", "{034960E6-0AA5-4148-9217-89E46627CC4A}"
 	ProjectSection(ProjectDependencies) = postProject
+		{8CD4BB51-AD07-4903-862F-4E165824BAD9} = {8CD4BB51-AD07-4903-862F-4E165824BAD9}
 		{C28EB08A-AE4E-4994-9C90-E19F8AE3341D} = {C28EB08A-AE4E-4994-9C90-E19F8AE3341D}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "core\core.vcxproj", "{C28EB08A-AE4E-4994-9C90-E19F8AE3341D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ai", "ai\ai.vcxproj", "{8CD4BB51-AD07-4903-862F-4E165824BAD9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C28EB08A-AE4E-4994-9C90-E19F8AE3341D} = {C28EB08A-AE4E-4994-9C90-E19F8AE3341D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +40,14 @@ Global
 		{C28EB08A-AE4E-4994-9C90-E19F8AE3341D}.Release|x64.Build.0 = Release|x64
 		{C28EB08A-AE4E-4994-9C90-E19F8AE3341D}.Release|x86.ActiveCfg = Release|Win32
 		{C28EB08A-AE4E-4994-9C90-E19F8AE3341D}.Release|x86.Build.0 = Release|Win32
+		{8CD4BB51-AD07-4903-862F-4E165824BAD9}.Debug|x64.ActiveCfg = Debug|x64
+		{8CD4BB51-AD07-4903-862F-4E165824BAD9}.Debug|x64.Build.0 = Debug|x64
+		{8CD4BB51-AD07-4903-862F-4E165824BAD9}.Debug|x86.ActiveCfg = Debug|Win32
+		{8CD4BB51-AD07-4903-862F-4E165824BAD9}.Debug|x86.Build.0 = Debug|Win32
+		{8CD4BB51-AD07-4903-862F-4E165824BAD9}.Release|x64.ActiveCfg = Release|x64
+		{8CD4BB51-AD07-4903-862F-4E165824BAD9}.Release|x64.Build.0 = Release|x64
+		{8CD4BB51-AD07-4903-862F-4E165824BAD9}.Release|x86.ActiveCfg = Release|Win32
+		{8CD4BB51-AD07-4903-862F-4E165824BAD9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
