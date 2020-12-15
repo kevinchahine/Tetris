@@ -6,6 +6,10 @@
 #include "TetrominoBase.h"
 #include "RandomizedBag.h"
 #include "ScoreKeeper.h"
+#include "MoveStatePair.h"
+
+#include <typeinfo>
+#include <iterator>
 
 #pragma warning (disable: 4251)
 
@@ -126,7 +130,6 @@ namespace tetris
 		{
 			using namespace std;
 			
-			back_insert_iterator<C> backIter(dstContainer);
 			bool overlaps;
 			TetrominoBase falling;
 			
@@ -135,7 +138,7 @@ namespace tetris
 			falling.moveDown();
 			overlaps = m_board.overlaps(falling, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
 			if (!overlaps) {
-				backIter = std::move(falling);
+				dstContainer.emplace_back(MoveStatePair(Move::DOWN, falling));
 			}
 			
 			// --- LEFT ---
@@ -143,7 +146,7 @@ namespace tetris
 			falling.moveLeft();
 			overlaps = m_board.overlaps(falling, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
 			if (!overlaps) {
-				backIter = move(falling);
+				dstContainer.emplace_back(MoveStatePair(Move::LEFT, falling));
 			}
 			
 			// --- RIGHT ---
@@ -151,7 +154,7 @@ namespace tetris
 			falling.moveRight();
 			overlaps = m_board.overlaps(falling, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
 			if (!overlaps) {
-				backIter = move(falling);
+				dstContainer.emplace_back(MoveStatePair(Move::RIGHT, falling));
 			}
 			
 			// --- SPIN ---
@@ -167,14 +170,14 @@ namespace tetris
 			}
 			overlaps = m_board.overlaps(falling, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
 			if (!overlaps) {
-				backIter = move(falling);
+				dstContainer.emplace_back(MoveStatePair(Move::SPIN, falling));
 			}
 			
 			// --- SWAP ---
 			if (leaveOutSwap == true) {
 				// swap is always valid move
 				falling = m_fallingPiece;
-				backIter = move(falling);
+				dstContainer.emplace_back(MoveStatePair(Move::SWAP, falling));
 			}
 		}
 	}

@@ -19,8 +19,9 @@
 #include <Tetris/core/ColoredConsoleDisplay.h>
 #include <Tetris/core/GraphicalDisplay.h>
 
-// Include controller classes (Controller)
+// Include controller and solver classes (Controller)
 #include <Tetris/core/Controllers.hpp>
+#include <Tetris/ai/Solvers.hpp>
 
 using namespace std;
 

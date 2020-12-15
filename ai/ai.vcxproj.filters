@@ -13,7 +13,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Controller">
+    <Filter Include="Solvers">
       <UniqueIdentifier>{1f648965-adfd-4d94-a120-6a1a383204bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -31,7 +31,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DfsSolver.h">
-      <Filter>Controller</Filter>
+      <Filter>Solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="Solvers.hpp">
+      <Filter>Solvers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -45,7 +48,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DfsSolver.cpp">
-      <Filter>Controller</Filter>
+      <Filter>Solvers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

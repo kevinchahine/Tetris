@@ -108,9 +108,6 @@
     <ClInclude Include="AiController.h">
       <Filter>Controller</Filter>
     </ClInclude>
-    <ClInclude Include="MoveGenerator.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="MoveStatePair.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -184,9 +181,6 @@
     </ClCompile>
     <ClCompile Include="AiController.cpp">
       <Filter>Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveGenerator.cpp">
-      <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="MoveStatePair.cpp">
       <Filter>Source Files</Filter>

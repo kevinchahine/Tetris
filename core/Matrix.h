@@ -18,6 +18,7 @@ namespace tetris
 		class CORE_API Matrix : public cv::Mat
 		{
 		public:
+			// Possible values that can be stored
 			const static uint8_t EMPTY = 0;
 			const static uint8_t I = 1;
 			const static uint8_t O = 2;

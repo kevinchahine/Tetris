@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "DfsSolver.h"
 
-#include <Tetris/core/MoveGenerator.h>
 #include <Tetris/core/MoveStatePair.h>
 
 #include <queue>
@@ -31,7 +30,7 @@ namespace tetris
 			// Next moves to try
 			stack<core::MoveStatePair> frontier;
 
-			// Keeps track of 
+			// Keeps track of moves that got us to the current state
 			queue<core::TetrominoBase> moves;
 
 			// Contains hash values of states we have already analysed
@@ -39,7 +38,8 @@ namespace tetris
 			set<int> explored;
 
 			// Generate starting moves
-			vector<core::Move> validMoves = tetris::core::MoveGenerator::generate(game, true);
+			vector<core::MoveStatePair> validMoves;
+			game.generateMoves(validMoves);
 
 			// Keep repeating as long has there are moves to try in the frontier
 			while (frontier.empty() == false)

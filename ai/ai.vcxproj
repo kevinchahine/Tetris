@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ai.h" />
+    <ClInclude Include="Solvers.hpp" />
     <ClInclude Include="DfsSolver.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />

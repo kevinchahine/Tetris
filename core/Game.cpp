@@ -27,20 +27,20 @@ namespace tetris
 
 		void Game::update(const tetris::core::Move& move)
 		{
+			// --- Apply move if it is safe ---
 			bool isSafe = this->moveSafe(move);
 			///if (this->isSafe(move)) {
 			///	this->moveFast(move);
 			///}
 
-			m_scoreKeeper.incrementTurnCount();
-			
 			cout << "Move is " << (isSafe ? "Safe" : " Unsafe") << '\t';
-			
+			cout << "Hash = " << hash<MoveStatePair>{}(MoveStatePair{ move, m_fallingPiece }) << '\t';
+
 			static int layingCount = 0;
 			if (this->isLaying()) {
 				layingCount++;
 				cout << "Laying " << layingCount << "\t";
-				
+
 				if (layingCount >= 2) {
 					this->placeFallingPiece();
 					this->clearFullRows();
@@ -51,13 +51,17 @@ namespace tetris
 			else {
 				layingCount = 0;
 			}
-			
-			if (this->isGameOver()) {
-				cout << iocolor::push()
-					<< iocolor::setfg(iocolor::RED)
-					<< "Game Over!!!\n"
-					<< iocolor::pop();
+
+			if (isSafe) {
+				m_scoreKeeper.incrementTurnCount();
+				if (this->isGameOver()) {
+					cout << iocolor::push()
+						<< iocolor::setfg(iocolor::RED)
+						<< "Game Over!!!\n"
+						<< iocolor::pop();
+				}
 			}
+
 			cout << '\n';
 		}
 
@@ -138,7 +142,7 @@ namespace tetris
 				}
 			}
 			else {
-				moveFast(move);		
+				moveFast(move);
 
 				return true;		// Swap is always a safe move
 			}
@@ -180,11 +184,11 @@ namespace tetris
 		bool Game::isGameOver() const
 		{
 			bool gameOver = any_of(
-				&m_board.at(0, 0), 
-				&m_board.at(0, 0) + m_board.cols, 
+				&m_board.at(0, 0),
+				&m_board.at(0, 0) + m_board.cols,
 				[](uint8_t cell) {return cell != TetrominoBase::EMPTY; }
 			);
-			
+
 			return gameOver;
 		}
 
@@ -218,13 +222,13 @@ namespace tetris
 		{
 			// Move falling piece down temporarilly
 			const_cast<TetrominoBase&>(m_fallingPiece).moveDown();
-			
+
 			// See if the falling piece overlaps any occupied cells
 			bool overlaps = m_board.overlaps(m_fallingPiece);
-			
+
 			// Move falling piece back up to where it was before
 			const_cast<TetrominoBase&>(m_fallingPiece).moveUp();
-			
+
 			// If moving down causes no overlaps, then falling piece can
 			// move down	
 			return overlaps;

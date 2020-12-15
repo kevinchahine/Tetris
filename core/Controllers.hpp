@@ -1,11 +1,5 @@
 #pragma once
 
 #include "KeyboardController.h"
+#include "AiController.h"
 
-namespace tetris
-{
-	namespace core
-	{
-
-	}
-}
