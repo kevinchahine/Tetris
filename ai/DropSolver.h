@@ -7,7 +7,11 @@ namespace tetris
 {
 	namespace ai
 	{
-		class AI_API RandomSolver : public core::AiController
+		/*
+		Solves by moving the falling piece left or right to its desired spot then dropping it 
+		all the way down. Does use swaps and spins 
+		*/
+		class AI_API DropSolver : public core::AiController
 		{
 		public:
 			virtual void reset() override;
@@ -15,8 +19,8 @@ namespace tetris
 			virtual core::Move getInput() override;
 
 		protected:
+			core::Move solve();
 
 		};
 	}
 }
-

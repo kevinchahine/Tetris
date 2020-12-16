@@ -46,6 +46,11 @@ namespace tetris
 			// Call Board::clearRows() after calling this method.
 			void pasteAt(const TetrominoBase& tetromino);
 
+			// Removes the cells from the board that are behind tetromino.
+			// Does the opposite of pasteAt()
+			// Can be used to undo moves 
+			void removeFrom(const TetrominoBase& tetromino);
+
 			// Removes all cells at the specified row regardless of whether they 
 			// it is a full row or not.
 			// Cells above this row will slide down.

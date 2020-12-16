@@ -123,6 +123,28 @@ namespace tetris
 			}
 		}
 
+		void Board::removeFrom(const TetrominoBase& tetromino)
+		{
+			register int row = tetromino.position().y;
+			register int col = tetromino.position().x;
+
+			for (int r = 0; r < tetromino.size().height; r++) {
+				for (int c = 0; c < tetromino.size().width; c++) {
+					if (tetromino.at(r, c) != TetrominoBase::EMPTY) {
+						int rowCoord = row + r;
+						int colCoord = col + c;
+						if (rowCoord >= 0 &&
+							rowCoord < this->rows &&
+							colCoord >= 0 &&
+							colCoord < this->cols)
+						{
+							this->at(rowCoord, colCoord) = TetrominoBase::EMPTY;
+						}
+					}
+				}
+			}
+		}
+
 		void Board::clearRow(int row)
 		{
 			// Get region of cells above the row we are to remove

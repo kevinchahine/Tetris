@@ -16,6 +16,9 @@
     <Filter Include="Solvers">
       <UniqueIdentifier>{1f648965-adfd-4d94-a120-6a1a383204bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Heuristics">
+      <UniqueIdentifier>{6c505a6b-5446-4760-9787-5750bc28f9ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -39,6 +42,9 @@
     <ClInclude Include="RandomSolver.h">
       <Filter>Solvers</Filter>
     </ClInclude>
+    <ClInclude Include="DropSolver.h">
+      <Filter>Solvers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ai.cpp">
@@ -54,6 +60,9 @@
       <Filter>Solvers</Filter>
     </ClCompile>
     <ClCompile Include="RandomSolver.cpp">
+      <Filter>Solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="DropSolver.cpp">
       <Filter>Solvers</Filter>
     </ClCompile>
   </ItemGroup>

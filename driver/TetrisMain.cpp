@@ -59,7 +59,8 @@ int main(int* argc, char** argv)
 	unique_ptr<tetris::core::ControllerBase> controllerPtr =
 		//make_unique<tetris::core::KeyboardController>();
 		//make_unique<tetris::ai::DfsSolver>();
-		make_unique<tetris::ai::RandomSolver>();
+		//make_unique<tetris::ai::RandomSolver>();
+		make_unique<tetris::ai::DropSolver>();
 
 	controllerPtr->gamePtr() = &game;
 
