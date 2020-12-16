@@ -10,6 +10,9 @@ namespace tetris
 {
 	namespace core
 	{
+		// --- Forward Declarations ---
+		class Game;
+		
 		class CORE_API ControllerBase
 		{
 		public:
@@ -19,9 +22,23 @@ namespace tetris
 
 			void setCallback(std::function<void(const Move & move)>&& callback) { m_callback = std::move(callback); }
 
-		protected:
+			const Game*& gamePtr() { return m_gamePtr; }
+			const Game* gamePtr() const { return m_gamePtr; }
 
+			const Game & game() const {
+				if (m_gamePtr == nullptr) 
+					throw std::exception("m_game was nullptr");
+
+				return *m_gamePtr;
+			}
+
+		protected:
 			std::function<void(const Move& move)> m_callback;
+
+		private:
+			// Non-owning
+			// Does not need to be dereferenced
+			const Game* m_gamePtr = nullptr;
 		};
 	}
 }

@@ -58,9 +58,10 @@ int main(int* argc, char** argv)
 	// --- Set up controller ---
 	unique_ptr<tetris::core::ControllerBase> controllerPtr =
 		//make_unique<tetris::core::KeyboardController>();
-		make_unique<tetris::ai::DfsSolver>();
+		//make_unique<tetris::ai::DfsSolver>();
+		make_unique<tetris::ai::RandomSolver>();
 
-	dynamic_cast<tetris::core::AiController*>(controllerPtr.get())->gamePtr() = &game;
+	controllerPtr->gamePtr() = &game;
 
 	controllerPtr->reset();
 

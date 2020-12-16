@@ -11,11 +11,11 @@
 #endif
 
 // This class is exported from the dll
-class AI_API Cai {
-public:
-	Cai(void);
-	// TODO: add your methods here.
-};
+//class AI_API Cai {
+//public:
+//	Cai(void);
+//	// TODO: add your methods here.
+//};
 
 extern AI_API int nai;
 

@@ -36,6 +36,9 @@
     <ClInclude Include="Solvers.hpp">
       <Filter>Solvers</Filter>
     </ClInclude>
+    <ClInclude Include="RandomSolver.h">
+      <Filter>Solvers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ai.cpp">
@@ -48,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DfsSolver.cpp">
+      <Filter>Solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomSolver.cpp">
       <Filter>Solvers</Filter>
     </ClCompile>
   </ItemGroup>
