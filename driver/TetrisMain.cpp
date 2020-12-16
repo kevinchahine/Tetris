@@ -46,33 +46,38 @@ int main(int* argc, char** argv)
 	// --- Set up Game ---
 	tetris::core::Game game;
 	game.awake();
-	
+
 	// --- Set up Display ---
 	unique_ptr<tetris::core::DisplayBase> displayPtr =
 		//make_unique<tetris::core::ColoredConsoleDisplay>();
 		make_unique<tetris::core::GraphicalDisplay>();
-	
+
 	displayPtr->rasterize(game);
 	displayPtr->show();
-	
+
 	// --- Set up controller ---
 	unique_ptr<tetris::core::ControllerBase> controllerPtr =
-		make_unique<tetris::core::KeyboardController>();
-	
+		//make_unique<tetris::core::KeyboardController>();
+		make_unique<tetris::ai::DfsSolver>();
+
+	dynamic_cast<tetris::core::AiController*>(controllerPtr.get())->gamePtr() = &game;
+
 	controllerPtr->reset();
-	
+
 	std::function<void(const tetris::core::Move& move)> onControllerInput = [&](const tetris::core::Move& move) {
 		game.update(move);
 	};
-	
+
 	controllerPtr->setCallback(move(onControllerInput));
-	
+
 	// --- Game Loop ---
 	while (true /*game.isGameOver()*/)
 	{
 		displayPtr->rasterize(game);
 		displayPtr->show();
 		this_thread::sleep_for(chrono::milliseconds(33));
+
+		controllerPtr->getInput();
 	}
 
 	cin.get();
