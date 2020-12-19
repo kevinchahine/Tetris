@@ -15,6 +15,7 @@ namespace tetris
 			static const uint8_t BOTTOM = 0b0000'0010;
 			static const uint8_t LEFT = 0b0000'0100;
 			static const uint8_t RIGHT = 0b0000'1000;
+			static const uint8_t ALL_EDGES = TOP | BOTTOM | LEFT | RIGHT;
 
 		public:
 			Board();
