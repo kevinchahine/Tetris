@@ -162,7 +162,6 @@
     <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AiController.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="ColoredConsoleDisplay.h" />
     <ClInclude Include="ControllerBase.h" />
@@ -190,7 +189,6 @@
     <ClInclude Include="TetrominoZ.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AiController.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="ColoredConsoleDisplay.cpp" />
     <ClCompile Include="ControllerBase.cpp" />

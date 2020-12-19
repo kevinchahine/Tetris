@@ -21,7 +21,11 @@
 
 // Include controller and solver classes (Controller)
 #include <Tetris/core/Controllers.hpp>
+#include <Tetris/ai/AiController.h>
 #include <Tetris/ai/Solvers.hpp>
+
+// Include heuristics for ai controllers
+#include <Tetris/ai/Heuristics.hpp>
 
 using namespace std;
 
@@ -43,11 +47,11 @@ int main(int* argc, char** argv)
 	tetris::core::TetrominoBase piece1 = tetris::core::TetrominoI();
 	tetris::core::TetrominoBase piece2 = tetris::core::TetrominoS();
 
-	// --- Set up Game ---
+	// --- Set up Game (MODEL) ---
 	tetris::core::Game game;
 	game.awake();
 
-	// --- Set up Display ---
+	// --- Set up Display (VIEW) ---
 	unique_ptr<tetris::core::DisplayBase> displayPtr =
 		//make_unique<tetris::core::ColoredConsoleDisplay>();
 		make_unique<tetris::core::GraphicalDisplay>();
@@ -55,7 +59,7 @@ int main(int* argc, char** argv)
 	displayPtr->rasterize(game);
 	displayPtr->show();
 
-	// --- Set up controller ---
+	// --- Set up controller (CONTROLLER) ---
 	unique_ptr<tetris::core::ControllerBase> controllerPtr =
 		//make_unique<tetris::core::KeyboardController>();
 		//make_unique<tetris::ai::DfsSolver>();
@@ -64,6 +68,10 @@ int main(int* argc, char** argv)
 
 	controllerPtr->gamePtr() = &game;
 
+	dynamic_cast<tetris::ai::AiController*>(controllerPtr.get())->heuristicPtr() =
+		//make_unique<tetris::ai::HolyHeuristic>();
+		make_unique<tetris::ai::OrangeJuiceHeuristic>();
+
 	controllerPtr->reset();
 
 	std::function<void(const tetris::core::Move& move)> onControllerInput = [&](const tetris::core::Move& move) {
@@ -71,7 +79,7 @@ int main(int* argc, char** argv)
 	};
 
 	controllerPtr->setCallback(move(onControllerInput));
-
+	
 	// --- Game Loop ---
 	while (true /*game.isGameOver()*/)
 	{

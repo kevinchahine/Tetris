@@ -35,7 +35,7 @@ namespace tetris
 			// Determines if tetromino overlaps an occupied cell on the board.
 			// Considers boundary of board. 
 			// Returns false if any part of tetromino is out of bounds
-			// Returns true if all tetromino cells are not out of bounds and do not overlap occupied cells
+			// Returns true if all tetromino cells are in of bounds and do not overlap occupied cells
 			// on the board.
 			bool overlaps(
 				const TetrominoBase& tetromino,

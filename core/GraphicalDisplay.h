@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 
 #include "core.h"
 #include "DisplayBase.h"

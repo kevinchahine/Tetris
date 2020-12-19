@@ -9,6 +9,10 @@ namespace tetris
 {
 	namespace core
 	{	
+		// --- Forward Declarations ---
+		class Board;
+
+		// --- Constants ---
 		const cv::Scalar RED{ 0, 0, 255 };
 		const cv::Scalar PURPLE{ 255, 0, 255 };
 		const cv::Scalar BLUE{ 255, 0, 0 };
@@ -50,6 +54,10 @@ namespace tetris
 			TetrominoBase& operator=(TetrominoBase&&) noexcept = default;
 
 			void spin();
+
+			// A more accurate spin method that pushes tetromino away from walls 
+			// if part of it ends up out of bounds
+			void spin(const Board& board);
 
 			void unSpin();
 

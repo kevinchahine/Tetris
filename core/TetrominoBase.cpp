@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "TetrominoBase.h"
+#include "Board.h"
 
 #pragma warning ( push, 3 )
 #include <opencv2/opencv.hpp>
@@ -27,6 +28,19 @@ namespace tetris
 		void TetrominoBase::spin()
 		{
 			cv::rotate(*this, *this, cv::ROTATE_90_COUNTERCLOCKWISE);
+		}
+
+		void TetrominoBase::spin(const Board& board)
+		{
+			spin();
+
+			while (board.isInBounds(*this, Board::LEFT) == false) {
+				moveRight();
+			}
+
+			while (board.isInBounds(*this, Board::RIGHT) == false) {
+				moveLeft();
+			}
 		}
 
 		void TetrominoBase::unSpin()

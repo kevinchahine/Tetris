@@ -97,23 +97,13 @@ namespace tetris
 		{
 			switch (move.getMove())
 			{
-			case Move::NONE:    m_fallingPiece.moveDown();	break;	// same as DOWN
-			case Move::DOWN:    m_fallingPiece.moveDown();	break;
-			case Move::LEFT:    m_fallingPiece.moveLeft();	break;
-			case Move::RIGHT:   m_fallingPiece.moveRight();	break;
-			case Move::SPIN:
-				m_fallingPiece.spin();
-
-				while (m_board.isInBounds(m_fallingPiece, Board::LEFT) == false) {
-					m_fallingPiece.moveRight();
-				}
-
-				while (m_board.isInBounds(m_fallingPiece, Board::RIGHT) == false) {
-					m_fallingPiece.moveLeft();
-				}
-				break;
-			case Move::SWAP:	swapPieces();				break;
-			default:			throw Move::BadMove();		break;
+			case Move::DOWN:    m_fallingPiece.moveDown();		break;
+			case Move::LEFT:    m_fallingPiece.moveLeft();		break;
+			case Move::RIGHT:   m_fallingPiece.moveRight();		break;
+			case Move::SPIN:	m_fallingPiece.spin(m_board);	break;
+			case Move::SWAP:	swapPieces();					break;
+			case Move::NONE:    m_fallingPiece.moveDown();		break;	// same as DOWN
+			default:			throw Move::BadMove();			break;
 			}
 		}
 

@@ -77,8 +77,8 @@ namespace tetris
 
 						// Is cell inside the board (or is it out of bounds)?
 						if ((top && rowOnBoard >= 0) &&				// Is cell below top boarder?
-							(bottom && rowOnBoard < this->rows) &&	// Is cell above bottom boarder?
-							(left && colOnBoard >= 0) &&			// Is cell right of left boarder?
+							(bottom && rowOnBoard < this->rows) &&		// Is cell above bottom boarder?
+							(left && colOnBoard >= 0) &&				// Is cell right of left boarder?
 							(right && colOnBoard < this->cols))		// Is cell left of right boarder?)
 						{
 							// Cell is inside the board. But does it overlap an occupied cell on the board?

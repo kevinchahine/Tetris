@@ -94,7 +94,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)../</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)../;$(IOCOLOR_DIR)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -162,7 +162,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ai.h" />
+    <ClInclude Include="AiController.h" />
     <ClInclude Include="DropSolver.h" />
+    <ClInclude Include="HeuristicBase.h" />
+    <ClInclude Include="HeuristicHelpers.h" />
+    <ClInclude Include="Heuristics.hpp" />
+    <ClInclude Include="HolyHeuristic.h" />
+    <ClInclude Include="OrangeJuiceHeuristic.h" />
     <ClInclude Include="RandomSolver.h" />
     <ClInclude Include="Solvers.hpp" />
     <ClInclude Include="DfsSolver.h" />
@@ -171,9 +177,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ai.cpp" />
+    <ClCompile Include="AiController.cpp" />
     <ClCompile Include="DfsSolver.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="DropSolver.cpp" />
+    <ClCompile Include="HeuristicBase.cpp" />
+    <ClCompile Include="HeuristicHelpers.cpp" />
+    <ClCompile Include="HolyHeuristic.cpp" />
+    <ClCompile Include="OrangeJuiceHeuristic.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
