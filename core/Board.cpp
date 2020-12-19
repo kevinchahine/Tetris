@@ -64,10 +64,10 @@ namespace tetris
 			register int row = tetromino.position().y;
 			register int col = tetromino.position().x;
 
-			const bool top = edges & TOP;
-			const bool bottom = edges & BOTTOM;
-			const bool left = edges & LEFT;
-			const bool right = edges & RIGHT;
+			const bool checkTop = edges & TOP;
+			const bool checkBottom = edges & BOTTOM;
+			const bool checkLeft = edges & LEFT;
+			const bool checkRight = edges & RIGHT;
 
 			for (int r = 0; r < tetromino.size().height; r++) {
 				for (int c = 0; c < tetromino.size().width; c++) {
@@ -75,11 +75,16 @@ namespace tetris
 						int rowOnBoard = row + r;
 						int colOnBoard = col + c;
 
+						if (!checkTop && rowOnBoard < 0)				continue;
+						if (!checkBottom && rowOnBoard >= this->rows)	continue;
+						if (!checkLeft && colOnBoard < 0)				continue;
+						if (!checkRight && colOnBoard >= this->cols)	continue;
+
 						// Is cell inside the board (or is it out of bounds)?
-						if ((top && rowOnBoard >= 0) &&				// Is cell below top boarder?
-							(bottom && rowOnBoard < this->rows) &&		// Is cell above bottom boarder?
-							(left && colOnBoard >= 0) &&				// Is cell right of left boarder?
-							(right && colOnBoard < this->cols))		// Is cell left of right boarder?)
+						if ((rowOnBoard >= 0) &&				// Is cell below top boarder?
+							(rowOnBoard < this->rows) &&		// Is cell above bottom boarder?
+							(colOnBoard >= 0) &&				// Is cell right of left boarder?
+							(colOnBoard < this->cols))			// Is cell left of right boarder?)
 						{
 							// Cell is inside the board. But does it overlap an occupied cell on the board?
 

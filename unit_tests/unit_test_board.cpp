@@ -21,19 +21,39 @@ namespace tetris
 				Game game;
 				
 				TetrominoBase piece = TetrominoO();
+				
+				// Place piece in middle
 				piece.position() = cv::Point(4, 4);
 
-				Assert::IsFalse(game.board().overlaps(piece));
+				Assert::IsFalse(game.board().overlaps(piece));			// should not overlap
 
-				game.board().pasteAt(piece);
+				// Put something in the way
+				game.board().pasteAt(piece);							
 
-				Assert::IsTrue(game.board().overlaps(piece));
+				Assert::IsTrue(game.board().overlaps(piece));			// should overlap
 
+				// Remove piece
+				game.board().removeFrom(piece);
+
+				// Move to LEFT edge
 				piece.position() = cv::Point(-1, 4);
 
-				Assert::IsTrue(game.board().overlaps(piece));
-
+				Assert::IsTrue(game.board().overlaps(piece));			// Overlap
+				
+																		// No Overlap
 				Assert::IsFalse(game.board().overlaps(piece, Board::TOP | Board::RIGHT | Board::BOTTOM));
+
+				// Move to CENTER
+				piece.position() = cv::Point(4, 4);						// No Overlap
+				Assert::IsFalse(game.board().overlaps(piece, Board::TOP | Board::RIGHT | Board::BOTTOM));
+
+				// Move to RIGHT edge
+				piece.position() = cv::Point(game.board().cols, 4);
+
+				Assert::IsTrue(game.board().overlaps(piece, Board::ALL_EDGES));	// Overlap
+
+																		// No Overlap
+				Assert::IsFalse(game.board().overlaps(piece, Board::TOP | Board::LEFT | Board::BOTTOM));
 
 			}
 		};
