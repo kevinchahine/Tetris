@@ -63,6 +63,9 @@
     <ClInclude Include="OrangeJuiceHeuristic.h">
       <Filter>Heuristics</Filter>
     </ClInclude>
+    <ClInclude Include="SolutionSequence.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ai.cpp">
@@ -97,6 +100,9 @@
     </ClCompile>
     <ClCompile Include="OrangeJuiceHeuristic.cpp">
       <Filter>Heuristics</Filter>
+    </ClCompile>
+    <ClCompile Include="SolutionSequence.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

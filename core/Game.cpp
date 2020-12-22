@@ -90,7 +90,10 @@ namespace tetris
 
 		bool Game::isSafe(const TetrominoBase& fallingPiece) const
 		{
-			return false;
+			// See if the falling piece is out of bounds or overlapping an occupied cell
+			bool overlaps = m_board.overlaps(m_fallingPiece, Board::BOTTOM | Board::LEFT | Board::RIGHT);
+
+			return !overlaps;
 		}
 
 		void Game::moveFast(const Move& move)
@@ -105,6 +108,11 @@ namespace tetris
 			case Move::NONE:    m_fallingPiece.moveDown();		break;	// same as DOWN
 			default:			throw Move::BadMove();			break;
 			}
+		}
+
+		void Game::moveFast(TetrominoBase&& fallingPiece)
+		{
+			m_fallingPiece = std::move(fallingPiece);
 		}
 
 		bool Game::moveSafe(const Move& move)
@@ -135,6 +143,13 @@ namespace tetris
 				moveFast(move);
 
 				return true;		// Swap is always a safe move
+			}
+		}
+
+		void Game::moveSafe(TetrominoBase&& fallingPiece)
+		{
+			if (isSafe(fallingPiece)) {
+				moveFast(std::move(fallingPiece));
 			}
 		}
 

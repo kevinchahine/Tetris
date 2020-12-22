@@ -2,6 +2,7 @@
 
 #include "core.h"
 #include "Matrix.h"
+#include "Move.h"
 
 #include <stdint.h>
 
@@ -68,6 +69,10 @@ namespace tetris
 			void moveRight();
 
 			void moveUp();
+
+			void move(Move m);
+
+			void move(Move m, const Board& board);
 
 			void show(const std::string& windowName = "Tetromino") const;
 

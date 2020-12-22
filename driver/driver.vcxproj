@@ -146,7 +146,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="run_game.cpp" />
+    <ClCompile Include="TestMoveSequence.cpp" />
     <ClCompile Include="TetrisMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="run_game.h" />
+    <ClInclude Include="TestMoveSequence.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

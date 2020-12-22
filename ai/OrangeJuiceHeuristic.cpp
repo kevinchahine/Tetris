@@ -15,16 +15,16 @@ namespace tetris
 
 			// --- Count the number of cells above each hole ---
 			// Cells that sit above multiple holes count that many times more ---
-			int nSitting = 0;
+			int nSitting = countSittingCells(board);
 
 			// --- Find altitude of the highest cell ---
-			int maxHeight = 0;
+			int height = maxHeight(board);
 
 			// --- Calculate linear combination ---
 			return 
 				nHoles * m_weights.at(0) +
 				nSitting * m_weights.at(1) +
-				maxHeight * m_weights.at(2);
+				height * m_weights.at(2);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TetrominoBase.h"
 #include "Board.h"
+#include "Move.h"
 
 #pragma warning ( push, 3 )
 #include <opencv2/opencv.hpp>
@@ -66,6 +67,30 @@ namespace tetris
 		void TetrominoBase::moveUp()
 		{
 			m_position.y--;
+		}
+
+		void TetrominoBase::move(Move m)
+		{
+			switch (m.getMove())
+			{
+			case Move::DOWN:	moveDown();		break;
+			case Move::LEFT:	moveLeft();		break;
+			case Move::RIGHT:	moveRight();	break;
+			case Move::SPIN:	spin();			break;
+			default:			throw Move::BadMove();
+			}
+		}
+
+		void TetrominoBase::move(Move m, const Board& board)
+		{
+			switch (m.getMove())
+			{
+			case Move::DOWN:	moveDown();		break;
+			case Move::LEFT:	moveLeft();		break;
+			case Move::RIGHT:	moveRight();	break;
+			case Move::SPIN:	spin(board);	break;
+			default:			throw Move::BadMove();
+			}
 		}
 
 		void TetrominoBase::show(const std::string& windowName) const

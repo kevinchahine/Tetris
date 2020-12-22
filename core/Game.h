@@ -175,7 +175,7 @@ namespace tetris
 			
 			// --- SWAP ---
 			if (leaveOutSwap == true) {
-				// swap is always valid move
+				// swap is always valid move but sometimes we don't want to use it
 				falling = m_fallingPiece;
 				dstContainer.emplace_back(MoveStatePair(Move::SWAP, falling));
 			}

@@ -170,6 +170,7 @@
     <ClInclude Include="HolyHeuristic.h" />
     <ClInclude Include="OrangeJuiceHeuristic.h" />
     <ClInclude Include="RandomSolver.h" />
+    <ClInclude Include="SolutionSequence.h" />
     <ClInclude Include="Solvers.hpp" />
     <ClInclude Include="DfsSolver.h" />
     <ClInclude Include="framework.h" />
@@ -192,6 +193,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="RandomSolver.cpp" />
+    <ClCompile Include="SolutionSequence.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "DropSolver.h"
+#include "SolutionSequence.h"
 
 // Remove VVV
 #include <Tetris/core/GraphicalDisplay.h>
@@ -55,8 +56,9 @@ namespace tetris
 		void DropSolver::solve()
 		{
 			GraphicalDisplay disp;
+			SolutionSequence sol;
 
-			// --- Create a copy the game ---
+			// --- Create a copy the current game ---
 			Game game = this->game();
 
 			// --- Stores the selected move ---
@@ -70,6 +72,7 @@ namespace tetris
 			while (game.board().isInBounds(falling)) {
 				falling.moveLeft();
 			}
+
 			falling.moveRight();
 
 			// 2.) --- For each position, see where the falling piece ends up 
@@ -90,7 +93,7 @@ namespace tetris
 					fallingCopy.moveUp();
 
 					// Save this state so that we can analyze it later.
-					endStates.push_back(move(fallingCopy));
+					endStates.push_back(std::move(fallingCopy));
 
 					// Rotate the falling piece
 					/////falling.spin(game.board());
@@ -116,12 +119,13 @@ namespace tetris
 				// 4-1.) --- Place endState on board ---
 				game.board().pasteAt(endState);
 
+				// 4-2.) --- Calculate heuristic ---
+				float favorability = m_heuristicPtr->calc(game.board());
+				cout << '\t' << "heuristic = " << favorability << '\n';
+
 				disp.rasterize(game);
 				disp.show();
 				cv::waitKey(0);
-
-				// 4-2.) --- Calculate heuristic ---
-				float favorability = m_heuristicPtr->calc(game.board());
 
 				// 4-3.) --- Is this end state better than the best? ---
 				if (favorability > bestHeuristic) {
@@ -160,6 +164,5 @@ namespace tetris
 			}
 			m_moveSequence.push(Move::DOWN);	// Last move to place piece
 		}
-
 	}
 }
