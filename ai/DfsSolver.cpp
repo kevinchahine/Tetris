@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "DfsSolver.h"
 
+#include "SolutionSequence.h"
+
 #include <Tetris/core/MoveStatePair.h>
 
 #include <queue>
@@ -25,40 +27,50 @@ namespace tetris
 
 		core::Move DfsSolver::solve()
 		{
-			const core::Game& game = this->game();
+			// Create a copy of the current game 
+			core::Game game = this->game();
+			
+			// Contains states that we want to try next.
+			// Make sure that states added to frontier are not found in explored
+			// to prevent infinite loops
+			stack<SolutionSequence> frontier;
 
-			// Next moves to try
-			vector<core::MoveStatePair> frontier;
-
-			// Keeps track of moves that got us to the current state
-			///queue<core::TetrominoBase> moves;
-
-			// Contains hash values of states we have already analysed
-			// To prevent infinite loops and improve efficiency
+			// Explored list containing hash values of states that we have analyzed
+			// *** "states" should move from the frontier, get analyzed and pushed to explored
 			set<size_t> explored;
 
-			// Generate starting moves and push them into the frontier
-			game.generateMoves(frontier);
-
-			// Keep repeating as long has there are moves to try in the frontier
-			while (!frontier.empty())
-			{
-				cout << '.';
-				// 2.) --- Grab the next state from the stack ---
-				// --- Don't forget to pop it off when we're done with it ---
-				tetris::core::MoveStatePair node = move(frontier.back());
-				frontier.pop_back();
-
-				// 3.) --- Find out if we have already analyzed it yet ---
-				// Start by calculating the hash of the current state
-				size_t hash_value = std::hash<tetris::core::MoveStatePair>{}(node);
-				// Have we analyzed this state yet?
-				if (explored.count(hash_value) == 0) {
-					// We haven't analyzed this state yet. Lets do so now.
-
-
-				}
-			}
+			// Next moves to try
+			//vector<core::MoveStatePair> frontier;
+			//
+			// Keeps track of moves that got us to the current state
+			///queue<core::TetrominoBase> moves;
+			//
+			// Contains hash values of states we have already analysed
+			// To prevent infinite loops and improve efficiency
+			//set<size_t> explored;
+			//
+			//// Generate starting moves and push them into the frontier
+			//game.generateMoves(frontier);
+			//
+			//// Keep repeating as long has there are moves to try in the frontier
+			//while (!frontier.empty())
+			//{
+			//	cout << '.';
+			//	// 2.) --- Grab the next state from the stack ---
+			//	// --- Don't forget to pop it off when we're done with it ---
+			//	tetris::core::MoveStatePair node = move(frontier.back());
+			//	frontier.pop_back();
+			//
+			//	// 3.) --- Find out if we have already analyzed it yet ---
+			//	// Start by calculating the hash of the current state
+			//	size_t hash_value = std::hash<tetris::core::MoveStatePair>{}(node);
+			//	// Have we analyzed this state yet?
+			//	if (explored.count(hash_value) == 0) {
+			//		// We haven't analyzed this state yet. Lets do so now.
+			//
+			//
+			//	}
+			//}
 			
 			if (m_callback != nullptr) {
 				m_callback(core::Move::DOWN);

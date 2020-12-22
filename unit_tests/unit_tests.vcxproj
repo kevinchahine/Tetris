@@ -165,6 +165,7 @@
     </ClCompile>
     <ClCompile Include="unit_tests.cpp" />
     <ClCompile Include="unit_test_board.cpp" />
+    <ClCompile Include="unit_test_frontier_stack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

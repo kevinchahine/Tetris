@@ -13,6 +13,14 @@ namespace tetris
 {
 	namespace ai 
 	{
+		SolutionSequence::SolutionSequence(const TetrominoBase& falling) :
+			m_falling(falling) 
+		{}
+
+		SolutionSequence::SolutionSequence(TetrominoBase&& falling) :
+			m_falling(std::move(falling)) 
+		{}
+
 		void SolutionSequence::moveDown()
 		{
 			m_sequence.push_back(Move::DOWN);

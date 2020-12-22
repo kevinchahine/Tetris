@@ -164,6 +164,7 @@
     <ClInclude Include="ai.h" />
     <ClInclude Include="AiController.h" />
     <ClInclude Include="DropSolver.h" />
+    <ClInclude Include="FrontierStack.h" />
     <ClInclude Include="HeuristicBase.h" />
     <ClInclude Include="HeuristicHelpers.h" />
     <ClInclude Include="Heuristics.hpp" />
@@ -182,6 +183,7 @@
     <ClCompile Include="DfsSolver.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="DropSolver.cpp" />
+    <ClCompile Include="FrontierStack.cpp" />
     <ClCompile Include="HeuristicBase.cpp" />
     <ClCompile Include="HeuristicHelpers.cpp" />
     <ClCompile Include="HolyHeuristic.cpp" />

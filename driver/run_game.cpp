@@ -51,9 +51,9 @@ void tetris::driver::runGame()
 	// --- Set up controller (CONTROLLER) ---
 	unique_ptr<tetris::core::ControllerBase> controllerPtr =
 		//make_unique<tetris::core::KeyboardController>();
-		//make_unique<tetris::ai::DfsSolver>();
+		make_unique<tetris::ai::DfsSolver>();
 		//make_unique<tetris::ai::RandomSolver>();
-		make_unique<tetris::ai::DropSolver>();
+		//make_unique<tetris::ai::DropSolver>();
 
 	controllerPtr->gamePtr() = &game;
 
