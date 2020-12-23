@@ -47,7 +47,7 @@ void tetris::driver::runGame()
 
 	displayPtr->rasterize(game);
 	displayPtr->show();
-
+	cin.get();	// remove this
 	// --- Set up controller (CONTROLLER) ---
 	unique_ptr<tetris::core::ControllerBase> controllerPtr =
 		//make_unique<tetris::core::KeyboardController>();
@@ -67,7 +67,7 @@ void tetris::driver::runGame()
 		game.update(move);
 	};
 
-	controllerPtr->setCallback(move(onControllerInput));
+	//controllerPtr->setCallback(move(onControllerInput));
 
 	// --- Game Loop ---
 	while (true /*game.isGameOver()*/)
@@ -76,6 +76,7 @@ void tetris::driver::runGame()
 		displayPtr->show();
 		this_thread::sleep_for(chrono::milliseconds(33));
 
-		controllerPtr->getInput();
+		tetris::core::Move m = controllerPtr->getInput();
+		game.update(m);
 	}
 }

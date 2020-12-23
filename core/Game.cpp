@@ -27,30 +27,23 @@ namespace tetris
 
 		void Game::update(const tetris::core::Move& move)
 		{
+			if (this->isLaying()) {
+				if (move == Move::DOWN)
+				{
+					this->placeFallingPiece();
+					this->clearFullRows();
+					this->loadNextPiece();
+				}
+			}
+
 			// --- Apply move if it is safe ---
 			bool isSafe = this->moveSafe(move);
 			///if (this->isSafe(move)) {
 			///	this->moveFast(move);
 			///}
 
-			cout << "Move is " << (isSafe ? "Safe" : " Unsafe") << '\t';
-			cout << "Hash = " << hash<MoveStatePair>{}(MoveStatePair{ move, m_fallingPiece }) << '\t';
-
-			static int layingCount = 0;
-			if (this->isLaying()) {
-				layingCount++;
-				cout << "Laying " << layingCount << "\t";
-
-				if (layingCount >= 2) {
-					this->placeFallingPiece();
-					this->clearFullRows();
-					this->loadNextPiece();
-					layingCount = 0;
-				}
-			}
-			else {
-				layingCount = 0;
-			}
+			cout << "Move is " << (isSafe ? "Safe  " : "Unsafe") << ' ';
+			cout << ", Hash = " << hash<MoveStatePair>{}(MoveStatePair{ move, m_fallingPiece }) << '\t';
 
 			if (isSafe) {
 				m_scoreKeeper.incrementTurnCount();
@@ -75,7 +68,7 @@ namespace tetris
 				const_cast<Game&>(*this).moveFast(move);
 
 				// See if the falling piece is out of bounds or overlapping an occupied cell
-				bool overlaps = m_board.overlaps(m_fallingPiece, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
+				bool overlaps = m_board.overlaps(m_fallingPiece, Board::BOTTOM | Board::LEFT | Board::RIGHT);
 
 				// Restore previous state of the falling piece
 				const_cast<TetrominoBase&>(m_fallingPiece) = currFallingPiece;

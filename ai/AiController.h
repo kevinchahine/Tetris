@@ -25,7 +25,7 @@ namespace tetris
 		protected:
 			std::unique_ptr<HeuristicBase> m_heuristicPtr;
 
-			std::queue<core::Move> m_moveSequence;
+			std::deque<core::Move> m_moveSequence;
 		};
 	}
 }

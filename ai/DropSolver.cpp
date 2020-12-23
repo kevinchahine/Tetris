@@ -25,9 +25,7 @@ namespace tetris
 		void DropSolver::reset()
 		{
 			// Clear queue
-			while (m_moveSequence.empty() == false) {
-				m_moveSequence.pop();
-			}
+			m_moveSequence.clear();
 		}
 
 		Move DropSolver::getInput()
@@ -37,12 +35,12 @@ namespace tetris
 			if (m_moveSequence.empty()) {
 				solve();
 				if (m_moveSequence.empty()) {
-					cin.get();
+					throw std::exception("No solution was found");
 				}
 			}
 
 			selection = m_moveSequence.front();
-			m_moveSequence.pop();
+			m_moveSequence.pop_front();
 
 			// --- Call the callback if it has been set
 			if (m_callback != nullptr) {
@@ -143,16 +141,14 @@ namespace tetris
 
 			// 5.) --- Find sequence of moves that lead us to the end state ---
 			// Clear queue
-			while (m_moveSequence.empty() == false) {
-				m_moveSequence.pop();
-			}
+			m_moveSequence.clear();
 
 			// 5-1.) --- Calculate horizontal shift ---
 			int xShift = bestRef.position().x - game.fallingPiece().position().x;
 			core::Move move = (xShift < 0 ? Move::LEFT : Move::RIGHT);
 			
 			for (int i = 0; i < abs(xShift); i++) {
-				m_moveSequence.push(move);
+				m_moveSequence.push_back(move);
 			}
 
 			// 5-2.) --- Calculate vertical shift ---
@@ -160,9 +156,10 @@ namespace tetris
 			move = Move::DOWN;
 			
 			for (int i = 0; i < abs(yShift); i++) {
-				m_moveSequence.push(move);
+				m_moveSequence.push_back(move);
 			}
-			m_moveSequence.push(Move::DOWN);	// Last move to place piece
+
+			m_moveSequence.push_back(Move::DOWN);	// Last move to place piece
 		}
 	}
 }

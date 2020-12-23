@@ -24,7 +24,7 @@ namespace tetris
 		public:
 			SolutionSequence() = default;
 			SolutionSequence(const core::TetrominoBase& falling);
-			SolutionSequence(core::TetrominoBase && falling);
+			SolutionSequence(core::TetrominoBase&& falling);
 			SolutionSequence(const SolutionSequence&) = default;
 			SolutionSequence(SolutionSequence&&) noexcept = default;
 			~SolutionSequence() noexcept = default;
@@ -33,13 +33,34 @@ namespace tetris
 
 			friend std::ostream& operator<<(std::ostream& os, const SolutionSequence& seq)
 			{
-				for (core::Move m : seq.sequence()) {
-					os << m << '\t';
+				if (seq.sequence().empty()) {
+					os << "EMPTY";
 				}
-				//std::ostream_iterator<core::Move> osIter(os, "\t");
-				//
-				//std::copy(seq.sequence().begin(), seq.sequence().end(), osIter);
-			
+				else {
+					int count = 0;
+					std::deque<core::Move>::const_iterator it = seq.sequence().begin();
+					std::deque<core::Move>::const_iterator end = seq.sequence().end();
+
+
+					while (it != end) {
+						core::Move currMove = *it;
+
+						auto nextIt = find_if_not(it, end, [currMove](auto m) { return m == currMove; });
+
+						os << currMove << "x" << nextIt - it << ' ';
+
+						it = nextIt;
+					}
+
+					//for (core::Move m : seq.sequence()) {
+					//
+					//	os << m << ' ';
+					//}
+					//std::ostream_iterator<core::Move> osIter(os, "\t");
+					//
+					//std::copy(seq.sequence().begin(), seq.sequence().end(), osIter);
+				}
+
 				return os;
 			}
 
@@ -49,7 +70,7 @@ namespace tetris
 
 			void moveRight();
 
-			void moveSpin(const core::Board & board);
+			void moveSpin(const core::Board& board);
 
 			void move(core::Move move, const core::Board& board);
 
