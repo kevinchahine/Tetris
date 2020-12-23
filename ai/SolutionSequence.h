@@ -5,6 +5,8 @@
 #include <Tetris/core/Move.h>
 #include <Tetris/core/TetrominoBase.h>
 
+#include <algorithm>
+#include <iterator>
 #include <memory>
 #include <queue>
 
@@ -29,6 +31,18 @@ namespace tetris
 			SolutionSequence& operator=(const SolutionSequence&) = default;
 			SolutionSequence& operator=(SolutionSequence&&) noexcept = default;
 
+			friend std::ostream& operator<<(std::ostream& os, const SolutionSequence& seq)
+			{
+				for (core::Move m : seq.sequence()) {
+					os << m << '\t';
+				}
+				//std::ostream_iterator<core::Move> osIter(os, "\t");
+				//
+				//std::copy(seq.sequence().begin(), seq.sequence().end(), osIter);
+			
+				return os;
+			}
+
 			void moveDown();
 
 			void moveLeft();
@@ -38,8 +52,6 @@ namespace tetris
 			void moveSpin(const core::Board & board);
 
 			void move(core::Move move, const core::Board& board);
-
-			void print(std::ostream& os = std::cout);
 
 			const std::deque<core::Move>& sequence() const { return m_sequence; }
 			const core::TetrominoBase& falling() const { return m_falling; }

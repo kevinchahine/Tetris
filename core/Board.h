@@ -42,6 +42,8 @@ namespace tetris
 				const TetrominoBase& tetromino,
 				uint8_t edges = Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT) const;
 
+			bool isLaying(const TetrominoBase& tetromino) const;
+
 			// Copies cells in tetromino onto the board.
 			// Does not clear full rows.
 			// Call Board::clearRows() after calling this method.

@@ -108,6 +108,9 @@
     <ClInclude Include="MoveStatePair.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MoveGenerator.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp">

@@ -55,13 +55,5 @@ namespace tetris
 
 			m_falling.move(move, board);
 		}
-
-		void SolutionSequence::print(std::ostream& os)
-		{
-			ostream_iterator<Move> osIter(os, "\t");
-			copy(m_sequence.begin(), m_sequence.end(), osIter);
-
-			os << '\n';
-		}
 	}
 }

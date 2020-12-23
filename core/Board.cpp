@@ -106,6 +106,21 @@ namespace tetris
 			return false;	// So no overlap
 		}
 
+		bool Board::isLaying(const TetrominoBase& tetromino) const
+		{
+			// Move falling piece down temporarilly
+			const_cast<TetrominoBase&>(tetromino).moveDown();
+
+			// See if the falling piece overlaps any occupied cells
+			bool overlaps = this->overlaps(tetromino);
+
+			// Move falling piece back up to where it was before
+			const_cast<TetrominoBase&>(tetromino).moveUp();
+
+			// If moving down causes an overlaps, then falling piece is laying on something
+			return overlaps;
+		}
+
 		void Board::pasteAt(const TetrominoBase& tetromino)
 		{
 			register int row = tetromino.position().y;

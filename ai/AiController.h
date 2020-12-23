@@ -20,6 +20,9 @@ namespace tetris
 			const std::unique_ptr<HeuristicBase>& heuristicPtr() const { return m_heuristicPtr; }
 
 		protected:
+			float calcHeuristic(const core::Board& board, const core::TetrominoBase& falling) const;
+
+		protected:
 			std::unique_ptr<HeuristicBase> m_heuristicPtr;
 
 			std::queue<core::Move> m_moveSequence;

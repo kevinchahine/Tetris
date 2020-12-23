@@ -67,7 +67,21 @@ namespace tetris
 			// C is to be a container class that that stores MoveStatePairs and has a push_back function
 			// ex: std::vector<tetris::core::MoveStatePair>
 			template<typename C>
-			void generateMoves(C & dstContainer, bool leaveOutSwap = false) const;
+			void generateMoveStatePairs(C& dstContainer, bool leaveOutSwap = true) const;
+
+			// Generates all valid moves from the current state excluding swap
+			// Stores them in a tetris::core::Move
+			// C is to be a container class that that stores tetris::core::Move and has a push_back function
+			// ex: std::vector<tetris::core::Move>
+			template<typename C>
+			void generateMoves(C& dstContainer, bool leaveOutSwap = true) const;
+
+			// Generates all valid moves from the current state excluding swap
+			// Stores them in a tetris::core::Move
+			// C is to be a container class that that stores tetris::core::Move and has a push_back function
+			// ex: std::vector<tetris::core::Move>
+			template<typename C>
+			void generateMoves(C& dstContainer, const TetrominoBase & falling, bool leaveOutSwap = true) const;
 
 			void loadNextPiece();
 
@@ -126,13 +140,13 @@ namespace tetris
 
 		// ------------------------ Template Definitions ----------------------------
 		template<typename C>
-		void Game::generateMoves(C & dstContainer, bool leaveOutSwap) const
+		void Game::generateMoveStatePairs(C& dstContainer, bool leaveOutSwap) const
 		{
 			using namespace std;
-			
+
 			bool overlaps;
 			TetrominoBase falling;
-			
+
 			// --- DOWN ---
 			falling = m_fallingPiece;
 			falling.moveDown();
@@ -140,7 +154,7 @@ namespace tetris
 			if (!overlaps) {
 				dstContainer.emplace_back(MoveStatePair(Move::DOWN, falling));
 			}
-			
+
 			// --- LEFT ---
 			falling = m_fallingPiece;
 			falling.moveLeft();
@@ -148,7 +162,7 @@ namespace tetris
 			if (!overlaps) {
 				dstContainer.emplace_back(MoveStatePair(Move::LEFT, falling));
 			}
-			
+
 			// --- RIGHT ---
 			falling = m_fallingPiece;
 			falling.moveRight();
@@ -156,15 +170,15 @@ namespace tetris
 			if (!overlaps) {
 				dstContainer.emplace_back(MoveStatePair(Move::RIGHT, falling));
 			}
-			
+
 			// --- SPIN ---
 			falling = m_fallingPiece;
 			falling.spin();
-			
+
 			while (m_board.isInBounds(falling, Board::LEFT) == false) {
 				falling.moveRight();
 			}
-			
+
 			while (m_board.isInBounds(falling, Board::RIGHT) == false) {
 				falling.moveLeft();
 			}
@@ -172,13 +186,76 @@ namespace tetris
 			if (!overlaps) {
 				dstContainer.emplace_back(MoveStatePair(Move::SPIN, falling));
 			}
-			
+
 			// --- SWAP ---
-			if (leaveOutSwap == true) {
+			if (leaveOutSwap == false) {
 				// swap is always valid move but sometimes we don't want to use it
 				falling = m_fallingPiece;
 				dstContainer.emplace_back(MoveStatePair(Move::SWAP, falling));
 			}
 		}
+
+		template<typename C>
+		void Game::generateMoves(C& dstContainer, bool leaveOutSwap) const
+		{
+			generateMoves(dstContainer, m_fallingPiece, leaveOutSwap);
+		}
+
+		template<typename C>
+		void Game::generateMoves(C& dstContainer, const TetrominoBase& fallingPiece, bool leaveOutSwap) const
+		{
+			using namespace std;
+
+			bool overlaps;
+			TetrominoBase falling;
+
+			// --- DOWN ---
+			falling = fallingPiece;
+			falling.moveDown();
+			overlaps = m_board.overlaps(falling, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
+			if (!overlaps) {
+				dstContainer.push_back(Move::DOWN);
+			}
+
+			// --- LEFT ---
+			falling = fallingPiece;
+			falling.moveLeft();
+			overlaps = m_board.overlaps(falling, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
+			if (!overlaps) {
+				dstContainer.push_back(Move::LEFT);
+			}
+
+			// --- RIGHT ---
+			falling = fallingPiece;
+			falling.moveRight();
+			overlaps = m_board.overlaps(falling, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
+			if (!overlaps) {
+				dstContainer.push_back(Move::RIGHT);
+			}
+
+			// --- SPIN ---
+			falling = fallingPiece;
+			falling.spin();
+
+			while (m_board.isInBounds(falling, Board::LEFT) == false) {
+				falling.moveRight();
+			}
+
+			while (m_board.isInBounds(falling, Board::RIGHT) == false) {
+				falling.moveLeft();
+			}
+			overlaps = m_board.overlaps(falling, Board::TOP | Board::BOTTOM | Board::LEFT | Board::RIGHT);
+			if (!overlaps) {
+				dstContainer.push_back(Move::SPIN);
+			}
+
+			// --- SWAP ---
+			if (leaveOutSwap == false) {
+				// swap is always valid move but sometimes we don't want to use it
+				falling = fallingPiece;
+				dstContainer.push_back(Move::SWAP);
+			}
+		}
+
 	}
 }

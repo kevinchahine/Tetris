@@ -3,11 +3,15 @@
 #include "ai.h"
 
 #include "AiController.h"
+#include "FrontierStack.h"
+#include "SolutionSequence.h"
 
 namespace tetris
 {
 	namespace ai
 	{
+		// --- Forward Declarations ---
+		
 		class AI_API DfsSolver : public ai::AiController
 		{
 		public:
@@ -16,9 +20,18 @@ namespace tetris
 			virtual core::Move getInput() override;
 
 		protected:
+			void copyValidMoves(
+				FrontierStack<SolutionSequence>& frontier, 
+				const std::set<size_t>& explored,
+				const core::Board& board, 
+				const SolutionSequence& baseSequence) const;
+			
+
+		protected:
 
 			core::Move solve();
 
+			
 		};
 	}
 }

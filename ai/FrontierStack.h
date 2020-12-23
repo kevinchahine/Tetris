@@ -20,7 +20,9 @@ namespace tetris
 		class FrontierStack
 		{
 		public:
-			STATE& top() { return m_states.top(); }
+			// Non constant overload is left out on purpose since changing the top state
+			// will require changing the hash values also.
+			//STATE& top() { return m_states.top(); }				 
 			const STATE& top() const { return m_states.top(); }
 
 			bool empty() const { return m_states.empty(); }

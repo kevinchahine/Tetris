@@ -25,7 +25,7 @@ namespace tetris
 
 			// --- Get all valid moves ---
 			vector<tetris::core::MoveStatePair> validMoves;
-			game.generateMoves(validMoves);	// leaves out the swap move
+			game.generateMoveStatePairs(validMoves);	// leaves out the swap move
 
 			core::Move selection = core::Move::DOWN;
 

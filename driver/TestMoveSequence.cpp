@@ -33,7 +33,7 @@ namespace tetris
 
 			seq.move(Move::SPIN, board);
 
-			seq.print(cout);
+			cout << seq << '\n';
 
 		}
 	}
