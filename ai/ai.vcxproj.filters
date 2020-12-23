@@ -72,6 +72,12 @@
     <ClInclude Include="FrontierStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GrapeJuiceHeuristic.h">
+      <Filter>Heuristics</Filter>
+    </ClInclude>
+    <ClInclude Include="AppleCiderHeuristic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ai.cpp">
@@ -111,6 +117,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FrontierStack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GrapeJuiceHeuristic.cpp">
+      <Filter>Heuristics</Filter>
+    </ClCompile>
+    <ClCompile Include="AppleCiderHeuristic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

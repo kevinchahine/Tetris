@@ -59,7 +59,9 @@ void tetris::driver::runGame()
 
 	dynamic_cast<tetris::ai::AiController*>(controllerPtr.get())->heuristicPtr() =
 		//make_unique<tetris::ai::HolyHeuristic>();
-		make_unique<tetris::ai::OrangeJuiceHeuristic>();
+		//make_unique<tetris::ai::OrangeJuiceHeuristic>();
+		//make_unique<tetris::ai::GrapeJuiceHeuristic>();
+		make_unique<tetris::ai::AppleCiderHeuristic>();
 
 	controllerPtr->reset();
 

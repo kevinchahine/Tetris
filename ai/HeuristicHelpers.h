@@ -15,5 +15,9 @@ namespace tetris
 		int AI_API countSittingCells(const core::Board& board);
 
 		int AI_API maxHeight(const core::Board& board);
+
+		int AI_API sumOfHeights(const core::Board& board);
+
+		int AI_API calcBumpiness(const core::Board& board);
 	}
 }

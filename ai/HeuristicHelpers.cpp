@@ -4,6 +4,7 @@
 #include <Tetris/core/TetrominoBase.h>
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 using namespace tetris::core;
@@ -74,7 +75,67 @@ namespace tetris
 		{
 			int max = 0;
 
+			for (int col = 0; col < board.cols; col++) {
+				// Find tallest column
+				for (int row = 0; row < board.rows; row++) {
+					if (board.at(row, col) != Board::EMPTY) {
+						int colMax = board.rows - row;
+
+						max = std::max(colMax, max);
+					}
+				}
+			}
+
 			return max;
+		}
+
+		int sumOfHeights(const core::Board& board)
+		{
+			int sum = 0;
+
+			for (int col = 0; col < board.cols; col++) {
+				// Find tallest column
+				for (int row = 0; row < board.rows; row++) {
+					if (board.at(row, col) != Board::EMPTY) {
+						sum += board.rows - row;
+					}
+				}
+			}
+
+			return sum;
+		}
+
+		int calcBumpiness(const core::Board& board)
+		{
+			int bumpiness = 0;
+
+			vector<int> nHeights{ board.cols, 0 };
+
+			// Calculate heights of each column
+			for (int col = 0; col < board.cols; col++) {
+				int max = 0;
+
+				// Find tallest column
+				for (int row = 0; row < board.rows; row++) {
+					if (board.at(row, col) != Board::EMPTY) {
+						int colMax = board.rows - row;
+
+						max = std::max(colMax, max);
+					}
+				}
+
+				nHeights.at(col) = max;
+			}
+
+			// Calculate bumpiness
+			for (int col = 0; col < nHeights.size() - 1; col++) {
+				register int currHeight = nHeights.at(col);
+				register int nextHeight = nHeights.at(col + 1);
+
+				bumpiness += abs(nextHeight - currHeight);
+			}
+
+			return bumpiness;
 		}
 	}
 }
