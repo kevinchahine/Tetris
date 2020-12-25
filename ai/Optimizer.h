@@ -8,19 +8,21 @@
 		random number distributions
 		boost::serializer
 		chrono
+		multiwindow stuff (try to show all games on the same window)
+			Make a new Display class for it that shows multiple games
 
 	Optimizer op;
 
 	if (true)		op.setGenerationLimit(100);
-	else			op.setTimeLimit(chrono::hours(4));
+	else			op.setTimeLimit(chrono::hours(4));	// <--- Do this later its probably not as practical
 
-	op.setOutPutDir(filesystem::directory);
+	op.setOutPutDir(filesystem::directory);				// <--- defaults to '.'
 
 	if (sync) {
-		op.run();					// blocking
+		op.run();					// blocking			
 	}
 	else {
-		op.async_run(callback);		// non-blocking
+		op.async_run(callback);		// non-blocking		// <--- Skip this one
 
 		while (isStillTraining) {
 			

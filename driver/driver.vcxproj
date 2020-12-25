@@ -154,6 +154,9 @@
     <ClInclude Include="run_game.h" />
     <ClInclude Include="TestMoveSequence.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="program_options_notes.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

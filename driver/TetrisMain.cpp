@@ -8,6 +8,10 @@
 
 using namespace std;
 
+/*
+	See program_options_notes.txt for ideas
+*/
+
 int main(int* argc, char** argv)
 {
 	cout

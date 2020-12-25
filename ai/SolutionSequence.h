@@ -51,14 +51,6 @@ namespace tetris
 
 						it = nextIt;
 					}
-
-					//for (core::Move m : seq.sequence()) {
-					//
-					//	os << m << ' ';
-					//}
-					//std::ostream_iterator<core::Move> osIter(os, "\t");
-					//
-					//std::copy(seq.sequence().begin(), seq.sequence().end(), osIter);
 				}
 
 				return os;

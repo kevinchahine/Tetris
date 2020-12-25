@@ -1,0 +1,29 @@
+
+----- Switches -----
+--r,record		record video output (only would work with displays that use opencv)	(give error if an uncompatible display class is used)
+--c,cl			use command line display
+--g,gui			use a built-in graphical display
+--t,train		run training algorithm instead of playing a game
+--p,play		run game instead of training algorithm (overrides t)
+
+----- Arguments (forgot what they were called) -----
+--controller=[ user | ai | DFS | Drop |			Determines what controller to use (make case insensitive if possible)
+				DFS1 | DFS2 | DFS3 ]			(ai defaults to the latest DFS solver)
+
+--display=[ cl | gui ]							Overrides --cl and --gui switches
+
+--heuristic=[	Holy | OJ | OrangeJuice |		Determines what heuristic to use (only applicable to ai controlelrs)
+				GrapeJuice | AppleCider ]		
+
+--- Arguments for training algorithm only ---
+--- Only applicable if -t,--train switch if found ---
+-- switches --
+-v,--verbose									Shows each individual in the population as they are being trained (slows down algorithm a lot)
+
+-- options --
+-g,--generations=[ int ]						Sets the number of generations to train for (use alongsize time-limit)
+-p,--population=[ int ]							Sets population size of each generation
+-t,--time-limit=[ time ]						Sets time limit (used along side generations)
+-d,--directory=[ directory ]					Sets outdirectory for training progress backups (default is '.')
+-c,--continue=[ directory = '.' ]				Continues training from where it left of last 
+
