@@ -22,6 +22,9 @@
     <Filter Include="Helpers">
       <UniqueIdentifier>{26f47f19-145e-4214-91e1-65b97b65730d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Optimizers">
+      <UniqueIdentifier>{5cfd0b8c-a35a-4768-9a26-ede96ebcf075}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -78,6 +81,9 @@
     <ClInclude Include="AppleCiderHeuristic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Optimizer.h">
+      <Filter>Optimizers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ai.cpp">
@@ -124,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="AppleCiderHeuristic.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Optimizer.cpp">
+      <Filter>Optimizers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
