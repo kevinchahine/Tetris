@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <random>
+#include <thread>
 
 using namespace std;
 
@@ -142,7 +143,7 @@ namespace tetris
 
 				// pick a random number between 0 and weights.size();
 				uniform_int_distribution<size_t> uniDist(0, N_WEIGHTS - 1);
-				normal_distribution<float> normDist(0.0f, 0.1f);
+				normal_distribution<float> normDist(-0.2f, 0.2f);
 
 				// --- cross-breed ---
 				size_t splitPoint = uniDist(generator);
@@ -202,8 +203,15 @@ namespace tetris
 
 			void Optimizer::evalPopulation(unique_ptr<AiController>& controllerPtr, vector<Individual>& population)
 			{
+				//vector<thread> threadPool{ thread::hardware_concurrency() };	// Just a start
+
 				for (Individual & individual : population) {
 					// Play a game
+
+					std::function<void(const Individual &)> evaluate =
+						[](const Individual & individual) {
+
+					};
 
 					// Set weights of ai controller
 					m_aiController->heuristicPtr()->weights() = individual.weights();

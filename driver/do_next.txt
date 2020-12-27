@@ -1,0 +1,7 @@
+v1.0
+
+v1.1
+Training Algorithm
+	make each population train against the same random seed. 
+		It seems like some individuals are getting lucky and seem to be doing really well when their not very good
+

@@ -32,8 +32,8 @@ int main(int* argc, char** argv)
 		<< iocolor::setfg(iocolor::BLUE) << "==================\n"
 		<< iocolor::pop();
 
-	//tetris::driver::runGame();
-	tetris::driver::train1();
+	tetris::driver::runGame();
+	//tetris::driver::train1();
 
 	//tetris::driver::testSolutionSequencePrint();
 

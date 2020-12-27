@@ -41,8 +41,8 @@ void tetris::driver::runGame()
 	// --- Set up Display (VIEW) ---
 	unique_ptr<tetris::core::DisplayBase> displayPtr =
 		//make_unique<tetris::core::ColoredConsoleDisplay>();
-		//make_unique<tetris::core::GraphicalDisplay>();
-		nullptr;
+		make_unique<tetris::core::GraphicalDisplay>();
+		//nullptr;
 
 	// --- Set up controller (CONTROLLER) ---
 	unique_ptr<tetris::core::ControllerBase> controllerPtr =
@@ -51,11 +51,21 @@ void tetris::driver::runGame()
 		//make_unique<tetris::ai::RandomSolver>();
 		//make_unique<tetris::ai::DropSolver>();
 
-	dynamic_cast<tetris::ai::AiController*>(controllerPtr.get())->heuristicPtr() =
-		//make_unique<tetris::ai::HolyHeuristic>();
-		//make_unique<tetris::ai::OrangeJuiceHeuristic>();
-		//make_unique<tetris::ai::GrapeJuiceHeuristic>();
-		make_unique<tetris::ai::AppleCiderHeuristic>();
+	{
+		tetris::ai::AiController & controller = *dynamic_cast<tetris::ai::AiController*>(controllerPtr.get());
+		
+		controller.heuristicPtr() =
+			//make_unique<tetris::ai::HolyHeuristic>();
+			//make_unique<tetris::ai::OrangeJuiceHeuristic>();
+			//make_unique<tetris::ai::GrapeJuiceHeuristic>();
+			make_unique<tetris::ai::AppleCiderHeuristic>();
+
+		controller.heuristicPtr()->weights() = 
+			//{ -2.5, -0.815, -1.5, -0.558 };
+			//{ -0.551, -0.0705, -0.149, -0.72 };	// score: 41400 
+			{ -1.64, -0.136, -0.465, -1.83 };		// score: 27160 
+			//{ -1.64, -0.136, -0.465, -1.83 };		// score: 27160 
+	}
 
 	controllerPtr->reset();
 

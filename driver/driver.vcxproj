@@ -157,8 +157,10 @@
     <ClInclude Include="training.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="do_next.txt" />
     <Text Include="program_options_notes.txt" />
     <Text Include="updates.txt" />
+    <Text Include="weights.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

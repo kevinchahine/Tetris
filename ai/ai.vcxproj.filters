@@ -25,6 +25,9 @@
     <Filter Include="Optimizers">
       <UniqueIdentifier>{5cfd0b8c-a35a-4768-9a26-ede96ebcf075}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Notes">
+      <UniqueIdentifier>{b96b0304-5ea4-408b-a1e4-4d73fa364ffe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -87,6 +90,9 @@
     <ClInclude Include="SolutionSequence.h">
       <Filter>Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="PineappleSlushy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ai.cpp">
@@ -140,8 +146,13 @@
     <ClCompile Include="SolutionSequence.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="PineappleSlushy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="notes.txt" />
+    <Text Include="notes.txt">
+      <Filter>Notes</Filter>
+    </Text>
   </ItemGroup>
 </Project>

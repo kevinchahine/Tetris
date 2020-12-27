@@ -23,6 +23,7 @@ namespace tetris
 
 			void setCallback(std::function<void(const Move & move)>&& callback) { m_callback = std::move(callback); }
 
+
 		protected:
 			std::function<void(const Move& move)> m_callback;
 

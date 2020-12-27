@@ -1,4 +1,4 @@
 For DFS Solver(s):
 	DFS1	- only considers falling piece											!SMART!
 	DFS2	- considers falling piece and held piece								!!VERY SMART!!
-	DFS3	- considers falling piece and held piece (followed by best next piece)	!!!SUPER SMART!!!
+	DFS3	- considers falling piece and held piece and next piece					!!!SUPER SMART!!!

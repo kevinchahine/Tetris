@@ -6,6 +6,7 @@ v1.0: (Game Engine, Display, Controllers and AI)
 
 v1.1: (ML)
 	adds ML optimizer using Genetic Algorithm:
+		implement clone methods for Controllers and Heuristics
 
 v1.2: (Backups)
 	adds backups that saves and recovers training progress incase something crashes

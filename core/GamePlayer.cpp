@@ -65,6 +65,12 @@ namespace tetris
 				<< "!!!Game Over!!!\n"
 				<< iocolor::pop();
 
+			if (displayPtr != nullptr) {
+				displayPtr->rasterize(game);
+				displayPtr->show();
+				this_thread::sleep_for(chrono::milliseconds(33));
+			}
+
 			return game.scoreKeeper().getScore();
 		}
 
