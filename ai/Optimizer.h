@@ -1,5 +1,12 @@
 #pragma once
 #include "ai.h"
+#include "Individual.h"
+#include "AiController.h"
+
+#include <limits>		// for numeric<T>::max()
+#include <chrono>
+#include <vector>
+#include <memory>		// for unique_ptr<T>
 
 /*
 	will involve:
@@ -13,22 +20,11 @@
 
 	Optimizer op;
 
-	if (true)		op.setGenerationLimit(100);
-	else			op.setTimeLimit(chrono::hours(4));	// <--- Do this later its probably not as practical
-
 	op.setOutPutDir(filesystem::directory);				// <--- defaults to '.'
 
-	if (sync) {
-		op.run();					// blocking			
-	}
-	else {
-		op.async_run(callback);		// non-blocking		// <--- Skip this one
+	*/
 
-		while (isStillTraining) {
-			
-		}
-	}
-
+/*
 	/////////////////////////////////////////////////////////////////
 
 	// *** Consider using a map<int, weights> for population that way the weights
@@ -38,7 +34,15 @@
 	vector<pair<weights, int>> populationScorePairs;		// use this instead
 	pair<weights, int> allTimeBest;
 
+	chrono::time_point startTime = now();
+
 	for (int gen = 0; gen < generationLimit; gen++) {
+		chrono::time_point currTime = now();
+		chrono::duration trainingDuration = currTime - startTime;
+		if (trainingDuration > timeLimit) {
+			break;
+		}
+
 		for each person in population:
 			Game g;
 			g.controller() = person
@@ -46,32 +50,38 @@
 			g.setControlelr();
 			int scores.push_back() = g.run();
 
-		vector<Weights> newPop;
-		sort population according to score
+			vector<Weights> newPop;
+			sort population according to score
 
-		// Save results in a file
-		//	- gen and generationLimit
-		//	- time_elapsed and timeLimit
-		//	- generationnumber
-		//	- population - vector<pair<weights, int>>
-		//	- allTimeBest - pair<weights, int>
+			// Save results in a file
+			//	- gen and generationLimit
+			//	- time_elapsed and timeLimit
+			//	- generationnumber
+			//	- population - vector<pair<weights, int>>
+			//	- allTimeBest - pair<weights, int>
 
-		// Breeding phase
-			
-			// Calculate favorability of each person 
-			{
-			vector<Weights> newPopulation = breed(population, scores);
-			population = move(newPopulation;
+			// Breeding phase
+				
+				// Calculate favorability of each person 
+				{
+				vector<Weights> newPopulation = breed(population, scores);
+				population = move(newPopulation;
+				}
+
+			// Challenge the all time best
+			pair<weights, int> & best = max(population.begin(), end(), [](const auto & left, const auto & right){ return left.second < right.second; });
+			if (best.second > allTimeBest.second) {
+				allTimeBest = best;
+				cout << "Found a new all time best: " << allTimeBest << '\n';
 			}
-
-		// Challenge the all time best
-		pair<weights, int> & best = max(population.begin(), end(), [](const auto & left, const auto & right){ return left.second < right.second; });
-		if (best.second > allTimeBest.second) {
-			allTimeBest = best;
-			cout << "Found a new all time best: " << allTimeBest << '\n';
 		}
+
+		return allTimeBest;
 	}
 
+	*/
+
+/*
 	/////////////////////////////////////////////////////
 	vector<float> breed(vector<pair<weights, int>> & population)
 	{
@@ -103,28 +113,9 @@
 		return newPopulation;
 	}
 
-	// Assumes mom.first.size() == dad.first.size() and both are > 0
-	pair<weights, int> makeBaby(const pair<weights, int> & mom, const pair<weights, int> & dad) {
-		pair<weights, int> child;
-		child.weights.resize(mom.weights.size());
+	*/
 
-		// pick a random number between 0 and weights.size();
-		uniform_int_distribution<int> uniDist(0, weights.size();
-		int splitPoint = uniDist(generator);
-
-		// --- cross-breed ---
-		copy(mom.weights.begin(), mom.weights.begin() + splitPoint, child.begin());
-		copy(dad.weights.begin() + splitPoint, dad.weights.end(), child.begin() + splitPoint);
-
-		// --- add a small variance to a randomly selected weight ---
-		normal_distribution<> normDist(0, 0.1);
-
-		int weightIndex = uniDist(generator);
-
-		child.weights.at(weightIndex) += normDist(generator);
-
-	}
-
+/*
 	////////////////////////////////////////////////////////////////////////////
 	void saveProgress(const boost::filesystem::directory & outDir, Everything else) {
 		// 1.) Make sure directory can be accessed
@@ -147,6 +138,9 @@
 		// 7.) Close file
 	}
 
+	*/
+
+/*
 	Everything else & void recoverProgress(const boost::filesystem::directory & outDir)
 	{
 		// 1.) Find the most recent file
@@ -156,17 +150,64 @@
 
 		// 3.) return
 	}
-
 */
 
 namespace tetris
 {
 	namespace ai
 	{
-		class Optimizer
+		namespace optimizers
 		{
-		public:
+			class AI_API Optimizer
+			{
+			public:	// -------------------- PUBLIC METHODS ------------------------
 
-		};
+				void reset();
+
+				std::vector<float> train();
+
+				std::vector<float> resumeTraining(const std::vector<Individual> & population);
+
+				// Make sure the AiController has been assigned a heuristic
+				void setAiController(std::unique_ptr<ai::AiController> && controller) { m_aiController = std::move(controller); }
+				const std::unique_ptr<ai::AiController> & getAiController() const { return m_aiController; }
+				
+				// Use std::numeric_limits<int>::max() for "endless" generations
+				void setGenerationsLimit(int nGenerations) { m_generationsLimit = nGenerations; }
+				// If returned value equals std::numeric_limits<int>::max(), 
+				// then optimizer will run for an "endless" number of generations
+				int getGenerationsLimit() const { return m_generationsLimit; }
+				
+				void setTimeLimit(std::chrono::steady_clock::duration timeLimit) { m_timeLimit = timeLimit; }
+				std::chrono::steady_clock::duration getTimeLimit() const { return m_timeLimit; }
+				
+				void setPopulationSize(int populationSize) { m_populationSize = populationSize; }
+				int getPopulationSize() const { return m_populationSize; }
+
+			private:	// ---------------- PRIVATE METHODS -----------------------
+
+				std::vector<Individual> makeInitialPopulation();
+
+				// Assumes mom.weights().size() == dad.weights().size() and both are > 0
+				Individual makeBaby(const Individual & mom, const Individual & dad);
+
+				// Make sure population is sorted from least to greatest score
+				std::vector<Individual> breed(const std::vector<Individual> & population);
+
+				int eval(std::unique_ptr<AiController> & controllerPtr);
+
+				void evalPopulation(std::unique_ptr<AiController> & controllerPtr, std::vector<Individual> & population);
+
+			private:	// ---------------- PRIVATE FIELDS ------------------------
+
+				std::unique_ptr<tetris::ai::AiController> m_aiController;
+
+				int m_generationsLimit = INT_MAX; // std::numeric_limits<int>::max();
+
+				std::chrono::steady_clock::duration m_timeLimit;
+
+				int m_populationSize = 10;
+			};
+		}
 	}
 }

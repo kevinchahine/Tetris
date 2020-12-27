@@ -170,6 +170,7 @@
     <ClInclude Include="DisplayBase.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GamePlayer.h" />
     <ClInclude Include="GraphicalDisplay.h" />
     <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="Matrix.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="DisplayBase.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GamePlayer.cpp" />
     <ClCompile Include="GraphicalDisplay.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="Matrix.cpp" />

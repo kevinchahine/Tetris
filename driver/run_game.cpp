@@ -29,33 +29,27 @@
 // Include heuristics for ai controllers
 #include <Tetris/ai/Heuristics.hpp>
 
+#include <Tetris/core/GamePlayer.h>
+
 using namespace std;
 
 void tetris::driver::runGame()
 {
-	tetris::core::TetrominoBase piece1 = tetris::core::TetrominoI();
-	tetris::core::TetrominoBase piece2 = tetris::core::TetrominoS();
-
-	// --- Set up Game (MODEL) ---
 	tetris::core::Game game;
 	game.awake();
 
 	// --- Set up Display (VIEW) ---
 	unique_ptr<tetris::core::DisplayBase> displayPtr =
 		//make_unique<tetris::core::ColoredConsoleDisplay>();
-		make_unique<tetris::core::GraphicalDisplay>();
+		//make_unique<tetris::core::GraphicalDisplay>();
+		nullptr;
 
-	displayPtr->rasterize(game);
-	displayPtr->show();
-	cin.get();	// remove this
 	// --- Set up controller (CONTROLLER) ---
 	unique_ptr<tetris::core::ControllerBase> controllerPtr =
 		//make_unique<tetris::core::KeyboardController>();
 		make_unique<tetris::ai::DfsSolver>();
 		//make_unique<tetris::ai::RandomSolver>();
 		//make_unique<tetris::ai::DropSolver>();
-
-	controllerPtr->gamePtr() = &game;
 
 	dynamic_cast<tetris::ai::AiController*>(controllerPtr.get())->heuristicPtr() =
 		//make_unique<tetris::ai::HolyHeuristic>();
@@ -65,20 +59,10 @@ void tetris::driver::runGame()
 
 	controllerPtr->reset();
 
-	std::function<void(const tetris::core::Move& move)> onControllerInput = [&](const tetris::core::Move& move) {
-		game.update(move);
-	};
+	// --- Play the game ---
+	tetris::core::GamePlayer gamePlayer;
 
-	//controllerPtr->setCallback(move(onControllerInput));
-
-	// --- Game Loop ---
-	while (true /*game.isGameOver()*/)
-	{
-		displayPtr->rasterize(game);
-		displayPtr->show();
-		this_thread::sleep_for(chrono::milliseconds(33));
-
-		tetris::core::Move m = controllerPtr->getInput();
-		game.update(m);
-	}
+	cout << "Playing game...";
+	int score = gamePlayer.play(game, controllerPtr, displayPtr);
+	cout << "Score: " << score << '\n';
 }

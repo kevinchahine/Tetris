@@ -17,7 +17,7 @@ namespace tetris
 
 			virtual void reset() override;
 
-			virtual Move getInput() override;
+			virtual Move getInput(const Game & game) override;
 
 		private:
 			// Stops ongoing thread

@@ -6,13 +6,7 @@
 
 #include <Tetris/core/MoveStatePair.h>
 #include <Tetris/core/MoveGenerator.h>
-#include <Tetris/core/GraphicalDisplay.h>	// Remove
-#include <opencv2/highgui.hpp>				// remove
 
-#include <iocolor/iocolor.h>
-
-#include <thread>		// for sleep
-#include <chrono>		// for sleep
 #include <algorithm>
 #include <iterator>
 #include <queue>
@@ -32,12 +26,12 @@ namespace tetris
 
 		}
 
-		core::Move DfsSolver::getInput()
+		core::Move DfsSolver::getInput(const Game & game)
 		{
 			//m_moveSequence.clear();
 
 			if (m_moveSequence.empty()) {
-				solve();
+				solve(game);
 			
 				if (m_moveSequence.empty()) {
 					throw std::exception("No solution was found\n");
@@ -58,14 +52,8 @@ namespace tetris
 			return selection;
 		}
 
-		core::Move DfsSolver::solve()
+		core::Move DfsSolver::solve(const Game & game)
 		{
-			core::GraphicalDisplay disp;	// remove
-
-			// Create a copy of the current game 
-			core::Game game = this->game();
-			core::Game gameDisp = game;		// remove
-
 			// Contains states that we want to try next.
 			// Make sure that states added to frontier are not found in explored
 			// to prevent infinite loops
@@ -97,29 +85,11 @@ namespace tetris
 				// It is a goal state if the falling piece is laying on something
 				if (game.board().isLaying(seq.falling())) {
 					float heur = calcHeuristic(game.board(), seq.falling());
-					cout << "\tHeuristic: " << heur;
 
 					if (heur > bestHeur) {
 						bestHeur = heur; 
 						bestSol = seq;
-
-						cout << iocolor::push()
-							<< iocolor::setfg(iocolor::GREEN)
-							<< " best :)\n" 
-							<< iocolor::setfg(iocolor::RED) << heur 
-							<< iocolor::pop();
 					}
-					else {
-						cout << iocolor::push()
-							<< iocolor::setfg(iocolor::RED)
-							<< "NOT good enough :(\n"
-							<< iocolor::pop();
-					}
-
-					gameDisp.fallingPiece() = seq.falling();
-					disp.rasterize(gameDisp);
-					disp.show();
-					cv::waitKey(1);
 				}
 
 				// 2-3.) See if there are any moves we can do from here
@@ -133,18 +103,6 @@ namespace tetris
 			// Copy best solution
 			m_moveSequence = std::move(bestSol.sequence());
 			m_moveSequence.push_back(Move::DOWN);
-
-			cout << "Solution found: "
-				<< iocolor::push()
-				<< iocolor::setfg(iocolor::BLUE)
-				<< "size = " << m_moveSequence.size() << ' '
-				<< iocolor::setfg(iocolor::YELLOW)
-				<< bestHeur << '\n'
-				<< iocolor::setfg(iocolor::MAGENTA)
-				<< bestSol << '\n'
-				<< iocolor::pop();
-			//this_thread::sleep_for(chrono::milliseconds(500));
-			//cin.get();
 
 			return Move::SPIN;// m_moveSequence.front();	// change this please its not correct
 		}

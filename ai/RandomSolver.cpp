@@ -18,11 +18,8 @@ namespace tetris
 
 		}
 
-		core::Move RandomSolver::getInput()
+		core::Move RandomSolver::getInput(const core::Game & game)
 		{
-			// --- Alias the game reference ---
-			const tetris::core::Game& game = this->game();
-
 			// --- Get all valid moves ---
 			vector<tetris::core::MoveStatePair> validMoves;
 			game.generateMoveStatePairs(validMoves);	// leaves out the swap move

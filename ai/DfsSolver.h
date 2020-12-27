@@ -17,7 +17,7 @@ namespace tetris
 		public:
 			virtual void reset() override;
 
-			virtual core::Move getInput() override;
+			virtual core::Move getInput(const core::Game & game) override;
 
 		protected:
 			void copyValidMoves(
@@ -29,7 +29,7 @@ namespace tetris
 
 		protected:
 
-			core::Move solve();
+			core::Move solve(const core::Game & game);
 
 			
 		};

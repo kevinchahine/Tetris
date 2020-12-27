@@ -1,0 +1,31 @@
+v1.0: (Game Engine, Display, Controllers and AI)
+	basic Tetris game engine
+	basic DFS, random and drop solver algorithms
+	heuristics: Holy, OrangeJuice, GrapeJuice, AppleCider
+	CommandLine and Graphic displays
+
+v1.1: (ML)
+	adds ML optimizer using Genetic Algorithm:
+
+v1.2: (Backups)
+	adds backups that saves and recovers training progress incase something crashes
+
+v1.3: (MT)
+	adds multithreading to training algorithm
+		optimize multithreading by evaluating potentially slowest individuals first based on average of parents game time
+
+v1.4: (Display)
+	Adds multiwindow display that can be used to show games being trained by each thread
+
+v1.5: (CL options)
+	Adds program options allowing program to be controlled from CL
+	
+v1.6 with Review: (Cross-Platform Compatible)
+	Make entire program is cross platform compatible with atlease Windows 10 and Ubuntu Linux 
+		with vcpkg and/or apt
+	Make sure it compiles with both MSVC and g++ 
+
+v1.7: (AI)
+	Make a more advanced DFS algorithm that uses held piece 
+	Make an even more advanced DFS algorithm that evaluates next piece
+	

@@ -35,7 +35,7 @@ namespace tetris
 			// Nothing to do here
 		}
 
-		Move KeyboardController::getInput()
+		Move KeyboardController::getInput(const Game & game)
 		{
 			Move ret = input;
 

@@ -111,6 +111,9 @@
     <ClInclude Include="MoveGenerator.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="GamePlayer.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core.cpp">
@@ -181,6 +184,9 @@
     </ClCompile>
     <ClCompile Include="MoveStatePair.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePlayer.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

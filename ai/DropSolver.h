@@ -16,10 +16,10 @@ namespace tetris
 		public:
 			virtual void reset() override;
 
-			virtual core::Move getInput() override;
+			virtual core::Move getInput(const core::Game & game) override;
 
 		protected:
-			void solve();
+			void solve(const core::Game & game);
 
 		};
 	}

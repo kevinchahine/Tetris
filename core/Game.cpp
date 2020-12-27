@@ -22,6 +22,8 @@ namespace tetris
 
 			m_nextPiece = bag.nextTetromino();
 
+			m_scoreKeeper.reset();
+
 			loadNextPiece();
 		}
 
@@ -38,24 +40,10 @@ namespace tetris
 
 			// --- Apply move if it is safe ---
 			bool isSafe = this->moveSafe(move);
-			///if (this->isSafe(move)) {
-			///	this->moveFast(move);
-			///}
-
-			cout << "Move is " << (isSafe ? "Safe  " : "Unsafe") << ' ';
-			cout << ", Hash = " << hash<MoveStatePair>{}(MoveStatePair{ move, m_fallingPiece }) << '\t';
-
+			
 			if (isSafe) {
 				m_scoreKeeper.incrementTurnCount();
-				if (this->isGameOver()) {
-					cout << iocolor::push()
-						<< iocolor::setfg(iocolor::RED)
-						<< "Game Over!!!\n"
-						<< iocolor::pop();
-				}
 			}
-
-			cout << '\n';
 		}
 
 		bool Game::isSafe(const Move& move) const
@@ -186,7 +174,7 @@ namespace tetris
 				&m_board.at(0, 0) + m_board.cols,
 				[](uint8_t cell) {return cell != TetrominoBase::EMPTY; }
 			);
-
+			
 			return gameOver;
 		}
 
@@ -196,6 +184,7 @@ namespace tetris
 
 			for (int r = 0; r < m_board.rows; r++) {
 
+				// Does row contain an empty cell
 				bool containsEmptyCell = false;
 
 				for (int c = 0; c < m_board.cols; c++) {

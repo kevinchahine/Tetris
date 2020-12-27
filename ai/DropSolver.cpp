@@ -28,12 +28,12 @@ namespace tetris
 			m_moveSequence.clear();
 		}
 
-		Move DropSolver::getInput()
+		Move DropSolver::getInput(const Game & game)
 		{
 			Move selection;
 			
 			if (m_moveSequence.empty()) {
-				solve();
+				solve(game);
 				if (m_moveSequence.empty()) {
 					throw std::exception("No solution was found");
 				}
@@ -51,13 +51,13 @@ namespace tetris
 			return selection;
 		}
 
-		void DropSolver::solve()
+		void DropSolver::solve(const Game & inputGame)
 		{
 			GraphicalDisplay disp;
 			SolutionSequence sol;
 
 			// --- Create a copy the current game ---
-			Game game = this->game();
+			Game game = inputGame;
 
 			// --- Stores the selected move ---
 			Move selection = Move::DOWN;

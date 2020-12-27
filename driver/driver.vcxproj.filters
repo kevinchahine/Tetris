@@ -24,6 +24,9 @@
     <ClCompile Include="run_game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="training.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestMoveSequence.h">
@@ -32,8 +35,12 @@
     <ClInclude Include="run_game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="training.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="program_options_notes.txt" />
+    <Text Include="updates.txt" />
   </ItemGroup>
 </Project>

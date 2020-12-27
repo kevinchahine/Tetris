@@ -171,6 +171,7 @@
     <ClInclude Include="HeuristicHelpers.h" />
     <ClInclude Include="Heuristics.hpp" />
     <ClInclude Include="HolyHeuristic.h" />
+    <ClInclude Include="Individual.h" />
     <ClInclude Include="Optimizer.h" />
     <ClInclude Include="OrangeJuiceHeuristic.h" />
     <ClInclude Include="RandomSolver.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="HeuristicBase.cpp" />
     <ClCompile Include="HeuristicHelpers.cpp" />
     <ClCompile Include="HolyHeuristic.cpp" />
+    <ClCompile Include="Individual.cpp" />
     <ClCompile Include="Optimizer.cpp" />
     <ClCompile Include="OrangeJuiceHeuristic.cpp" />
     <ClCompile Include="pch.cpp">

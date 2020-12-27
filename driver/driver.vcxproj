@@ -149,13 +149,16 @@
     <ClCompile Include="run_game.cpp" />
     <ClCompile Include="TestMoveSequence.cpp" />
     <ClCompile Include="TetrisMain.cpp" />
+    <ClCompile Include="training.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="run_game.h" />
     <ClInclude Include="TestMoveSequence.h" />
+    <ClInclude Include="training.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="program_options_notes.txt" />
+    <Text Include="updates.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
