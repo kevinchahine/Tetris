@@ -29,20 +29,22 @@ namespace tetris
 
 		void Game::update(const tetris::core::Move& move)
 		{
-			if (this->isLaying()) {
-				if (move == Move::DOWN)
-				{
-					this->placeFallingPiece();
-					this->clearFullRows();
-					this->loadNextPiece();
+			if (move != Move::NONE) {
+				if (this->isLaying()) {
+					if (move == Move::DOWN)
+					{
+						this->placeFallingPiece();
+						this->clearFullRows();
+						this->loadNextPiece();
+					}
 				}
-			}
 
-			// --- Apply move if it is safe ---
-			bool isSafe = this->moveSafe(move);
-			
-			if (isSafe) {
-				m_scoreKeeper.incrementTurnCount();
+				// --- Apply move if it is safe ---
+				bool isSafe = this->moveSafe(move);
+				
+				if (isSafe) {
+					m_scoreKeeper.incrementTurnCount();
+				}
 			}
 		}
 
@@ -86,7 +88,7 @@ namespace tetris
 			case Move::RIGHT:   m_fallingPiece.moveRight();		break;
 			case Move::SPIN:	m_fallingPiece.spin(m_board);	break;
 			case Move::SWAP:	swapPieces();					break;
-			case Move::NONE:    m_fallingPiece.moveDown();		break;	// same as DOWN
+			case Move::NONE:    /*m_fallingPiece.moveDown();*/	break;	// same as DOWN
 			default:			throw Move::BadMove();			break;
 			}
 		}

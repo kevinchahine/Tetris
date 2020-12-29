@@ -52,21 +52,23 @@ void tetris::driver::runGame()
 		//make_unique<tetris::ai::DropSolver>();
 
 	{
-		tetris::ai::AiController & controller = *dynamic_cast<tetris::ai::AiController*>(controllerPtr.get());
-		
-		controller.heuristicPtr() =
-			//make_unique<tetris::ai::HolyHeuristic>();
-			//make_unique<tetris::ai::OrangeJuiceHeuristic>();
-			//make_unique<tetris::ai::GrapeJuiceHeuristic>();
-			make_unique<tetris::ai::AppleCiderHeuristic>();
-			//make_unique<tetris::ai::PineappleSlushy>();
+		tetris::ai::AiController * ptr = dynamic_cast<tetris::ai::AiController*>(controllerPtr.get());
 
-		controller.heuristicPtr()->weights() = 
-			//{ -2.5, -0.815, -1.5, -0.558 };
-			//{ -0.551, -0.0705, -0.149, -0.72 };	// score: 41400 (AppleCider)
-			{ -1.64, -0.136, -0.465, -1.83 };		// score: 27160 (AppleCider)
-			//{ -1.64, -0.136, -0.465, -1.83 };		// score: 27160 (AppleCider)
-			//{ -1.73, -0.112, -1.3, 0.933 };		// score: 12520 (AppleCider)
+		if (ptr != nullptr) {
+			ptr->heuristicPtr() =
+				//make_unique<tetris::ai::HolyHeuristic>();
+				//make_unique<tetris::ai::OrangeJuiceHeuristic>();
+				//make_unique<tetris::ai::GrapeJuiceHeuristic>();
+				make_unique<tetris::ai::AppleCiderHeuristic>();
+				//make_unique<tetris::ai::PineappleSlushy>();
+
+			ptr->heuristicPtr()->weights() =
+				//{ -2.5, -0.815, -1.5, -0.558 };
+				//{ -0.551, -0.0705, -0.149, -0.72 };	// score: 41400 (AppleCider)
+				{ -1.64, -0.136, -0.465, -1.83 };		// score: 27160 (AppleCider)
+				//{ -1.64, -0.136, -0.465, -1.83 };		// score: 27160 (AppleCider)
+				//{ -1.73, -0.112, -1.3, 0.933 };		// score: 12520 (AppleCider)
+		}
 	}
 
 	controllerPtr->reset();

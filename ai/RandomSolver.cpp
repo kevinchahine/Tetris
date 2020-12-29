@@ -34,11 +34,6 @@ namespace tetris
 				selection = validMoves.at(randomIndex).move;
 			}
 
-			// --- Call the callback if it has been set
-			if (m_callback != nullptr) {
-				m_callback(selection);
-			}
-
 			// --- Return the selected move ---
 			return selection;
 		}

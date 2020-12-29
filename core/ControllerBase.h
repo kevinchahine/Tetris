@@ -21,12 +21,6 @@ namespace tetris
 
 			virtual Move getInput(const Game & game) = 0;
 
-			void setCallback(std::function<void(const Move & move)>&& callback) { m_callback = std::move(callback); }
-
-
-		protected:
-			std::function<void(const Move& move)> m_callback;
-
 		};
 	}
 }

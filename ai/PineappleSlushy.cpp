@@ -8,11 +8,11 @@ namespace tetris
 		float tetris::ai::PineappleSlushy::calc(const tetris::core::Board & board) const
 		{
 			int nHoles = 0;
-			int sittingCells;
-			int sumOfAllHeights;
-			int bumpyness;
-			int clearableLines;
-			int wells;
+			int sittingCells = 0;
+			int sumOfAllHeights = 0;
+			int bumpyness = 0;
+			int clearableLines = 0;
+			int wells = 0;
 
 			return
 				nHoles * m_weights.at(0) +

@@ -42,11 +42,6 @@ namespace tetris
 			selection = m_moveSequence.front();
 			m_moveSequence.pop_front();
 
-			// --- Call the callback if it has been set
-			if (m_callback != nullptr) {
-				m_callback(selection);
-			}
-
 			// --- Return the selected move ---
 			return selection;
 		}
@@ -92,9 +87,6 @@ namespace tetris
 
 					// Save this state so that we can analyze it later.
 					endStates.push_back(std::move(fallingCopy));
-
-					// Rotate the falling piece
-					/////falling.spin(game.board());
 				}
 
 				// --- Move top piece one space to the RIGHT and repeat ---
@@ -134,7 +126,6 @@ namespace tetris
 				// 4-4.) --- Remove endState from board ---
 				game.board().removeFrom(endState);
 			}
-			cout << "done\n";
 
 			// *** Now bestPtr points to the best end state ***
 			const TetrominoBase& bestRef = *bestPtr;

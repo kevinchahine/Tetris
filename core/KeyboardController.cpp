@@ -39,8 +39,10 @@ namespace tetris
 		{
 			Move ret = input;
 
+			ret = input;
+			
 			input.setMove(Move::NONE);
-
+			
 			return ret;
 		}
 
@@ -72,10 +74,7 @@ namespace tetris
 
 						bool isValid = this->input.setMove(ch);
 
-						if (isValid && m_callback != nullptr) {
-							m_callback(this->input);
-						}
-						else {
+						if (isValid == false) {
 							cout << ch << " is an invalid entry\n";
 						}
 					}

@@ -23,13 +23,11 @@ namespace tetris
 	{
 		void DfsSolver::reset()
 		{
-
+			m_moveSequence.clear();
 		}
 
 		core::Move DfsSolver::getInput(const Game & game)
 		{
-			//m_moveSequence.clear();
-
 			if (m_moveSequence.empty()) {
 				solve(game);
 			
@@ -43,11 +41,6 @@ namespace tetris
 			Move selection = m_moveSequence.front();
 
 			m_moveSequence.pop_front();
-
-			// --- Call the callback if it has been set
-			if (m_callback != nullptr) {
-				m_callback(selection);
-			}
 
 			return selection;
 		}
@@ -94,10 +87,6 @@ namespace tetris
 
 				// 2-3.) See if there are any moves we can do from here
 				copyValidMoves(frontier, explored, game.board(), seq);
-			}
-			
-			if (m_callback != nullptr) {
-				m_callback(core::Move::DOWN);
 			}
 			
 			// Copy best solution
