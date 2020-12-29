@@ -1,7 +1,13 @@
 #pragma once
 
+#include "ai.h"
+
 #include <vector>
 #include <tuple>
+
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
 
 namespace tetris
 {
@@ -9,7 +15,7 @@ namespace tetris
 	{
 		namespace optimizers
 		{
-			class Individual : public std::pair<int, std::vector<float>>
+			class AI_API Individual : public std::pair<int, std::vector<float>>
 			{
 			public:
 				Individual() = default;
@@ -34,7 +40,23 @@ namespace tetris
 				std::vector<float> & weights() { return this->second; };
 
 				friend std::ostream & operator<<(std::ostream & os, const Individual & individual);
+
+			private:
+				friend class boost::serialization::access;
+
+				template<typename Archive>
+				void serialize(Archive & ar, const unsigned int version);
 			};
+
+			template<typename Archive>
+			void Individual::serialize(Archive & ar, unsigned int version)
+			{
+				///auto & super = static_cast<std::pair<int, std::vector<float>>>(*this);
+				///ar & super;
+
+				ar & this->score();
+				ar & this->weights();
+			}
 		}
 	}
 }

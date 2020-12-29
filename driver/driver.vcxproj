@@ -147,12 +147,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="run_game.cpp" />
+    <ClCompile Include="TestIndividual.cpp" />
     <ClCompile Include="TestMoveSequence.cpp" />
     <ClCompile Include="TetrisMain.cpp" />
     <ClCompile Include="training.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="run_game.h" />
+    <ClInclude Include="TestIndividual.h" />
     <ClInclude Include="TestMoveSequence.h" />
     <ClInclude Include="training.h" />
   </ItemGroup>

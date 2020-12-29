@@ -3,6 +3,7 @@
 #include "training.h"
 
 // Include test files
+#include "TestIndividual.h"
 #include "TestMoveSequence.h"
 
 #include <iocolor/iocolor.h>
@@ -32,9 +33,10 @@ int main(int* argc, char** argv)
 		<< iocolor::setfg(iocolor::BLUE) << "==================\n"
 		<< iocolor::pop();
 
-	tetris::driver::runGame();
+	//tetris::driver::runGame();
 	//tetris::driver::train1();
 
+	tetris::driver::testIndividualSerialize();
 	//tetris::driver::testSolutionSequencePrint();
 
 	//cin.get();

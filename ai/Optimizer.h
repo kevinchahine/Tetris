@@ -198,6 +198,8 @@ namespace tetris
 
 				void evalPopulation(std::unique_ptr<AiController> & controllerPtr, std::vector<Individual> & population);
 
+				void saveProgress();
+
 			private:	// ---------------- PRIVATE FIELDS ------------------------
 
 				std::unique_ptr<tetris::ai::AiController> m_aiController;

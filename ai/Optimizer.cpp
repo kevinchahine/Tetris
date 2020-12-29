@@ -227,6 +227,18 @@ namespace tetris
 						<< iocolor::pop() << '\n';
 				}
 			}
+
+			void Optimizer::saveProgress()
+			{
+				// Save:
+				//	Generation (vector<Individuals>)
+				//	All time best (Individual)
+				//	Generation number
+				//	Generation limit
+				//	
+				//  --- or ---
+				//	Entire Optimizer class
+			}
 		}
 	}
 }
