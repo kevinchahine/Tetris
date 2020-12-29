@@ -39,6 +39,11 @@ namespace tetris
 			return tetrominos[index];
 		}
 
+		void RandomizedBag::resetRandomSeed(int seed)
+		{
+			randomEngine.seed(seed);
+		}
+
 		void RandomizedBag::fillAndShuffle()
 		{
 			// Initialize with 0, 1, 2, 3, ..., 6

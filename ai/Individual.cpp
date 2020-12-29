@@ -44,22 +44,6 @@ namespace tetris
 				return this->score() != right.score();
 			}
 
-			std::ostream & operator<<(std::ostream & os, const Individual & individual)
-			{
-				auto osflags = os.flags();
-
-				os << "score: " << setw(6) << individual.score()
-					<< " weights: ";
-
-				os << setprecision(3);
-				for (float w : individual.weights()) {
-					os << setw(8) << w;
-				}
-
-				os.flags(osflags);
-
-				return os;
-			}
 		}
 	}
 }

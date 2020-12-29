@@ -46,6 +46,13 @@ namespace tetris
 			return selection;
 		}
 
+		std::unique_ptr<ControllerBase> DropSolver::clone()
+		{
+			unique_ptr<DropSolver> ptr = make_unique<DropSolver>(*this);
+
+			return ptr;
+		}
+
 		void DropSolver::solve(const Game & inputGame)
 		{
 			GraphicalDisplay disp;

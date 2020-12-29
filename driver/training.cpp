@@ -1,10 +1,9 @@
 #include "training.h"
 
 #include <Tetris/ai/Optimizer.h>
-
 #include <Tetris/ai/Solvers.hpp>
-
 #include <Tetris/ai/Heuristics.hpp>
+#include <Tetris/ai/Individual.h>
 
 #include <chrono>
 
@@ -32,11 +31,16 @@ namespace tetris
 			}
 
 			cout << "Starting training\n";
-			vector<float> weights = op.train();
+			tetris::ai::Session session = 
+				op.train();
+				//op.resumeTrainingFromFile();
 
 			cout << "Training complete\n";
-			for (float f : weights) {
-				cout << f << '\n';
+
+			cout << "All Time Best: " << session.allTimeBest << '\n';
+			cout << "Population:\n";
+			for (const tetris::ai::optimizers::Individual i : session.population) {
+				cout << "\t" << i << "\n";
 			}
 		}
 	}

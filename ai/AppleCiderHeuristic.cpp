@@ -2,6 +2,8 @@
 #include "AppleCiderHeuristic.h"
 #include "HeuristicHelpers.h"
 
+using namespace std;
+
 namespace tetris
 {
 	namespace ai
@@ -26,6 +28,11 @@ namespace tetris
 				nSitting * m_weights.at(1) +
 				height * m_weights.at(2) +
 				nWells * m_weights.at(3);
+		}
+
+		unique_ptr<HeuristicBase> AppleCiderHeuristic::clone()
+		{
+			return make_unique<AppleCiderHeuristic>(*this);
 		}
 	}
 }

@@ -18,9 +18,9 @@ namespace tetris
 		{
 			m_board.clear();
 
-			m_heldPiece = bag.nextTetromino();
+			m_heldPiece = m_randomBag.nextTetromino();
 
-			m_nextPiece = bag.nextTetromino();
+			m_nextPiece = m_randomBag.nextTetromino();
 
 			m_scoreKeeper.reset();
 
@@ -148,7 +148,7 @@ namespace tetris
 				m_fallingPiece.moveDown();
 			}
 
-			m_nextPiece = bag.nextTetromino();
+			m_nextPiece = m_randomBag.nextTetromino();
 		}
 
 		void Game::swapPieces()

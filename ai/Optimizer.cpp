@@ -29,43 +29,54 @@ namespace tetris
 
 			}
 
-			vector<float> Optimizer::train()
+			Session Optimizer::train()
 			{
-				Individual allTimeBest;
+				Session session;
+
+				session.generationLimit = m_generationsLimit;
+				session.timeLimit = m_timeLimit;
+
+				// Set "allTimeBest" (with dumby values)
+				session.allTimeBest.score() = 0;
+				session.allTimeBest.weights() = m_aiController->heuristicPtr()->weights();
 
 				// Create the first generation
-				vector<Individual> population = makeInitialPopulation();
+				session.population = makeInitialPopulation();
 
 				// Keep training 
-				resumeTraining(population, allTimeBest);
+				resumeTraining(session);
 
-				return allTimeBest.weights();
+				return session;
 			}
 
-			void Optimizer::resumeTraining(const vector<Individual> & inputPopulation,	Individual & allTimeBest)
+			void Optimizer::resumeTraining(Session & session)
 			{
 				// Do some safty checks
 				if (m_aiController == nullptr) 
 					throw exception("AiController was not set. Did someone forget to call Optimizer::setAiController()");
 				if (m_aiController->heuristicPtr() == nullptr)
 					throw exception("AiController was not attached to a HeuristicBase object");
-				if (inputPopulation.empty()) 
+				if (session.population.empty()) 
 					throw exception("inputPopulation is empty.");
 				// *** Still need to make sure each Inidividual has the same number of heuristic elements as does the AiControllers heuristic
 
 				chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
 
-				// Create a copy of the input population
-				vector<Individual> population = inputPopulation;
+				// Alias some objects from session
+				Individual & allTimeBest = session.allTimeBest;
+				vector<Individual> & population = session.population;
 
 				// Be fruitfull and multiply 
 				// (but don't actually multiply. This algorithm only works with population control)
-				for (int genNum = 0; genNum < m_generationsLimit; genNum++) {
+				for (int genNum = session.generationNumber; genNum < session.generationLimit; genNum++) {
 					// Check time limit
 					chrono::steady_clock::time_point currTime = chrono::steady_clock::now();
 					chrono::seconds dur = chrono::duration_cast<chrono::seconds>(currTime - startTime);
 
-					cout << "Generation " << genNum << '\t' << "training time: " << dur.count() << " seconds" << '\n';
+					session.randomSeed = currTime.time_since_epoch().count();
+
+					cout << "Generation " << genNum << '\t' << "training time: " << dur.count() << " seconds" << '\n'
+						<< "\tRandom seed = " << session.randomSeed << '\n';
 
 					//if (dur > m_timeLimit) {
 					//	cout << "Time out at " << dur.count() << '\n';
@@ -73,11 +84,15 @@ namespace tetris
 					//}
 
 					// Evaluate Each individual and save their scores in population
-					evalPopulation(m_aiController, population);
+					evalPopulation(m_aiController, population, session.randomSeed);
+
+					// Reevaluate all time best with the same seed used by this generation
+					eval(m_aiController, allTimeBest, session.randomSeed);
 
 					// Challenge allTimeBest
 					auto maxIt = max_element(population.begin(), population.end());
-					if (maxIt->score() > allTimeBest.score()) {
+					if (maxIt != population.end() && 
+						maxIt->score() > allTimeBest.score()) {
 						allTimeBest = *maxIt;
 
 						cout << iocolor::push()
@@ -97,25 +112,25 @@ namespace tetris
 					cout << "Generation Time Elapsed: " << generationDuration.count() << " seconds\n";
 
 					// --- Save Progress (incase errors occur) ---
-					saveProgress(genNum, allTimeBest, population);
+					session.generationNumber = genNum;
+					session.timeElapsed = dur;
+					session.timeLimit = m_timeLimit;
+					saveProgress(session);
 				}
 
 				chrono::steady_clock::time_point endTime = chrono::steady_clock::now();
+
+				session.timeElapsed += chrono::duration_cast<chrono::seconds>(endTime - startTime);
 			}
 
-			void Optimizer::resumeTrainingFromFile()
+			Session Optimizer::resumeTrainingFromFile()
 			{
-				Individual allTimeBest;
-
-				// Create the first generation
-				vector<Individual> population;
-
-				int genNumber = 0;
-
-				restoreProgress(genNumber, allTimeBest, population);
+				Session session = restoreProgress();
 
 				// Keep training 
-				resumeTraining(population, allTimeBest);
+				resumeTraining(session);
+
+				return session;
 			}
 
 			// ------------------------ PRIVATE METHODS -----------------------
@@ -202,11 +217,12 @@ namespace tetris
 				return newPopulation;
 			}
 
-			int Optimizer::eval(unique_ptr<AiController>& controllerPtr)
+			int Optimizer::eval(unique_ptr<AiController>& controllerPtr, int randomSeed)
 			{
 				// --- Set up Game (MODEL) ---
 				core::Game game;
 				game.awake();
+				game.randomBag().resetRandomSeed(randomSeed);
 
 				controllerPtr->reset();
 
@@ -220,7 +236,23 @@ namespace tetris
 				return game.scoreKeeper().getScore();
 			}
 
-			void Optimizer::evalPopulation(unique_ptr<AiController>& controllerPtr, vector<Individual>& population)
+			void Optimizer::eval(std::unique_ptr<AiController>& controllerPtr, Individual & individual, int randomSeed)
+			{
+				// Set weights of ai controller
+				m_aiController->heuristicPtr()->weights() = individual.weights();
+
+				// Play a game using the individuals weights heuristic
+				int score = eval(m_aiController, randomSeed);
+
+				individual.score() = score;
+
+				cout << iocolor::push()
+					<< iocolor::setfg(iocolor::YELLOW)
+					<< individual
+					<< iocolor::pop() << '\n';
+			}
+
+			void Optimizer::evalPopulation(unique_ptr<AiController>& controllerPtr, vector<Individual>& population, int randomSeed)
 			{
 				//vector<thread> threadPool{ thread::hardware_concurrency() };	// Just a start
 
@@ -229,14 +261,13 @@ namespace tetris
 
 					std::function<void(const Individual &)> evaluate =
 						[](const Individual & individual) {
-
 					};
 
 					// Set weights of ai controller
 					m_aiController->heuristicPtr()->weights() = individual.weights();
 
 					// Play a game using the individuals weights heuristic
-					int score = eval(m_aiController);
+					int score = eval(m_aiController, randomSeed);
 
 					individual.score() = score;
 
@@ -247,52 +278,56 @@ namespace tetris
 				}
 			}
 
-			void Optimizer::saveProgress(int genNumber, const Individual & allTimeBest, const std::vector<Individual> & population)
+			void Optimizer::saveProgress(const Session & session)
 			{
-				// 1.) --- Create file and archiver ---1
+				// 1.) --- Create file and archiver ---
 				ofstream outFile;
-				string fileName = "Generation_" + to_string(genNumber) + ".txt";
+				string fileName = "Generation__" + to_string(session.generationNumber) + ".txt";
 				outFile.open(fileName);
 				boost::archive::text_oarchive outAr{ outFile };
-
+			
 				cout << iocolor::push()
 					<< iocolor::setfg(iocolor::LIGHTMAGENTA)
 					<< "Saving progress to " << fileName << "...";
-
+			
 				// 2.) --- Archive progress to file ---
-				outAr << genNumber;
-				outAr << allTimeBest;
-				outAr << population;
-
+				outAr << session;
+			
 				// 3.) --- Close file ---
 				outFile.close();
-
+			
 				cout << "done\n"
 					<< iocolor::pop();
 			}
 
-			void Optimizer::restoreProgress(int & genNumber, Individual & allTimeBest, std::vector<Individual> & population)
+			Session Optimizer::restoreProgress()
 			{
+				Session session;
+
 				// 1.) --- Open file and create Archiver ---
 				ifstream inFile;
-				string fileName = "Generation_" + to_string(10) + ".txt";
+				string fileName = "Generation_" + to_string(15) + ".txt";
 				inFile.open(fileName);
 				boost::archive::text_iarchive inAr{ inFile };
-
+			
 				cout << iocolor::push()
 					<< iocolor::setfg(iocolor::CYAN)
-					<< "Saving progress to " << fileName << "...";
-
+					<< "Restoring progress from " << fileName << "...";
+			
 				// 2.) --- Restore progress from archive ---
-				inAr >> genNumber;
-				inAr >> allTimeBest;
-				inAr >> population;
-
+				inAr >> session;
+			
 				// 3.) --- Close file ---
 				inFile.close();
-
-				cout << "done\n"
+			
+				cout << "done\n";
+			
+				cout << "Restored: \n"
+					<< iocolor::setfg(iocolor::YELLOW)
+					<< session << '\n'
 					<< iocolor::pop();
+
+				return session;
 			}
 		}
 	}

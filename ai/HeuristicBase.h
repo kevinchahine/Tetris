@@ -29,6 +29,8 @@ namespace tetris
 			std::vector<float>& weights() { return m_weights; }
 			const std::vector<float>& weights() const { return m_weights; }
 
+			virtual std::unique_ptr<HeuristicBase> clone() = 0;
+
 		protected:
 			std::vector<float> m_weights;
 		};

@@ -6,27 +6,31 @@ v1.0: (Game Engine, Display, Controllers and AI)
 
 v1.1: (ML)
 	adds ML optimizer using Genetic Algorithm:
-		implement clone methods for Controllers and Heuristics
 
-v1.2: (Backups)
+v1.2: (Backups - filesystem, boost::serialize)
 	adds backups that saves and recovers training progress incase something crashes
 
-v1.3: (MT)
-	adds multithreading to training algorithm
-		optimize multithreading by evaluating potentially slowest individuals first based on average of parents game time
+v1.3: (Fix Training)
+	Make it so that each generation along with allTimeBest play using the same random seed
+	Determine the next allTimeBest by having it play another game with the same random seed as the generation
 
-v1.4: (Display)
-	Adds multiwindow display that can be used to show games being trained by each thread
-
-v1.5: (CL options)
+v1.4: (CL options)
 	Adds program options allowing program to be controlled from CL
 	
-v1.6 with Review: (Cross-Platform Compatible)
+v1.5: (MT)
+	adds multithreading to training algorithm
+		optimize multithreading by evaluating potentially slowest individuals first based on average of parents game time
+	implement clone methods for Controllers and Heuristics
+
+v1.6: (Display)
+	Adds multiwindow display that can be used to show games being trained by each thread
+
+v1.7: (with Review) (Cross-Platform Compatible)
 	Make entire program is cross platform compatible with atlease Windows 10 and Ubuntu Linux 
 		with vcpkg and/or apt
-	Make sure it compiles with both MSVC and g++ 
+	Make sure it compiles with both MSVC and g++ (bonus: gcc on both windows and linux) 
 
-v1.7: (AI)
+v1.8: (AI)
 	Make a more advanced DFS algorithm that uses held piece 
 	Make an even more advanced DFS algorithm that evaluates next piece
 	

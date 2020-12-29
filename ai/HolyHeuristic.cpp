@@ -15,5 +15,10 @@ namespace tetris
 
 			return -nHoles;
 		}
+
+		std::unique_ptr<HeuristicBase> HolyHeuristic::clone()
+		{
+			return make_unique<HolyHeuristic>(*this);
+		}
 	}
 }

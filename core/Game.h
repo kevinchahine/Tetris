@@ -121,6 +121,9 @@ namespace tetris
 			TetrominoBase& heldPiece() { return m_heldPiece; }
 			const TetrominoBase& heldPiece() const { return m_heldPiece; }
 
+			RandomizedBag & randomBag() { return m_randomBag; }
+			const RandomizedBag & randomBag() const { return m_randomBag; }
+
 			ScoreKeeper& scoreKeeper() { return m_scoreKeeper; }
 			const ScoreKeeper& scoreKeeper() const { return m_scoreKeeper; }
 
@@ -133,7 +136,7 @@ namespace tetris
 
 			TetrominoBase m_heldPiece;
 
-			RandomizedBag bag;
+			RandomizedBag m_randomBag;
 
 			ScoreKeeper m_scoreKeeper;
 		};

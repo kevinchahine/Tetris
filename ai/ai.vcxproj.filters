@@ -93,6 +93,9 @@
     <ClInclude Include="PineappleSlushy.h">
       <Filter>Heuristics</Filter>
     </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ai.cpp">
@@ -148,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="PineappleSlushy.cpp">
       <Filter>Heuristics</Filter>
+    </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -14,10 +14,12 @@ namespace tetris
 		public:
 			KeyboardController();
 			virtual ~KeyboardController() noexcept;
-
+			
 			virtual void reset() override;
 
 			virtual Move getInput(const Game & game) override;
+
+			virtual std::unique_ptr<ControllerBase> clone() override;
 
 		private:
 			// Stops ongoing thread

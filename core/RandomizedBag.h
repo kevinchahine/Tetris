@@ -22,6 +22,8 @@ namespace tetris
 		public:
 			const TetrominoBase& nextTetromino();
 
+			void resetRandomSeed(int seed);
+
 		private:
 			void fillAndShuffle();
 

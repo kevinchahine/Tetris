@@ -14,6 +14,8 @@ namespace tetris
 
 			virtual core::Move getInput(const core::Game & game) override;
 
+			virtual std::unique_ptr<ControllerBase> clone() override;
+
 		protected:
 
 		};

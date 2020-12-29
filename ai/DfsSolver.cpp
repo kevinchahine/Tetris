@@ -45,6 +45,11 @@ namespace tetris
 			return selection;
 		}
 
+		std::unique_ptr<ControllerBase> DfsSolver::clone()
+		{
+			return make_unique<DfsSolver>(*this);
+		}
+
 		core::Move DfsSolver::solve(const Game & game)
 		{
 			// Contains states that we want to try next.

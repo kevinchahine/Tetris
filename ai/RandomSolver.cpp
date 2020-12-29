@@ -6,6 +6,7 @@
 #include <vector>
 
 using namespace std;
+using namespace tetris::core;
 
 namespace tetris
 {
@@ -36,6 +37,10 @@ namespace tetris
 
 			// --- Return the selected move ---
 			return selection;
+		}
+		std::unique_ptr<ControllerBase> RandomSolver::clone()
+		{
+			return make_unique<RandomSolver>(*this);
 		}
 	}
 }

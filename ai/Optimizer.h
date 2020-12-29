@@ -2,6 +2,7 @@
 #include "ai.h"
 #include "Individual.h"
 #include "AiController.h"
+#include "Session.h"
 
 #include <limits>		// for numeric<T>::max()
 #include <chrono>
@@ -164,11 +165,11 @@ namespace tetris
 
 				void reset();
 
-				std::vector<float> train();
+				Session train();
 
-				void resumeTraining(const std::vector<Individual> & population, Individual & allTimeBest);
+				void resumeTraining(Session & trainingSession);
 
-				void resumeTrainingFromFile();
+				Session resumeTrainingFromFile();
 
 				// Make sure the AiController has been assigned a heuristic
 				void setAiController(std::unique_ptr<ai::AiController> && controller) { m_aiController = std::move(controller); }
@@ -180,7 +181,7 @@ namespace tetris
 				// then optimizer will run for an "endless" number of generations
 				int getGenerationsLimit() const { return m_generationsLimit; }
 				
-				void setTimeLimit(std::chrono::steady_clock::duration timeLimit) { m_timeLimit = timeLimit; }
+				void setTimeLimit(std::chrono::seconds timeLimit) { m_timeLimit = timeLimit; }
 				std::chrono::steady_clock::duration getTimeLimit() const { return m_timeLimit; }
 				
 				void setPopulationSize(int populationSize) { m_populationSize = populationSize; }
@@ -196,13 +197,15 @@ namespace tetris
 				// Make sure population is sorted from least to greatest score
 				std::vector<Individual> breed(const std::vector<Individual> & population);
 
-				int eval(std::unique_ptr<AiController> & controllerPtr);
+				int eval(std::unique_ptr<AiController> & controllerPtr, int randomSeed);
 
-				void evalPopulation(std::unique_ptr<AiController> & controllerPtr, std::vector<Individual> & population);
+				void eval(std::unique_ptr<AiController> & controllerPtr, Individual & individual, int randomSeed);
 
-				void saveProgress(int genNumber, const Individual & allTimeBest, const std::vector<Individual> & population);
+				void evalPopulation(std::unique_ptr<AiController> & controllerPtr, std::vector<Individual> & population, int randomSeed);
 
-				void restoreProgress(int & genNumber, Individual & allTimeBest, std::vector<Individual> & population);
+				void saveProgress(const Session & session);
+				
+				Session restoreProgress();
 
 			private:	// ---------------- PRIVATE FIELDS ------------------------
 
@@ -210,7 +213,7 @@ namespace tetris
 
 				int m_generationsLimit = INT_MAX; // std::numeric_limits<int>::max();
 
-				std::chrono::steady_clock::duration m_timeLimit;
+				std::chrono::seconds m_timeLimit;
 
 				int m_populationSize = 10;
 			};

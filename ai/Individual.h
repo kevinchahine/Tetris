@@ -2,8 +2,10 @@
 
 #include "ai.h"
 
+#include <iostream>
 #include <vector>
 #include <tuple>
+#include <iomanip>
 
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -39,7 +41,21 @@ namespace tetris
 				const std::vector<float> & weights() const { return this->second; };
 				std::vector<float> & weights() { return this->second; };
 
-				friend std::ostream & operator<<(std::ostream & os, const Individual & individual);
+				friend std::ostream & operator<<(std::ostream & os, const Individual & individual) {
+					auto osflags = os.flags();
+
+					os << "score: " << std::setw(6) << individual.score()
+						<< " weights: ";
+
+					os << std::setprecision(3);
+					for (float w : individual.weights()) {
+						os << std::setw(8) << w;
+					}
+
+					os.flags(osflags);
+
+					return os;
+				}
 
 			private:
 				friend class boost::serialization::access;

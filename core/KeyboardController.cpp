@@ -46,6 +46,11 @@ namespace tetris
 			return ret;
 		}
 
+		unique_ptr<ControllerBase> KeyboardController::clone()
+		{
+			return make_unique<KeyboardController>();
+		}
+
 		void KeyboardController::stopAsyncOp()
 		{
 			// When thread reads this in its loop, it will return and close itself

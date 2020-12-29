@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "PineappleSlushy.h"
 
+using namespace std;
+
 namespace tetris
 {
 	namespace ai
@@ -21,6 +23,11 @@ namespace tetris
 				bumpyness * m_weights.at(3) +
 				clearableLines * m_weights.at(4) +
 				wells * m_weights.at(5);
+		}
+
+		unique_ptr<HeuristicBase> PineappleSlushy::clone()
+		{
+			return make_unique<PineappleSlushy>(*this);
 		}
 	}
 }
