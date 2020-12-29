@@ -17,6 +17,8 @@ namespace tetris
 		public:
 			OrangeJuiceHeuristic() :
 				HeuristicBase({ -1.0f, -1.0f, -1.0f }) {}
+			OrangeJuiceHeuristic(float nHoles, float sittingCells, float maxHeight) :
+				HeuristicBase({ nHoles, sittingCells, maxHeight }) {}
 			OrangeJuiceHeuristic(const OrangeJuiceHeuristic&) = default;
 			OrangeJuiceHeuristic(OrangeJuiceHeuristic&&) noexcept = default;
 			virtual ~OrangeJuiceHeuristic() noexcept = default;

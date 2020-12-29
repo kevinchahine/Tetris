@@ -166,7 +166,9 @@ namespace tetris
 
 				std::vector<float> train();
 
-				std::vector<float> resumeTraining(const std::vector<Individual> & population);
+				void resumeTraining(const std::vector<Individual> & population, Individual & allTimeBest);
+
+				void resumeTrainingFromFile();
 
 				// Make sure the AiController has been assigned a heuristic
 				void setAiController(std::unique_ptr<ai::AiController> && controller) { m_aiController = std::move(controller); }
@@ -198,7 +200,9 @@ namespace tetris
 
 				void evalPopulation(std::unique_ptr<AiController> & controllerPtr, std::vector<Individual> & population);
 
-				void saveProgress();
+				void saveProgress(int genNumber, const Individual & allTimeBest, const std::vector<Individual> & population);
+
+				void restoreProgress(int & genNumber, Individual & allTimeBest, std::vector<Individual> & population);
 
 			private:	// ---------------- PRIVATE FIELDS ------------------------
 

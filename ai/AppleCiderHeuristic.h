@@ -18,6 +18,8 @@ namespace tetris
 		public:
 			AppleCiderHeuristic() :
 				HeuristicBase({ -1.0f, -1.0f, -1.0f, -1.0f }) {}
+			AppleCiderHeuristic(float nHoles, float sittingCells, float sumOfAllHeights, float nWells) :
+				HeuristicBase({ nHoles, sittingCells, sumOfAllHeights, nWells }) {}
 			AppleCiderHeuristic(const AppleCiderHeuristic&) = default;
 			AppleCiderHeuristic(AppleCiderHeuristic&&) noexcept = default;
 			virtual ~AppleCiderHeuristic() noexcept = default;

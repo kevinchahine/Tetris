@@ -34,9 +34,9 @@ int main(int* argc, char** argv)
 		<< iocolor::pop();
 
 	//tetris::driver::runGame();
-	//tetris::driver::train1();
+	tetris::driver::train1();
 
-	tetris::driver::testIndividualSerialize();
+	//tetris::driver::testIndividualSerialize();
 	//tetris::driver::testSolutionSequencePrint();
 
 	//cin.get();

@@ -6,6 +6,7 @@
 
 #include <iocolor/iocolor.h>
 
+#include <fstream>
 #include <algorithm>
 #include <random>
 #include <thread>
@@ -36,12 +37,12 @@ namespace tetris
 				vector<Individual> population = makeInitialPopulation();
 
 				// Keep training 
-				allTimeBest.weights() = resumeTraining(population);
+				resumeTraining(population, allTimeBest);
 
 				return allTimeBest.weights();
 			}
 
-			vector<float> Optimizer::resumeTraining(const vector<Individual> & inputPopulation)
+			void Optimizer::resumeTraining(const vector<Individual> & inputPopulation,	Individual & allTimeBest)
 			{
 				// Do some safty checks
 				if (m_aiController == nullptr) 
@@ -51,8 +52,6 @@ namespace tetris
 				if (inputPopulation.empty()) 
 					throw exception("inputPopulation is empty.");
 				// *** Still need to make sure each Inidividual has the same number of heuristic elements as does the AiControllers heuristic
-
-				Individual allTimeBest;
 
 				chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
 
@@ -66,7 +65,7 @@ namespace tetris
 					chrono::steady_clock::time_point currTime = chrono::steady_clock::now();
 					chrono::seconds dur = chrono::duration_cast<chrono::seconds>(currTime - startTime);
 
-					cout << "Generation " << genNum << '\t' << dur.count() << " seconds" << '\n';
+					cout << "Generation " << genNum << '\t' << "training time: " << dur.count() << " seconds" << '\n';
 
 					//if (dur > m_timeLimit) {
 					//	cout << "Time out at " << dur.count() << '\n';
@@ -92,11 +91,31 @@ namespace tetris
 					vector<Individual> nextGeneration = breed(move(population));
 
 					population = move(nextGeneration);
+
+					chrono::steady_clock::time_point endGenTime = chrono::steady_clock::now();
+					chrono::seconds generationDuration = chrono::duration_cast<chrono::seconds>(endGenTime - currTime);
+					cout << "Generation Time Elapsed: " << generationDuration.count() << " seconds\n";
+
+					// --- Save Progress (incase errors occur) ---
+					saveProgress(genNum, allTimeBest, population);
 				}
 
 				chrono::steady_clock::time_point endTime = chrono::steady_clock::now();
+			}
 
-				return allTimeBest.weights();
+			void Optimizer::resumeTrainingFromFile()
+			{
+				Individual allTimeBest;
+
+				// Create the first generation
+				vector<Individual> population;
+
+				int genNumber = 0;
+
+				restoreProgress(genNumber, allTimeBest, population);
+
+				// Keep training 
+				resumeTraining(population, allTimeBest);
 			}
 
 			// ------------------------ PRIVATE METHODS -----------------------
@@ -228,16 +247,52 @@ namespace tetris
 				}
 			}
 
-			void Optimizer::saveProgress()
+			void Optimizer::saveProgress(int genNumber, const Individual & allTimeBest, const std::vector<Individual> & population)
 			{
-				// Save:
-				//	Generation (vector<Individuals>)
-				//	All time best (Individual)
-				//	Generation number
-				//	Generation limit
-				//	
-				//  --- or ---
-				//	Entire Optimizer class
+				// 1.) --- Create file and archiver ---1
+				ofstream outFile;
+				string fileName = "Generation_" + to_string(genNumber) + ".txt";
+				outFile.open(fileName);
+				boost::archive::text_oarchive outAr{ outFile };
+
+				cout << iocolor::push()
+					<< iocolor::setfg(iocolor::LIGHTMAGENTA)
+					<< "Saving progress to " << fileName << "...";
+
+				// 2.) --- Archive progress to file ---
+				outAr << genNumber;
+				outAr << allTimeBest;
+				outAr << population;
+
+				// 3.) --- Close file ---
+				outFile.close();
+
+				cout << "done\n"
+					<< iocolor::pop();
+			}
+
+			void Optimizer::restoreProgress(int & genNumber, Individual & allTimeBest, std::vector<Individual> & population)
+			{
+				// 1.) --- Open file and create Archiver ---
+				ifstream inFile;
+				string fileName = "Generation_" + to_string(10) + ".txt";
+				inFile.open(fileName);
+				boost::archive::text_iarchive inAr{ inFile };
+
+				cout << iocolor::push()
+					<< iocolor::setfg(iocolor::CYAN)
+					<< "Saving progress to " << fileName << "...";
+
+				// 2.) --- Restore progress from archive ---
+				inAr >> genNumber;
+				inAr >> allTimeBest;
+				inAr >> population;
+
+				// 3.) --- Close file ---
+				inFile.close();
+
+				cout << "done\n"
+					<< iocolor::pop();
 			}
 		}
 	}

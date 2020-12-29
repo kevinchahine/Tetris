@@ -5,3 +5,22 @@ Training Algorithm
 	make each population train against the same random seed. 
 		It seems like some individuals are getting lucky and seem to be doing really well when their not very good
 
+v1.2
+Save/Restore Training Progress
+	make a separate directory structure to organize and store training progress.
+	ex:
+		|-outDir
+		|---training_progress
+		|	|---session_001
+		|	|	|---generation_001.txt
+		|	|	|---generation_002.txt
+		|	|---session_002
+		|	|	|---generation_001.txt
+		|	|	|---generation_002.txt
+		|	|	|---generation_003.txt
+
+	Make sure to print destination directory everytime we save data
+
+	Figure out a good way to restore progress (this really becomes more practical with program options)
+	Really depends on filesystems and program_options.
+	

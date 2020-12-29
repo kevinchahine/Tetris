@@ -14,6 +14,8 @@ namespace tetris
 		public:
 			HolyHeuristic() :
 				HeuristicBase(1) {}
+			GrapeJuiceHeuristic(float nHoles) :
+				HeuristicBase({ nHoles }) {}
 			HolyHeuristic(const HolyHeuristic&) = default;
 			HolyHeuristic(HolyHeuristic&&) noexcept = default;
 			virtual ~HolyHeuristic() noexcept = default;

@@ -91,7 +91,7 @@
       <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="PineappleSlushy.h">
-      <Filter>Header Files</Filter>
+      <Filter>Heuristics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -147,7 +147,7 @@
       <Filter>Helpers</Filter>
     </ClCompile>
     <ClCompile Include="PineappleSlushy.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Heuristics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

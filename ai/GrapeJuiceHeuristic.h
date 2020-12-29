@@ -17,6 +17,8 @@ namespace tetris
 		public:
 			GrapeJuiceHeuristic() :
 				HeuristicBase({ -1.0f, -1.0f, -1.0f, -1.0f }) {}
+			GrapeJuiceHeuristic(float nHoles, float sittingCells, float sumOfHeights) :
+				HeuristicBase({ nHoles, sittingCells, sumOfHeights }) {}
 			GrapeJuiceHeuristic(const GrapeJuiceHeuristic&) = default;
 			GrapeJuiceHeuristic(GrapeJuiceHeuristic&&) noexcept = default;
 			virtual ~GrapeJuiceHeuristic() noexcept = default;

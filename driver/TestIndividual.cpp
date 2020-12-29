@@ -34,4 +34,5 @@ void tetris::driver::testIndividualSerialize()
 		cout << w << ' ';
 	}
 	cout << "\n";
+
 }
