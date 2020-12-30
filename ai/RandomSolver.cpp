@@ -14,6 +14,18 @@ namespace tetris
 	{
 		default_random_engine engine(chrono::system_clock::now().time_since_epoch().count());
 
+		RandomSolver::RandomSolver(const RandomSolver & solver) :
+			AiController(solver)
+		{
+		}
+
+		RandomSolver & RandomSolver::operator=(const RandomSolver & solver)
+		{
+			static_cast<AiController &>(*this) = solver;
+
+			return *this;
+		}
+
 		void RandomSolver::reset()
 		{
 
@@ -38,6 +50,7 @@ namespace tetris
 			// --- Return the selected move ---
 			return selection;
 		}
+
 		std::unique_ptr<ControllerBase> RandomSolver::clone()
 		{
 			return make_unique<RandomSolver>(*this);

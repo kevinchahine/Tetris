@@ -30,7 +30,7 @@ namespace tetris
 				nWells * m_weights.at(3);
 		}
 
-		unique_ptr<HeuristicBase> AppleCiderHeuristic::clone()
+		unique_ptr<HeuristicBase> AppleCiderHeuristic::clone() const
 		{
 			return make_unique<AppleCiderHeuristic>(*this);
 		}

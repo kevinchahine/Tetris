@@ -31,7 +31,7 @@ namespace tetris
 
 			virtual float calc(const tetris::core::Board& board) const;
 
-			virtual std::unique_ptr<HeuristicBase> clone() override;
+			virtual std::unique_ptr<HeuristicBase> clone() const override;
 
 		};
 	}

@@ -16,6 +16,13 @@ namespace tetris
 		class AI_API AiController : public core::ControllerBase
 		{
 		public:
+			AiController() = default;
+			AiController(const AiController & aiController);
+			AiController(AiController &&) noexcept = default;
+			virtual ~AiController() noexcept = default;
+			AiController & operator=(const AiController &);
+			AiController & operator=(AiController &&) noexcept = default;
+
 			std::unique_ptr<HeuristicBase>& heuristicPtr() { return m_heuristicPtr; }
 			const std::unique_ptr<HeuristicBase>& heuristicPtr() const { return m_heuristicPtr; }
 

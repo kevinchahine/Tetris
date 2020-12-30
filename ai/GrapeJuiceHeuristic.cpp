@@ -28,7 +28,7 @@ namespace tetris
 				height * m_weights.at(2);
 		}
 
-		std::unique_ptr<HeuristicBase> GrapeJuiceHeuristic::clone()
+		std::unique_ptr<HeuristicBase> GrapeJuiceHeuristic::clone() const
 		{
 			return make_unique<GrapeJuiceHeuristic>(*this);
 		}

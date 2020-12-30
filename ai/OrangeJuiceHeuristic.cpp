@@ -26,7 +26,7 @@ namespace tetris
 				nSitting * m_weights.at(1) +
 				height * m_weights.at(2);
 		}
-		std::unique_ptr<HeuristicBase> OrangeJuiceHeuristic::clone()
+		std::unique_ptr<HeuristicBase> OrangeJuiceHeuristic::clone() const
 		{
 			return make_unique<OrangeJuiceHeuristic>(*this);
 		}

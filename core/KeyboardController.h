@@ -12,9 +12,14 @@ namespace tetris
 		class CORE_API KeyboardController : public ControllerBase
 		{
 		public:
+
 			KeyboardController();
+			KeyboardController(const KeyboardController &) = default;
+			KeyboardController(KeyboardController &&) noexcept = default;
 			virtual ~KeyboardController() noexcept;
-			
+			KeyboardController & operator=(const KeyboardController &) = default;
+			KeyboardController & operator=(KeyboardController &&) noexcept = default;
+
 			virtual void reset() override;
 
 			virtual Move getInput(const Game & game) override;

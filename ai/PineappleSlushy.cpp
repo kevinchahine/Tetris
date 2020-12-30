@@ -25,7 +25,7 @@ namespace tetris
 				wells * m_weights.at(5);
 		}
 
-		unique_ptr<HeuristicBase> PineappleSlushy::clone()
+		unique_ptr<HeuristicBase> PineappleSlushy::clone() const
 		{
 			return make_unique<PineappleSlushy>(*this);
 		}

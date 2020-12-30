@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable: 4251)
 
 #include "ai.h"
 
@@ -20,8 +21,8 @@ namespace tetris
 		{
 		public:
 
-			//template<typename Archive>
-			//void serialize(Archive & ar, unsigned int version);
+			template<typename Archive>
+			void serialize(Archive & ar, unsigned int version);
 
 			template<typename Archive>
 			void save(Archive & ar, const unsigned int version) const;
@@ -61,18 +62,18 @@ namespace tetris
 
 // ------------------------------------ TEMPLATE DEFINITIONS ------------------
 
-		//template<typename Archive>
-		//void Session::serialize(Archive & ar, unsigned int version)
-		//{
-		//	ar & generationNumber;
-		//	ar & generationLimit;
-		//
-		//	//ar & timeLimit;
-		//	//ar & timeElapsed;
-		//
-		//	ar & population;
-		//	ar & allTimeBest;
-		//}
+		template<typename Archive>
+		void Session::serialize(Archive & ar, unsigned int version)
+		{
+			ar & generationNumber;
+			ar & generationLimit;
+		
+			//ar & timeLimit;
+			//ar & timeElapsed;
+		
+			ar & population;
+			ar & allTimeBest;
+		}
 
 		template<typename Archive>
 		void Session::save(Archive & ar, const unsigned int version) const
