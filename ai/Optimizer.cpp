@@ -86,7 +86,7 @@ namespace tetris
 					// Evaluate Each individual and save their scores in population
 					evalPopulation(m_aiController, population, session.randomSeed);
 
-					// Reevaluate all time best with the same seed used by this generation
+					// Reevaluate "all time best" with the same seed used by this generation
 					eval(m_aiController, allTimeBest, session.randomSeed);
 
 					// Challenge allTimeBest

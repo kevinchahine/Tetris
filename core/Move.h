@@ -5,6 +5,8 @@
 #include <iostream>
 #include <exception>
 
+#pragma warning (disable: 4275)		// remove dll-export warning for objects in stl
+
 namespace tetris
 {
 	namespace core

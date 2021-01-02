@@ -1,6 +1,7 @@
 // Include runtime files
 #include "run_game.h"
 #include "training.h"
+#include "ClParser.h"
 
 // Include test files
 #include "TestIndividual.h"
@@ -16,7 +17,7 @@ using namespace std;
 	See notes.txt in ai project
 */
 
-int main(int* argc, char** argv)
+int main(int argc, char** argv)
 {
 	cout
 		<< iocolor::push()
@@ -33,7 +34,18 @@ int main(int* argc, char** argv)
 		<< iocolor::setfg(iocolor::BLUE) << "==================\n"
 		<< iocolor::pop();
 
-	tetris::driver::runGame();
+	tetris::driver::ClParser clParser;
+
+	try
+	{
+		clParser.handle(argc, argv);
+	}
+	catch (const std::exception& e)
+	{
+		cout << "Exception caught: " << e.what() << '\n';
+	}
+
+	//tetris::driver::runGame();
 	//tetris::driver::train1();
 
 	//tetris::driver::testIndividualSerialize();

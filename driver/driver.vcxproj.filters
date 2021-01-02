@@ -16,6 +16,9 @@
     <Filter Include="Notes">
       <UniqueIdentifier>{5005e1dc-589c-48fc-9f38-4e12d88be2ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ProgramOptions">
+      <UniqueIdentifier>{3962786a-9984-46f8-ad22-61b86b230665}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TetrisMain.cpp">
@@ -33,6 +36,9 @@
     <ClCompile Include="TestIndividual.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ClParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestMoveSequence.h">
@@ -45,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TestIndividual.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

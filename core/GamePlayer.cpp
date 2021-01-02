@@ -34,17 +34,14 @@ namespace tetris
 			std::unique_ptr<ControllerBase>& controllerPtr, 
 			const std::unique_ptr<DisplayBase>& displayPtr)
 		{
+			// Make sure we have a controller. We can't play without one
+			if (controllerPtr == nullptr) {
+				string message = "controllerPtr " + string(__FUNCTION__) + " is nullptr";
+				throw std::exception(message.c_str());
+			}
+
 			// --- Set up Game (MODEL) ---
 			game.awake();
-
-			controllerPtr->reset();
-
-			std::function<void(const tetris::core::Move& move)> onControllerInput = 
-				[&](const tetris::core::Move& move) {
-				game.update(move);
-			};
-
-			//controllerPtr->setCallback(move(onControllerInput));
 
 			// --- Game Loop ---
 			while (game.isGameOver() == false)

@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClParser.cpp" />
     <ClCompile Include="run_game.cpp" />
     <ClCompile Include="TestIndividual.cpp" />
     <ClCompile Include="TestMoveSequence.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="training.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClParser.h" />
     <ClInclude Include="run_game.h" />
     <ClInclude Include="TestIndividual.h" />
     <ClInclude Include="TestMoveSequence.h" />
