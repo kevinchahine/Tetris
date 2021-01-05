@@ -58,6 +58,7 @@ namespace tetris
 				fallenPiece.moveUp();
 				game.fallingPiece() = move(fallenPiece);
 				game.placeFallingPiece();
+				game.clearFullRows();
 				game.loadNextPiece();
 				SolutionSequence fallingNextSeq = DfsSolver::solve(game);
 				
@@ -76,28 +77,29 @@ namespace tetris
 				fallenPiece.moveUp();
 				game.fallingPiece() = move(fallenPiece);
 				game.placeFallingPiece();
+				game.clearFullRows();
 				game.loadNextPiece();
 				SolutionSequence heldNextSeq = DfsSolver::solve(game);
 
 				heldHeur = calcHeuristic(game.board(), heldNextSeq.falling());
 			}
 
-			cout << iocolor::cyan() << "Held: " << heldHeur << '\n'
-				<< "Falling: " << fallingHeur << '\n';
+			//cout << iocolor::cyan() << "Held: " << heldHeur << '\n'
+			//	<< "Falling: " << fallingHeur << '\n';
 
 			// --- Determine which is better ---
 			SolutionSequence bestSeq;
-			if (true/*fallingHeur > heldHeur*/) {
-				cout << iocolor::lightgreen() << "Falling is better\n";
+			if (fallingHeur > heldHeur) {
+				//cout << iocolor::lightgreen() << "Falling is better\n";
 
 				bestSeq = move(fallingSeq);
 			}
 			else {
-				cout << iocolor::lightgreen() << "Held is better\n";
+				//cout << iocolor::lightgreen() << "Held is better\n";
 
-				//heldSeq.prependSwap();
+				heldSeq.prependSwap();
 
-				//bestSeq = move(heldSeq);
+				bestSeq = move(heldSeq);
 			}
 
 			cout << iocolor::pop();

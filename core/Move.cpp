@@ -32,6 +32,8 @@ namespace tetris
 				move == Move::EXIT) 
 			{
 				this->move = move;
+
+				return true;
 			}
 			else 
 			{

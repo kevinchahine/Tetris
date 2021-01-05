@@ -38,6 +38,7 @@ int main(int argc, char** argv)
 
 	try
 	{
+		//tetris::driver::train1();
 		clParser.handle(argc, argv);
 	}
 	catch (const std::exception& e)

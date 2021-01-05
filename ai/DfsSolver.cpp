@@ -29,10 +29,8 @@ namespace tetris
 		core::Move DfsSolver::getInput(const Game & game)
 		{
 			if (m_moveSequence.empty()) {
-				SolutionSequence sol = solve(game);
-				cout << sol << '\n';
-				m_moveSequence = sol.sequence();// solve(game).sequence();
 				
+				m_moveSequence = solve(game).sequence();
 
 				if (m_moveSequence.empty()) {
 					throw std::exception("No solution was found\n");

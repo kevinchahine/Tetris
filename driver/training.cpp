@@ -20,23 +20,33 @@ namespace tetris
 
 			// Set Optimizer parameters
 			{
-				unique_ptr<tetris::ai::DfsSolver> solverPtr = make_unique<tetris::ai::DfsSolver2>();
+				unique_ptr<tetris::ai::DfsSolver3> solverPtr = make_unique<tetris::ai::DfsSolver3>();
 				solverPtr->heuristicPtr() = make_unique<tetris::ai::AppleCiderHeuristic>();
 				op.setAiController(move(solverPtr));
 				
 				op.setGenerationsLimit(INT_MAX);// numeric_limits<int>::max());
 				
-				op.setTimeLimit(chrono::hours(100));// chrono::seconds::max());
+				op.setTimeLimit(chrono::hours(1000));// chrono::seconds::max());
 				
-				op.setPopulationSize(8);
+				op.setPopulationSize(10);
 			}
 
-			cout << "Starting training\n";
+			chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
+
+			cout << "Starting training at "
+				<< startTime.time_since_epoch().count()
+				<< "\n";
+
 			tetris::ai::Session session = 
 				op.train();
 				//op.resumeTrainingFromFile();
 
-			cout << "Training complete\n";
+			chrono::steady_clock::time_point finishTime = chrono::steady_clock::now();
+
+			cout << "Training complete at " << finishTime.time_since_epoch().count() << "\n";
+			cout << "duration = "
+				<< chrono::duration_cast<chrono::minutes>(finishTime - startTime).count()
+				<< " minutes\n";
 
 			cout << "All Time Best: " << session.allTimeBest << '\n';
 			cout << "Population:\n";
