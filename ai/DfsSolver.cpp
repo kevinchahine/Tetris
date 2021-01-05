@@ -29,8 +29,11 @@ namespace tetris
 		core::Move DfsSolver::getInput(const Game & game)
 		{
 			if (m_moveSequence.empty()) {
-				solve(game);
-			
+				SolutionSequence sol = solve(game);
+				cout << sol << '\n';
+				m_moveSequence = sol.sequence();// solve(game).sequence();
+				
+
 				if (m_moveSequence.empty()) {
 					throw std::exception("No solution was found\n");
 				}
@@ -50,7 +53,7 @@ namespace tetris
 			return make_unique<DfsSolver>(*this);
 		}
 
-		core::Move DfsSolver::solve(const Game & game)
+		SolutionSequence DfsSolver::solve(const Game & game)
 		{
 			// Contains states that we want to try next.
 			// Make sure that states added to frontier are not found in explored
@@ -65,7 +68,7 @@ namespace tetris
 			float bestHeur = numeric_limits<float>::lowest();	// Heuristic of the best solution
 
 			// 1.) Generate starting moves and push them into the frontier
-			copyValidMoves(frontier, explored, game.board(), game.fallingPiece());
+			branchValidMoves(frontier, explored, game.board(), game.fallingPiece());
 
 			// 2.) --- Keep repeating as long has there are moves to try in the frontier ---
 			while (!frontier.empty())
@@ -91,17 +94,16 @@ namespace tetris
 				}
 
 				// 2-3.) See if there are any moves we can do from here
-				copyValidMoves(frontier, explored, game.board(), seq);
+				branchValidMoves(frontier, explored, game.board(), seq);
 			}
 			
-			// Copy best solution
-			m_moveSequence = std::move(bestSol.sequence());
-			m_moveSequence.push_back(Move::DOWN);
+			// 3.) --- Final down move to place piece ---
+			bestSol.placePiece();		
 
-			return Move::SPIN;// m_moveSequence.front();	// change this please its not correct
+			return bestSol;
 		}
 
-		void DfsSolver::copyValidMoves(
+		void DfsSolver::branchValidMoves(
 			FrontierStack<SolutionSequence>& frontier, 
 			const std::set<size_t>& explored, 
 			const core::Board& board,

@@ -30,7 +30,7 @@ namespace tetris
 			virtual std::unique_ptr<ControllerBase> clone() override;
 
 		protected:
-			void copyValidMoves(
+			void branchValidMoves(
 				FrontierStack<SolutionSequence>& frontier, 
 				const std::set<size_t>& explored,
 				const core::Board& board, 
@@ -38,7 +38,7 @@ namespace tetris
 
 		protected:
 
-			core::Move solve(const core::Game & game);
+			SolutionSequence solve(const core::Game & game);
 		};
 	}
 }

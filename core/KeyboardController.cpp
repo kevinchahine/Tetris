@@ -41,7 +41,7 @@ namespace tetris
 
 			ret = input;
 			
-			input.setMove(Move::NONE);
+			input.setMove(Move::NONE);	// clear input
 			
 			return ret;
 		}

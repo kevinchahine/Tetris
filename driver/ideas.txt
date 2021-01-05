@@ -1,0 +1,13 @@
+
+=== Heuristics ===
+	Make height feature exponensial. So that low heights are less significant and higher
+	heights are more significant than other weights.
+
+	Clear pieces before evaluating fitness. DFS3 seems to avoid using its held I pieces
+	because it doesn't know that clearing lines is good.
+
+=== Game Mechanics ===
+	Make a special move for placing pieces. 
+	Make it operate like a down move.
+	Make sure SolutionSequences don't move the piece down when appending a place move
+

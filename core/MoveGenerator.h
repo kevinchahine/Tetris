@@ -13,7 +13,7 @@ namespace tetris
 		// C is to be a container class that that stores tetris::core::Move and has a push_back function
 		// ex: std::vector<tetris::core::Move>
 		template<typename C>
-		void CORE_API generateMoves(
+		void generateMoves(
 			C& dstContainer,				// destination
 			const Board& board,				
 			const TetrominoBase& falling, 

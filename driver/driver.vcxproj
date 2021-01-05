@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="do_next.txt" />
+    <Text Include="ideas.txt" />
     <Text Include="program_options_notes.txt" />
     <Text Include="updates.txt" />
     <Text Include="weights.txt" />

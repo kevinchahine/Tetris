@@ -70,6 +70,5 @@ namespace tetris
 
 			return game.scoreKeeper().getScore();
 		}
-
 	}
 }

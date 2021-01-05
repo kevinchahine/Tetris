@@ -49,11 +49,24 @@ namespace tetris
 			m_falling.spin(board);
 		}
 
+		void SolutionSequence::placePiece()
+		{
+			m_sequence.push_back(core::Move::PLACE);
+
+			// Don't move the falling piece
+		}
+
 		void SolutionSequence::move(core::Move move, const core::Board& board)
 		{
 			m_sequence.push_back(move);
 
-			m_falling.move(move, board);
+			if (move != Move::PLACE)
+				m_falling.move(move, board);
+		}
+
+		void SolutionSequence::prependSwap()
+		{
+			m_sequence.push_front(Move::SWAP);
 		}
 	}
 }

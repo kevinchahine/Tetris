@@ -6,6 +6,7 @@
 #include <Tetris/ai/Individual.h>
 
 #include <chrono>
+#include <numeric>
 
 using namespace std;
 
@@ -19,13 +20,13 @@ namespace tetris
 
 			// Set Optimizer parameters
 			{
-				unique_ptr<tetris::ai::DfsSolver> solverPtr = make_unique<tetris::ai::DfsSolver>();
+				unique_ptr<tetris::ai::DfsSolver> solverPtr = make_unique<tetris::ai::DfsSolver2>();
 				solverPtr->heuristicPtr() = make_unique<tetris::ai::AppleCiderHeuristic>();
 				op.setAiController(move(solverPtr));
 				
-				op.setGenerationsLimit(std::numeric_limits<int>::max());
+				op.setGenerationsLimit(INT_MAX);// numeric_limits<int>::max());
 				
-				op.setTimeLimit(chrono::seconds::max());
+				op.setTimeLimit(chrono::hours(100));// chrono::seconds::max());
 				
 				op.setPopulationSize(8);
 			}

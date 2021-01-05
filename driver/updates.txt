@@ -17,20 +17,21 @@ v1.3: (Fix Training)
 v1.4: (CL options)
 	Adds program options allowing program to be controlled from CL
 	
-v1.5: (MT)
+v1.5: (AI)
+	Make a more advanced DFS algorithm that uses held piece 
+	Make an even more advanced DFS algorithm that evaluates next piece
+
+v1.6: (MT)
 	adds multithreading to training algorithm
 		optimize multithreading by evaluating potentially slowest individuals first based on average of parents game time
 	implement clone methods for Controllers and Heuristics
 
-v1.6: (Display)
+v1.7: (Display)
 	Adds multiwindow display that can be used to show games being trained by each thread
 
-v1.7: (with Review) (Cross-Platform Compatible)
+v1.8: (with Review) (Cross-Platform Compatible)
 	Make entire program is cross platform compatible with atlease Windows 10 and Ubuntu Linux 
 		with vcpkg and/or apt
 	Make sure it compiles with both MSVC and g++ (bonus: gcc on both windows and linux) 
 
-v1.8: (AI)
-	Make a more advanced DFS algorithm that uses held piece 
-	Make an even more advanced DFS algorithm that evaluates next piece
 	

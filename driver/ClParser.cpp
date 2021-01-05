@@ -98,18 +98,8 @@ namespace tetris
 					cout << '\t' << v.first << " | " << v.second.as<string>() << '\n';
 				}
 
-				// If no arguments were found?
-				//if (argc <= 1) {
-				//	setGameMode("play");	// Just run a game
-				//}
-
 				handleSwitches(vm);
-
 				handleOptions(vm);
-
-				//if (m_gameMode == nullptr) {
-				//	setGameMode("play");
-				//}
 
 				// After switches and options have been handled, execute 
 				// the game mode. ** See .setGameMode()
@@ -207,19 +197,17 @@ namespace tetris
 			// Shorten name
 			const string & c = controller;
 
-			if (c == "hmi") {
+			if (c == "keyboard") {
 				m_controllerPtr = make_unique<tetris::core::KeyboardController>();
 			}
 			else if (c == "dfs" || c == "dfs1") {
 				m_controllerPtr = make_unique<tetris::ai::DfsSolver>();
 			}
 			else if (c == "dfs2") {
-				cout << "DFS2 has not yet been implemented\n";
-				m_controllerPtr = make_unique<tetris::ai::DfsSolver>();	// Implement and change this
+				m_controllerPtr = make_unique<tetris::ai::DfsSolver2>();
 			}
 			else if (c == "dfs3") {
-				cout << "DFS3 has not yet been implemented\n";
-				m_controllerPtr = make_unique<tetris::ai::DfsSolver>();	// Implement and change this
+				m_controllerPtr = make_unique<tetris::ai::DfsSolver3>();
 			}
 			else if (c == "drop") {
 				m_controllerPtr = make_unique<tetris::ai::DropSolver>();
@@ -304,20 +292,23 @@ namespace tetris
 			tetris::core::Game game;
 
 			// --- View ---	
-			// Nothing to do
+			// Nothing to do here
 
 			// --- Controller ---
+			// Make sure we have a controller
 			if (m_controllerPtr == nullptr) {
 				setController("dfs");
 			}
 
-			// Set heuristic but only if it controller is an AiController
+			// Set heuristic but only if our controller is an AiController
 			{
-				// Down cast into AiController if possible
+				// Down cast to AiController if possible
 				tetris::ai::AiController * cPtr = dynamic_cast<tetris::ai::AiController*>(m_controllerPtr.get());
 
-				// If cast was sucessfull, set its heuristic
+				// If cast was sucessfull, set its heuristic 
+				// (now we know if our controller was infact an AiController
 				if (cPtr != nullptr) {
+					// Next set the controllers hueristic
 					if (m_heuristicPtr == nullptr) {
 						throw std::exception("Heuristic was not specified. Ai controllers need to have a heuristic to work");
 					}

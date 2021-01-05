@@ -21,17 +21,21 @@ namespace tetris
 		{
 			move = tolower(move);
 
-			switch (move)
+			if (move == Move::SPIN ||      
+				move == Move::DOWN || 		
+				move == Move::LEFT || 		
+				move == Move::RIGHT || 	
+				move == Move::NONE || 		
+				move == Move::SWAP || 		
+				move == Move::PLACE || 	
+				move == Move::PENDING || 	
+				move == Move::EXIT) 
 			{
-			case Move::SPIN:    this->move = move;  return true;
-			case Move::DOWN:    this->move = move;  return true;
-			case Move::LEFT:    this->move = move;  return true;
-			case Move::RIGHT:   this->move = move;  return true;
-			case Move::NONE:    this->move = move;  return true;
-			case Move::SWAP:	this->move = move;	return true;
-			case Move::PENDING: this->move = move;  return true;
-			case Move::EXIT:	this->move = move;  return true;
-			default:                                return false;
+				this->move = move;
+			}
+			else 
+			{
+				return false;
 			}
 		}
 

@@ -96,6 +96,12 @@
     <ClInclude Include="Session.h">
       <Filter>Optimizers</Filter>
     </ClInclude>
+    <ClInclude Include="DfsSolver2.h">
+      <Filter>Solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="DfsSolver3.h">
+      <Filter>Solvers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ai.cpp">
@@ -154,6 +160,12 @@
     </ClCompile>
     <ClCompile Include="Session.cpp">
       <Filter>Optimizers</Filter>
+    </ClCompile>
+    <ClCompile Include="DfsSolver2.cpp">
+      <Filter>Solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="DfsSolver3.cpp">
+      <Filter>Solvers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

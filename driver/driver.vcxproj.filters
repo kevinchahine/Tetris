@@ -37,7 +37,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ClParser.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>ProgramOptions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -54,7 +54,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ClParser.h">
-      <Filter>Header Files</Filter>
+      <Filter>ProgramOptions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +68,9 @@
       <Filter>Notes</Filter>
     </Text>
     <Text Include="do_next.txt">
+      <Filter>Notes</Filter>
+    </Text>
+    <Text Include="ideas.txt">
       <Filter>Notes</Filter>
     </Text>
   </ItemGroup>

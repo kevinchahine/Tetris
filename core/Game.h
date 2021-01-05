@@ -37,12 +37,11 @@ namespace tetris
 			//  // between left and right boarders.
 			//  // But doesn't consider bottom boarder.
 			//	bool isIn = g.isInBounds(m, Board::TOP | Board::LEFT | Board::RIGHT);
-			// 
-			// WARNING: Only use for regular moves: SPIN, LEFT, RIGHT, DOWN
-			//			Do not use for SWAP.
 			bool isSafe(const Move& move) const;
 
 			// See comments of overload
+			// 
+			// WARNING: Do not use this with place
 			bool isSafe(const TetrominoBase& fallingPiece) const;
 
 			// Moves falling piece even if it ends up off the edge of the board

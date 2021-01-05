@@ -64,7 +64,13 @@ namespace tetris
 
 			void moveSpin(const core::Board& board);
 
+			void placePiece();
+
 			void move(core::Move move, const core::Board& board);
+
+			// Puts a swap move to the beginning of the sequence.
+			// Does not affect the falling piece
+			void prependSwap();
 
 			const std::deque<core::Move>& sequence() const { return m_sequence; }
 			const core::TetrominoBase& falling() const { return m_falling; }

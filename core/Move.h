@@ -20,6 +20,7 @@ namespace tetris
 			static const char RIGHT = 'd';
 			static const char NONE = ' ';
 			static const char SWAP = 'q';
+			static const char PLACE = 'p';
 			static const char PENDING = '?';	// Still needs more time to decide (Not used)
 			static const char EXIT = 'x';		// Exit game (Not really a move, used for convenience)
 
@@ -55,6 +56,7 @@ namespace tetris
 				case Move::RIGHT:   os << "RIGHT";      break;
 				case Move::NONE:    os << "NONE";       break;
 				case Move::SWAP:	os << "SWAP";		break;
+				case Move::PLACE:	os << "PLACE";		break;
 				case Move::PENDING: os << "PENDING";	break;
 				case Move::EXIT:	os << "EXIT GAME";  break;
 				default:

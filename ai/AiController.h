@@ -9,6 +9,8 @@
 #include <memory>
 #include <queue>
 
+#include <iocolor/iocolor.h>
+
 namespace tetris
 {
 	namespace ai

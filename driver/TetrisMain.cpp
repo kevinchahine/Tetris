@@ -45,12 +45,5 @@ int main(int argc, char** argv)
 		cout << "Exception caught: " << e.what() << '\n';
 	}
 
-	//tetris::driver::runGame();
-	//tetris::driver::train1();
-
-	//tetris::driver::testIndividualSerialize();
-	//tetris::driver::testSolutionSequencePrint();
-
-	//cin.get();
 	return 0;
 }

@@ -31,7 +31,7 @@ namespace tetris
 		{
 			if (move != Move::NONE) {
 				if (this->isLaying()) {
-					if (move == Move::DOWN)
+					if (move == Move::DOWN || move == Move::PLACE)
 					{
 						this->placeFallingPiece();
 						this->clearFullRows();
@@ -41,7 +41,7 @@ namespace tetris
 
 				// --- Apply move if it is safe ---
 				bool isSafe = this->moveSafe(move);
-				
+
 				if (isSafe) {
 					m_scoreKeeper.incrementTurnCount();
 				}
@@ -50,7 +50,15 @@ namespace tetris
 
 		bool Game::isSafe(const Move& move) const
 		{
-			if (move != Move::SWAP) {
+			if (move == Move::SWAP) {
+				// Swap is always safe
+				return true;
+			}
+			else if (move == Move::PLACE) {
+				// If falling piece is laying on something then it can be placed
+				return this->isLaying();
+			}
+			else {
 				// Save the state of the falling piece so that we can restore it later
 				TetrominoBase currFallingPiece = m_fallingPiece;
 
@@ -65,9 +73,6 @@ namespace tetris
 
 				// As long as the move won't make the falling piece overlap, then the move is a safe move.
 				return !overlaps;
-			}
-			else {
-				return true;
 			}
 		}
 
@@ -88,6 +93,7 @@ namespace tetris
 			case Move::RIGHT:   m_fallingPiece.moveRight();		break;
 			case Move::SPIN:	m_fallingPiece.spin(m_board);	break;
 			case Move::SWAP:	swapPieces();					break;
+			case Move::PLACE:	placeFallingPiece();	loadNextPiece();	break;
 			case Move::NONE:    /*m_fallingPiece.moveDown();*/	break;	// same as DOWN
 			default:			throw Move::BadMove();			break;
 			}
@@ -100,7 +106,16 @@ namespace tetris
 
 		bool Game::moveSafe(const Move& move)
 		{
-			if (move != Move::SWAP) {
+			if (move == Move::SWAP) {
+				moveFast(move);
+
+				return true;		// Swap is always a safe move
+			}
+			else if (move == Move::PLACE) {
+				if (isSafe(move)) { moveFast(move);	return true; }
+				else { return false; }
+			}
+			else {
 				// Save the state of the falling piece so that we can restore it later
 				TetrominoBase currFallingPiece = m_fallingPiece;
 
@@ -121,11 +136,6 @@ namespace tetris
 				else {
 					return true;	// Safe move
 				}
-			}
-			else {
-				moveFast(move);
-
-				return true;		// Swap is always a safe move
 			}
 		}
 
@@ -153,9 +163,6 @@ namespace tetris
 
 		void Game::swapPieces()
 		{
-			m_heldPiece.print();
-			m_fallingPiece.print();
-
 			swap(m_heldPiece, m_fallingPiece);
 
 			// Place falling piece at very top of board
@@ -176,7 +183,7 @@ namespace tetris
 				&m_board.at(0, 0) + m_board.cols,
 				[](uint8_t cell) {return cell != TetrominoBase::EMPTY; }
 			);
-			
+
 			return gameOver;
 		}
 
