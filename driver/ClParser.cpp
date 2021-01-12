@@ -27,7 +27,7 @@ namespace tetris
 			m_controllerPtr(make_unique<tetris::ai::DfsSolver>()),
 			m_heuristicPtr(make_unique<tetris::ai::AppleCiderHeuristic>())
 		{
-			dynamic_cast<tetris::ai::AiController*>(m_controllerPtr.get())->heuristicPtr() = 
+			dynamic_cast<tetris::ai::AiController*>(m_controllerPtr.get())->heuristicPtr() =
 				m_heuristicPtr->clone();
 
 			switchesDesc.add_options()
@@ -39,14 +39,14 @@ namespace tetris
 				("play,p", "run game instead of training algorithm")
 				("list,l", "List controllers and heuristics")
 				;
-
+			
 			optionsDesc.add_options()
 				("controller", po::value<string>()->default_value("dfs"), "Determines what controller to use. Use --list to see options")
 				("heuristic", po::value<string>()->default_value("applecider"), "Determines what heuristic to use. Only applies to AiControllers. Use --list to see options.")
 				("display", po::value<string>()->default_value("gui"), "Determines what display to use. Use --list to see options.")
-				("generations", po::value<int>(), "Sets generations limit. Only applies to training.")
-				("population", po::value<int>(), "Sets population size of each generation. Only applies to training.")
-				("time-limit", po::value<int>(), "Time limit in seconds, Sets time limit for training. Only applies to training.")
+				("generations", po::value<int>()->implicit_value(100), "Sets generations limit. Only applies to training.")
+				("population", po::value<int>()->implicit_value(10), "Sets population size of each generation. Only applies to training.")
+				("time-limit", po::value<int>()->implicit_value(10'000), "Time limit in seconds, Sets time limit for training. Only applies to training.")
 				("out-dir", po::value<string>()->default_value("."), "Sets out directory for training progess backups. Only applies to training")
 				("continue", po::value<string>()->default_value("."), "Specifies which directory training progress was saved in. Only applies to training.")
 				("seed", po::value<int>(), "Sets random seed for more controlled games.")
@@ -73,8 +73,8 @@ namespace tetris
 				style::allow_long |
 				style::short_allow_next |		// allows separation
 				//style::case_insensitive
-				0 ;		
-			
+				0;
+
 			po::variables_map vm;
 
 			try {
@@ -89,7 +89,7 @@ namespace tetris
 					po::command_line_parser(argc, argv)
 					.options(desc)
 					.style(git_style)
-					.run(), 
+					.run(),
 					vm);
 
 				cout << "Print arguments: "
@@ -144,7 +144,7 @@ namespace tetris
 		{
 			cout << iocolor::push();
 
-			cout << iocolor::setfg(iocolor::YELLOW) 
+			cout << iocolor::setfg(iocolor::YELLOW)
 				<< "Controllers:\n"
 				<< iocolor::setfg(iocolor::LIGHTGREEN)
 				<< "\tKeyboard      Uses keyboard as controller.\n"
@@ -157,7 +157,7 @@ namespace tetris
 				<< "\tRandom        Ai Solver that makes random moves (dumb).\n"
 				<< '\n';
 
-			cout << iocolor::setfg(iocolor::YELLOW) 
+			cout << iocolor::setfg(iocolor::YELLOW)
 				<< "Displays:\n"
 				<< iocolor::setfg(iocolor::GREEN)
 				<< "\tGUI           Show display on a graphical window. Needs opencv support.\n"
@@ -297,7 +297,7 @@ namespace tetris
 			// --- Controller ---
 			// Make sure we have a controller
 			if (m_controllerPtr == nullptr) {
-				setController("dfs");
+				setController("dfs");	// Default to dfs
 			}
 
 			// Set heuristic but only if our controller is an AiController
@@ -306,13 +306,15 @@ namespace tetris
 				tetris::ai::AiController * cPtr = dynamic_cast<tetris::ai::AiController*>(m_controllerPtr.get());
 
 				// If cast was sucessfull, set its heuristic 
-				// (now we know if our controller was infact an AiController
 				if (cPtr != nullptr) {
-					// Next set the controllers hueristic
+					// (now we know that our controller is infact an AiController)
+
+					// Make sure we have a heuristic
 					if (m_heuristicPtr == nullptr) {
 						throw std::exception("Heuristic was not specified. Ai controllers need to have a heuristic to work");
 					}
-			
+
+					// Next set the controllers hueristic
 					cPtr->heuristicPtr() = m_heuristicPtr->clone();
 				}
 			}
@@ -358,7 +360,52 @@ namespace tetris
 
 		void ClParser::train()
 		{
-			cout << __FUNCTION__ << "() hasn't been implemented\n";
+			// --- Model ---
+			tetris::ai::optimizers::Optimizer opt;
+
+			// --- View --- (No view)
+
+			// --- Controller
+			// Make sure we have a controller
+			if (m_controllerPtr == nullptr) {
+				throw std::exception("AI Controller not set");
+			}
+
+			// Set heuristic but only if our controller is an AiController
+			{
+				// Down cast to AiController if possible
+				tetris::ai::AiController * cPtr = dynamic_cast<tetris::ai::AiController*>(m_controllerPtr.get());
+
+				// If cast was sucessfull, set its heuristic 
+				if (cPtr == nullptr) {
+					throw std::exception("Controller needs to be an Ai Controller.");
+				}
+				else {
+					// (now we know that our controller is infact an AiController)
+
+					// Make sure we have a heuristic
+					if (m_heuristicPtr == nullptr) {
+						throw std::exception("Heuristic was not specified. Ai controllers need to have a heuristic to work");
+					}
+
+					// Next set the controllers hueristic
+					cPtr->heuristicPtr() = m_heuristicPtr->clone();
+
+					// Set Ai Controller to Optimizer
+					auto d = static_cast<ai::AiController*>(m_controllerPtr.release());
+					unique_ptr<ai::AiController> aiPtr(d);
+					opt.setAiController(move(aiPtr));
+				}
+			}
+
+			// --- Train ---
+
+			if (m_trainingSessionPtr == nullptr) {
+				m_trainingSessionPtr = make_unique<ai::Session>();
+			}
+
+			//opt.resumeTraining(*m_trainingSessionPtr);
+			opt.train();
 		}
 
 		void ClParser::printWarning(const std::string & message, std::ostream & os) const

@@ -31,6 +31,8 @@ namespace tetris
 
 			virtual std::unique_ptr<HeuristicBase> clone() const = 0;
 
+			virtual std::string name() = 0;
+
 		protected:
 			std::vector<float> m_weights;
 		};

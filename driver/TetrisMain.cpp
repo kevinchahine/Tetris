@@ -39,11 +39,22 @@ int main(int argc, char** argv)
 	try
 	{
 		//tetris::driver::train1();
-		clParser.handle(argc, argv);
+		tetris::core::Game game;
+		tetris::core::ColoredConsoleDisplay disp;
+		disp.rasterize(game);
+		disp.show();
+
+		//clParser.handle(argc, argv);
 	}
 	catch (const std::exception& e)
 	{
-		cout << "Exception caught: " << e.what() << '\n';
+		cout << iocolor::push()
+			<< iocolor::red()
+			<< "Exception caught: " << e.what() 
+			<< iocolor::pop() << '\n';
+
+		//cout << "Press any key to continue";
+		//cin.get();
 	}
 
 	return 0;

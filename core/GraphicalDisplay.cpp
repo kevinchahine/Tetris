@@ -41,6 +41,11 @@ namespace tetris
 			cv::waitKey(1);
 		}
 
+		std::string GraphicalDisplay::name()
+		{
+			return "Graphical";
+		}
+
 		void GraphicalDisplay::resetSubImages()
 		{
 			/* General Layout:

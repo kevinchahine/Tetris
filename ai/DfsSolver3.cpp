@@ -40,6 +40,11 @@ namespace tetris
 			return std::unique_ptr<DfsSolver3>();
 		}
 
+		std::string DfsSolver3::name()
+		{
+			return "DFS3";
+		}
+
 		SolutionSequence DfsSolver3::solve(const core::Game & inputGame)
 		{
 			GraphicalDisplay disp;

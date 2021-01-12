@@ -163,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
+    <ClInclude Include="ColoredChar.h" />
     <ClInclude Include="ColoredConsoleDisplay.h" />
     <ClInclude Include="ControllerBase.h" />
     <ClInclude Include="Controllers.hpp" />
@@ -192,6 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="ColoredChar.cpp" />
     <ClCompile Include="ColoredConsoleDisplay.cpp" />
     <ClCompile Include="ControllerBase.cpp" />
     <ClCompile Include="core.cpp" />

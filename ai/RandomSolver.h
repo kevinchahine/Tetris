@@ -23,6 +23,8 @@ namespace tetris
 
 			virtual std::unique_ptr<ControllerBase> clone() override;
 
+			virtual std::string name() override;
+
 		protected:
 
 		};

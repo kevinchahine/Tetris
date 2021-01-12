@@ -165,6 +165,8 @@ namespace tetris
 
 				void reset();
 
+				Session train(std::unique_ptr<AiController> && controller, int popSize, int generationsLimit);
+					
 				Session train();
 
 				void resumeTraining(Session & trainingSession);

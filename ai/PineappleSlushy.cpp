@@ -29,5 +29,9 @@ namespace tetris
 		{
 			return make_unique<PineappleSlushy>(*this);
 		}
+		std::string PineappleSlushy::name()
+		{
+			return "Pineapple Slushy";
+		}
 	}
 }

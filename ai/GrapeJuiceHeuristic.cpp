@@ -32,5 +32,9 @@ namespace tetris
 		{
 			return make_unique<GrapeJuiceHeuristic>(*this);
 		}
+		std::string GrapeJuiceHeuristic::name()
+		{
+			return "GrapeJuice";
+		}
 	}
 }

@@ -34,5 +34,9 @@ namespace tetris
 		{
 			return make_unique<AppleCiderHeuristic>(*this);
 		}
+		std::string AppleCiderHeuristic::name()
+		{
+			return "AppleCider";
+		}
 	}
 }

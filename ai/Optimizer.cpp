@@ -29,6 +29,15 @@ namespace tetris
 
 			}
 
+			Session Optimizer::train(std::unique_ptr<AiController>&& controller, int popSize, int generationsLimit)
+			{
+				this->setAiController(move(controller));
+				this->setGenerationsLimit(generationsLimit);
+				this->setPopulationSize(popSize);
+
+				return train();
+			}
+
 			Session Optimizer::train()
 			{
 				Session session;
@@ -77,11 +86,6 @@ namespace tetris
 
 					cout << "Generation " << genNum << '\t' << "training time: " << dur.count() << " seconds" << '\n'
 						<< "\tRandom seed = " << session.randomSeed << '\n';
-
-					//if (dur > m_timeLimit) {
-					//	cout << "Time out at " << dur.count() << '\n';
-					//	break;
-					//}
 
 					// Evaluate Each individual and save their scores in population
 					evalPopulation(m_aiController, population, session.randomSeed);

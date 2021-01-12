@@ -37,6 +37,11 @@ namespace tetris
 			return make_unique<DfsSolver2>(*this);
 		}
 
+		std::string DfsSolver2::name()
+		{
+			return "DFS2";
+		}
+
 		SolutionSequence DfsSolver2::solve(const Game & game)
 		{
 			Game gameCopy = game;

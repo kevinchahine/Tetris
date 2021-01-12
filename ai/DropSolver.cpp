@@ -53,6 +53,11 @@ namespace tetris
 			return ptr;
 		}
 
+		std::string DropSolver::name()
+		{
+			return "Drop";
+		}
+
 		void DropSolver::solve(const Game & inputGame)
 		{
 			GraphicalDisplay disp;

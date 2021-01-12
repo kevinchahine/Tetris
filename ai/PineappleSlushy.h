@@ -33,6 +33,8 @@ namespace tetris
 
 			virtual std::unique_ptr<HeuristicBase> clone() const override;
 
+			virtual std::string name() override;
+
 		};
 	}
 }

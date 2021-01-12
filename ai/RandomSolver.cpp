@@ -55,5 +55,9 @@ namespace tetris
 		{
 			return make_unique<RandomSolver>(*this);
 		}
+		std::string RandomSolver::name()
+		{
+			return "Random";
+		}
 	}
 }

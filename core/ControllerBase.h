@@ -7,6 +7,7 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 
 namespace tetris
 {
@@ -23,6 +24,8 @@ namespace tetris
 			virtual Move getInput(const Game & game) = 0;
 
 			virtual std::unique_ptr<ControllerBase> clone() = 0;
+
+			virtual std::string name() = 0;
 		};
 	}
 }

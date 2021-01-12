@@ -51,6 +51,11 @@ namespace tetris
 			return make_unique<KeyboardController>();
 		}
 
+		std::string KeyboardController::name()
+		{
+			return "Keyboard Controller";
+		}
+
 		void KeyboardController::stopAsyncOp()
 		{
 			// When thread reads this in its loop, it will return and close itself

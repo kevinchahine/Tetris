@@ -17,6 +17,8 @@ namespace tetris
 
 			virtual void show() = 0;
 
+			virtual std::string name() = 0;
+
 		protected:
 			// Size of tetris board in units of cells (not pixels)
 			cv::Size m_boardSize;

@@ -20,5 +20,9 @@ namespace tetris
 		{
 			return make_unique<HolyHeuristic>(*this);
 		}
+		std::string HolyHeuristic::name()
+		{
+			return "Holy";
+		}
 	}
 }

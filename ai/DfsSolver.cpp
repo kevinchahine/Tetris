@@ -51,6 +51,11 @@ namespace tetris
 			return make_unique<DfsSolver>(*this);
 		}
 
+		std::string DfsSolver::name()
+		{
+			return "DFS1";
+		}
+
 		SolutionSequence DfsSolver::solve(const Game & game)
 		{
 			// Contains states that we want to try next.

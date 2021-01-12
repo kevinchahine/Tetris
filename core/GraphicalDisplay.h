@@ -23,6 +23,8 @@ namespace tetris
 
 			virtual void show() override;
 
+			virtual std::string name() override;
+
 			cv::Size& cellSize() { return m_cellSize; }
 			const cv::Size & cellSize() const { return m_cellSize; }
 
