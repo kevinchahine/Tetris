@@ -365,7 +365,7 @@ namespace tetris
 
 			// --- View --- (No view)
 
-			// --- Controller
+			// --- Controller ---
 			// Make sure we have a controller
 			if (m_controllerPtr == nullptr) {
 				throw std::exception("AI Controller not set");
@@ -381,14 +381,14 @@ namespace tetris
 					throw std::exception("Controller needs to be an Ai Controller.");
 				}
 				else {
-					// (now we know that our controller is infact an AiController)
+					// *** Now we know our controller is infact an AiController ***
 
 					// Make sure we have a heuristic
 					if (m_heuristicPtr == nullptr) {
 						throw std::exception("Heuristic was not specified. Ai controllers need to have a heuristic to work");
 					}
 
-					// Next set the controllers hueristic
+					// Next set copy the controllers hueristic
 					cPtr->heuristicPtr() = m_heuristicPtr->clone();
 
 					// Set Ai Controller to Optimizer

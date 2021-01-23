@@ -9,6 +9,8 @@
 
 #include <iocolor/iocolor.h>
 
+#include <iostream>
+
 using namespace std;
 
 /*
@@ -39,10 +41,10 @@ int main(int argc, char** argv)
 	try
 	{
 		//tetris::driver::train1();
-		tetris::core::Game game;
-		tetris::core::ColoredConsoleDisplay disp;
-		disp.rasterize(game);
-		disp.show();
+		//tetris::core::Game game;
+		//tetris::core::ColoredConsoleDisplay disp;
+		//disp.rasterize(game);
+		//disp.show();
 
 		//clParser.handle(argc, argv);
 	}
@@ -52,10 +54,12 @@ int main(int argc, char** argv)
 			<< iocolor::red()
 			<< "Exception caught: " << e.what() 
 			<< iocolor::pop() << '\n';
-
-		//cout << "Press any key to continue";
-		//cin.get();
 	}
 
+	chrono::seconds waitTime(2);
+	cout << "Closing in " << waitTime.count() << " seconds...";
+	this_thread::sleep_for(waitTime);
+	//cout << "Press any key to continue";
+	//cin.get();
 	return 0;
 }

@@ -69,6 +69,11 @@ namespace tetris
 					throw exception("inputPopulation is empty.");
 				// *** Still need to make sure each Inidividual has the same number of heuristic elements as does the AiControllers heuristic
 
+				cout << "Solver: " << m_aiController->name() << '\n'
+					<< "Heuristic: " << m_aiController->heuristicPtr()->name() << '\n'
+					<< "Population Size: " << session.population.size() << '\n'
+					<< '\n';
+
 				chrono::steady_clock::time_point startTime = chrono::steady_clock::now();
 
 				// Alias some objects from session

@@ -20,7 +20,8 @@ namespace tetris
 
 			// Set Optimizer parameters
 			{
-				unique_ptr<tetris::ai::DfsSolver3> solverPtr = make_unique<tetris::ai::DfsSolver3>();
+				unique_ptr<tetris::ai::AiController> solverPtr = 
+					make_unique<tetris::ai::DfsSolver>();
 				solverPtr->heuristicPtr() = make_unique<tetris::ai::AppleCiderHeuristic>();
 				op.setAiController(move(solverPtr));
 				
@@ -28,7 +29,7 @@ namespace tetris
 				
 				op.setTimeLimit(chrono::hours(1000));// chrono::seconds::max());
 				
-				op.setPopulationSize(10);
+				op.setPopulationSize(4);
 			}
 
 			chrono::steady_clock::time_point startTime = chrono::steady_clock::now();

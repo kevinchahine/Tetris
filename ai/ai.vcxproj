@@ -166,6 +166,7 @@
     <ClInclude Include="AppleCiderHeuristic.h" />
     <ClInclude Include="DfsSolver2.h" />
     <ClInclude Include="DfsSolver3.h" />
+    <ClInclude Include="DfsSolverMT.h" />
     <ClInclude Include="DropSolver.h" />
     <ClInclude Include="FrontierStack.h" />
     <ClInclude Include="GrapeJuiceHeuristic.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="DfsSolver.cpp" />
     <ClCompile Include="DfsSolver2.cpp" />
     <ClCompile Include="DfsSolver3.cpp" />
+    <ClCompile Include="DfsSolverMT.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="DropSolver.cpp" />
     <ClCompile Include="FrontierStack.cpp" />

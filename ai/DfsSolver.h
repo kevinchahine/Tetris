@@ -10,8 +10,6 @@ namespace tetris
 {
 	namespace ai
 	{
-		// --- Forward Declarations ---
-		
 		class AI_API DfsSolver : public AiController
 		{
 		public:
@@ -37,8 +35,6 @@ namespace tetris
 				const std::set<size_t>& explored,
 				const core::Board& board, 
 				const SolutionSequence& baseSequence) const;
-
-		protected:
 
 			SolutionSequence solve(const core::Game & game);
 		};

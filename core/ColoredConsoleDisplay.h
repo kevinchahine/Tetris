@@ -6,6 +6,8 @@
 
 #include <boost/multi_array.hpp>	// Fix this, break down into only what we need
 
+#include <memory>
+
 namespace tetris
 {
 	namespace core
@@ -13,7 +15,13 @@ namespace tetris
 		class CORE_API ColoredConsoleDisplay : public DisplayBase
 		{
 		public:
-			
+			ColoredConsoleDisplay();
+			ColoredConsoleDisplay(const ColoredConsoleDisplay &) = default;
+			ColoredConsoleDisplay(ColoredConsoleDisplay &&) noexcept = default;
+			virtual ~ColoredConsoleDisplay() noexcept = default;
+			ColoredConsoleDisplay & operator=(const ColoredConsoleDisplay &) = default;
+			ColoredConsoleDisplay & operator=(ColoredConsoleDisplay &&) noexcept = default;
+
 			virtual void rasterize(const Game& game) override;
 
 			virtual void show() override;
@@ -40,25 +48,28 @@ namespace tetris
 
 		protected:
 
-			boost::multi_array<ColoredChar, 2> m_fullImage;
+			using array_type = boost::multi_array<ColoredChar, 2>;
+			using view_type = array_type::array_view<2>::type;
+
+			array_type m_fullImage;
 
 			// --- Views (of m_fullImage) ---
 
 			// Box showing the held piece
 			// Submatrix of m_fullImage
-			boost::multi_array<ColoredChar, 2>  m_heldPieceBox;
+			std::unique_ptr<view_type> m_heldPieceView;
 
 			// Box showing all the placed pieces and the falling piece
 			// Submatrix of m_fullImage
-			boost::multi_array<ColoredChar, 2>  m_boardBox;
+			std::unique_ptr<view_type> m_boardView;
 
 			// Box showing score
 			// Submatrix of m_fullImage
-			boost::multi_array<ColoredChar, 2>  m_scoreBox;
+			std::unique_ptr<view_type> m_scoreView;
 
 			// Box showing the next piece generated
 			// Submatrix of m_fullImage
-			boost::multi_array<ColoredChar, 2>  m_nextPieceBox;
+			std::unique_ptr<view_type> m_nextPieceView;
 		};
 	}
 }
