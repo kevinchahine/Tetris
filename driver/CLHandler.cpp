@@ -1,4 +1,7 @@
-#include "ClParser.h"
+#include "CLHandler.h"
+
+#include <Tetris/core/GamePlayer.h>
+#include <Tetris/ai/Heuristics.hpp>
 
 #include <algorithm>
 #include <iterator>
@@ -8,13 +11,9 @@
 #include <cstring>		// for strlen()
 #include <numeric>
 
-#include <boost/program_options.hpp>	// Break this down into only the headers we need
+#include <boost/program_options.hpp>
 
-#include <iocolor/iocolor.h>
-
-#include <Tetris/core/GamePlayer.h>
-#include <Tetris/ai/Heuristics.hpp>
-
+using namespace tetris::ai;
 using namespace std;
 namespace po = boost::program_options;
 
@@ -22,36 +21,32 @@ namespace tetris
 {
 	namespace driver
 	{
-		ClParser::ClParser()	
-			m_displayPtr(make_unique<tetris::core::ColoredConsoleDisplay>()),
-			m_controllerPtr(make_unique<tetris::ai::DfsSolver>()),
-			m_heuristicPtr(make_unique<tetris::ai::AppleCiderHeuristic>())
+		CLHandler::CLHandler()
 		{
-			dynamic_cast<tetris::ai::AiController*>(m_controllerPtr.get())->heuristicPtr() =
-				m_heuristicPtr->clone();
-
 			switchesDesc.add_options()
 				("help,h", "Show help")
-				//("r,record", "Record video output (only works with displays that support this feature")
 				("cl,c", "use command line display")
 				("gui,g", "use a build-in graphical display")
 				("train,t", "run training algorithm instead of playing a game")
 				("play,p", "run game instead of training algorithm")
 				("list,l", "List controllers and heuristics")
+				("continue-training", "Continue training. Hint: Specify out-dir where training files are stored")
+				//("r,record", "Record video output (only works with displays that support this feature")
 				;
 
 			optionsDesc.add_options()
 				("controller", po::value<string>()->default_value("dfs"), "Determines what controller to use. Use --list to see options")
 				("heuristic", po::value<string>()->default_value("applecider"), "Determines what heuristic to use. Only applies to AiControllers. Use --list to see options.")
 				("display", po::value<string>()->default_value("gui"), "Determines what display to use. Use --list to see options.")
-				("generations", po::value<int>()->implicit_value(100), "Sets generations limit. Only applies to training.")
-				("population", po::value<int>()->implicit_value(10), "Sets population size of each generation. Only applies to training.")
-				("time-limit", po::value<int>()->implicit_value(10'000), "Time limit in seconds, Sets time limit for training. Only applies to training.")
+				("generations", po::value<int>()->default_value(100), "Sets generations limit. Only applies to training.")
+				("population", po::value<int>()->default_value(10), "Sets population size of each generation. Only applies to training.")
+				("time-limit", po::value<string>()->default_value("100d"), "Time limit for training.Only applies to training. Accepts units days(d), hours(h), minutes(m) and seconds(s). ex: 10h for 10 hours")
 				("out-dir", po::value<string>()->default_value("."), "Sets out directory for training progess backups. Only applies to training")
-				("continue", po::value<string>()->default_value("."), "Specifies which directory training progress was saved in. Only applies to training.")
 				("seed", po::value<int>()->default_value(time(0)), "Sets random seed for more controlled games.")
-				("mt", po::value<int>()->default_value(thread::hardware_concurrency()), "Use Multithreaded versions of solvers")
+				("mt", po::value<int>()->implicit_value(thread::hardware_concurrency()), "Sets number of threads to use for solvers supporting multi threading")
 				;
+
+			// Add positional parameters that allow specifying heuristic weights to the heuristic option
 
 
 			// Combine all descriptions into 1
@@ -59,7 +54,7 @@ namespace tetris
 			desc.add(optionsDesc);
 		}
 
-		void ClParser::handle(int argc, char ** argv)
+		void CLHandler::handle(int argc, char ** argv)
 		{
 			// 1.) --- Set options style ---
 			namespace style = boost::program_options::command_line_style;
@@ -99,7 +94,8 @@ namespace tetris
 				// the game mode. ** See .setGameMode()
 				if (m_gameMode != nullptr) {
 					cout << iocolor::setfg(iocolor::LIGHTBLUE)
-						<< "lets play!!!\n";
+						<< "Lets play!!!\n";
+
 					m_gameMode();
 				}
 				else {
@@ -117,9 +113,7 @@ namespace tetris
 			cout << iocolor::pop();
 		}
 
-		// ------------------------ SWITCHES ------------------------------
-
-		void ClParser::handleSwitches(const boost::program_options::variables_map & vm)
+		void CLHandler::handleSwitches(const boost::program_options::variables_map & vm)
 		{
 			if (vm.count("help"))	showHelp();
 			if (vm.count("cl"))		setDisplay("cl");
@@ -127,30 +121,36 @@ namespace tetris
 			if (vm.count("train"))	setGameMode("train");
 			if (vm.count("play"))	setGameMode("play");
 			if (vm.count("list"))	listOptions();
+
+			// If game mode wan't set, set it to play
+			if (m_gameMode == nullptr) {
+				setGameMode("play");
+			}
 		}
 
-		void ClParser::showHelp() const
+		void CLHandler::showHelp() const
 		{
-			cout << desc << '\n';	// Simple
+			cout << iocolor::push()
+				<< iocolor::yellow()
+				<< desc << '\n'
+				<< iocolor::pop();
 		}
 
-		// ------------------------ OPTIONS -------------------------------
-
-		void ClParser::listOptions() const
+		void CLHandler::listOptions() const
 		{
 			cout << iocolor::push();
 
 			cout << iocolor::setfg(iocolor::YELLOW)
 				<< "Controllers:\n"
 				<< iocolor::setfg(iocolor::LIGHTGREEN)
-				<< "\tKeyboard      Uses keyboard as controller.\n"
+				<< "\tKeyboard      Uses keyboard as controller. (As smart as you)\n"
 				<< "\tDFS           Ai Solver using a depth-first search. (Same as DFS1)\n"
 				<< "\tDFS1          Depth-First Search involving only the falling piece. (same as DFS) (smart)\n"
 				<< "\tDFS2          Depth-First Search involving falling piece and held piece. (More smart)\n"
 				<< "\tDFS3          Depth-First Search involving falling, held and next piece. (Even more smart)\n"
 				<< "\tDrop          Ai Solver using a simpler search algorithm involving spins\n"
-				<< "\t              followed by lateral moves and ending with straight drops. (okay)\n"
-				<< "\tRandom        Ai Solver that makes random moves (dumb).\n"
+				<< "\t              followed by lateral moves and ending with straight drops. (Sort of smart)\n"
+				<< "\tRandom        Ai Solver that makes random moves (Not to smart).\n"
 				<< '\n';
 
 			cout << iocolor::setfg(iocolor::YELLOW)
@@ -173,7 +173,7 @@ namespace tetris
 			cout << iocolor::pop();
 		}
 
-		void ClParser::handleOptions(const boost::program_options::variables_map & vm)
+		void CLHandler::handleOptions(const boost::program_options::variables_map & vm)
 		{
 			if (vm.count("mt"))				setThreads(vm["mt"].as<int>());		// Must be placed before setController
 			if (vm.count("controller"))		setController(vm["controller"].as<string>());
@@ -181,31 +181,37 @@ namespace tetris
 			if (vm.count("display"))		setDisplay(vm["display"].as<string>());
 			if (vm.count("generations"))	setGenerationLimit(vm["generations"].as<int>());
 			if (vm.count("population"))		setPopulationSize(vm["population"].as<int>());
-			if (vm.count("time-limit"))		setTimeLimit(vm["time-limit"].as<int>());
+			if (vm.count("time-limit"))		setTimeLimit(vm["time-limit"].as<string>());
 			if (vm.count("out-dir"))		setOutputDir(vm["out-dir"].as<string>());
 			if (vm.count("continue"))		cout << "continue: " << vm["continue"].as<string>() << '\n';
 			if (vm.count("seed"))			cout << "seed: " << vm["seed"].as<int>() << '\n';
 		}
 
-		void ClParser::setThreads(size_t numThreads)
+		void CLHandler::setThreads(size_t numThreads)
 		{
+			cout << iocolor::push();
+
 			if (numThreads == 0) {
-				cout << "0 threads is too few. We need at least 1 thread. We'll use 1 instead.\n";
+				cout << iocolor::lightred() 
+					<< "0 threads is too few. We need at least 1 thread. We'll use 1 instead.\n";
 				numThreads = 1;
 			}
 			else if (numThreads > thread::hardware_concurrency()) {
-				cout << "We don't have enough cores to run " << numThreads
+				cout << iocolor::lightred() 
+					<< "We don't have enough cores to run " << numThreads
 					<< " effectivaly. We will run ";
-			
+
 				numThreads = thread::hardware_concurrency();
-			
+
 				cout << numThreads << " instead.\n";
 			}
 
 			m_numThreads = numThreads;
+
+			cout << iocolor::pop();
 		}
 
-		void ClParser::setController(const string & controller)
+		void CLHandler::setController(const std::string & controller)
 		{
 			// Shorten name
 			const string & c = controller;
@@ -242,15 +248,13 @@ namespace tetris
 			}
 
 			if (m_controllerPtr != nullptr)
-				cout << iocolor::push() 
-				<< iocolor::yellow() << "Controller: " << m_controllerPtr->name() 
+				cout << iocolor::push()
+				<< iocolor::yellow() << "Controller: " << m_controllerPtr->name()
 				<< iocolor::pop() << '\n';
 		}
 
-		void ClParser::setHeuristic(const std::string & heuristic)
+		void CLHandler::setHeuristic(const std::string & heuristic)
 		{
-			using namespace tetris::ai;
-
 			// Shorten names
 			const string & h = heuristic;
 			auto & p = m_heuristicPtr;
@@ -275,7 +279,7 @@ namespace tetris
 			}
 		}
 
-		void ClParser::setDisplay(const string & display)
+		void CLHandler::setDisplay(const std::string & display)
 		{
 			// Shorten name
 			const string & d = display;
@@ -293,17 +297,19 @@ namespace tetris
 			}
 		}
 
-		void ClParser::setGameMode(const std::string & mode)
+		void CLHandler::setGameMode(const std::string & mode)
 		{
 			// Shorten name
 			const string & m = mode;
 
 			if (m == "play") {
+				// Try to use bind instead
 				m_gameMode = [&]() {
 					this->playGame();
 				};
 			}
 			else if (m == "train") {
+				// Try to use bind instead
 				m_gameMode = [&]() {
 					this->train();
 				};
@@ -313,7 +319,7 @@ namespace tetris
 			}
 		}
 
-		void ClParser::playGame()
+		void CLHandler::playGame()
 		{
 			// --- Model ---
 			tetris::core::Game game;
@@ -346,12 +352,25 @@ namespace tetris
 				}
 			}
 
+			// --- Print some data ---
+			cout << iocolor::push()
+				<< iocolor::lightgreen()
+				<< "--- Play Tetris ---\n"
+				<< iocolor::cyan() << "\tController = " << m_controllerPtr->name() << '\n';
+
+			if (m_heuristicPtr != nullptr)
+				cout << iocolor::gray() << "\tHeuristic = " << m_heuristicPtr->name() << '\n';
+
+			cout << iocolor::magenta() << "\tDisplay = " << m_displayPtr->name() << '\n'
+				<< iocolor::brown() << "\t# threads = " << m_numThreads << '\n'
+				<< iocolor::pop();
+
 			// --- Play ---
 			tetris::core::GamePlayer player;
 			player.play(game, m_controllerPtr, m_displayPtr);
 		}
 
-		void ClParser::setGenerationLimit(int generationLimit)
+		void CLHandler::setGenerationLimit(int generationLimit)
 		{
 			if (m_trainingSessionPtr == nullptr) {
 				m_trainingSessionPtr = make_unique<tetris::ai::Session>();
@@ -360,7 +379,7 @@ namespace tetris
 			m_trainingSessionPtr->generationLimit = generationLimit;
 		}
 
-		void ClParser::setPopulationSize(int populationSize)
+		void CLHandler::setPopulationSize(int populationSize)
 		{
 			if (m_trainingSessionPtr == nullptr) {
 				m_trainingSessionPtr = make_unique<tetris::ai::Session>();
@@ -369,28 +388,28 @@ namespace tetris
 			m_trainingSessionPtr->population.resize(populationSize);
 		}
 
-		void ClParser::setTimeLimit(int timeLimit)
+		void CLHandler::setTimeLimit(const string & timeLimit)
 		{
 			cout << __FUNCTION__ << " not implemented. Also figure out how to "
 				<< "abstractify time into chrono durations\n";
 		}
 
-		void ClParser::setOutputDir(const string & outDir)
+		void CLHandler::setOutputDir(const std::string & outDir)
 		{
 			cout << __FUNCTION__ << " not implemented.\n";
 		}
 
-		void ClParser::setTrainingParams(const boost::program_options::variables_map & vm)
+		void CLHandler::setTrainingParams(const boost::program_options::variables_map & vm)
 		{
 			cout << __FUNCTION__ << " not implemented.\n";
 		}
 
-		void ClParser::train()
+		void CLHandler::train()
 		{
 			// --- Model ---
 			tetris::ai::optimizers::Optimizer opt;
 
-			// --- View --- (No view)
+			// --- View --- (No view for training for now)
 
 			// --- Controller ---
 			// Make sure we have a controller
@@ -403,7 +422,7 @@ namespace tetris
 				// Down cast to AiController if possible
 				tetris::ai::AiController * cPtr = dynamic_cast<tetris::ai::AiController*>(m_controllerPtr.get());
 
-				// If cast was sucessfull, set its heuristic 
+				// If cast was sucessfull, then set its heuristic 
 				if (cPtr == nullptr) {
 					throw std::exception("Controller needs to be an Ai Controller.");
 				}
@@ -431,11 +450,20 @@ namespace tetris
 				m_trainingSessionPtr = make_unique<ai::Session>();
 			}
 
+			// --- Print some stuff ---
+			cout << iocolor::push()
+				<< iocolor::brown() << "--- Training ---"
+				<< iocolor::cyan() << "\tController = " << m_controllerPtr->name() << '\n'
+				<< iocolor::gray() << "\tHeuristic = " << m_heuristicPtr->name() << '\n'
+				<< iocolor::lightgreen() << "\tTime limit = " << m_trainingSessionPtr->timeLimit.count() << " sec\n"
+				<< iocolor::lightmagenta() << "\tGenerations limit = " << m_trainingSessionPtr->generationLimit << '\n'
+				<< iocolor::pop();
+
 			//opt.resumeTraining(*m_trainingSessionPtr);
 			opt.train();
 		}
 
-		void ClParser::printWarning(const std::string & message, std::ostream & os) const
+		void CLHandler::printWarning(const std::string & message, std::ostream & os) const
 		{
 			cout << iocolor::push()
 				<< iocolor::setfg(iocolor::RED)

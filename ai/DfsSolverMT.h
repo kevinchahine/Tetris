@@ -6,6 +6,11 @@
 #include "FrontierStack.h"
 #include "SolutionSequence.h"
 
+#include <thread>
+#include <mutex>
+
+using namespace std;
+
 namespace tetris
 {
 	namespace ai
@@ -15,11 +20,11 @@ namespace tetris
 		public:
 
 			DfsSolverMT() = default;
-			DfsSolverMT(const DfsSolverMT&) = default;
-			DfsSolverMT(DfsSolverMT&&) noexcept = default;
+			DfsSolverMT(const DfsSolverMT& rhs);
+			DfsSolverMT(DfsSolverMT&& rhs) noexcept;
 			virtual ~DfsSolverMT() noexcept = default;
-			DfsSolverMT & operator=(const DfsSolverMT &) = default;
-			DfsSolverMT & operator=(DfsSolverMT &&) noexcept = default;
+			DfsSolverMT & operator=(const DfsSolverMT &);
+			DfsSolverMT & operator=(DfsSolverMT &&) noexcept;
 
 			virtual void reset() override;
 
@@ -44,18 +49,20 @@ namespace tetris
 			// Make sure that states added to frontier are not found in explored list
 			// to prevent infinite loops
 			FrontierStack<SolutionSequence> frontier;
+			mutable std::mutex frontierMutex;
 
 			// Explored list containing hash values of states that we have analyzed
 			// *** "states" should move from the frontier, get analyzed and then
 			// its hash value pushed to explored
 			set<size_t> explored;
+			mutable std::mutex exploredMutex;
 
 			// Best solution found so far
 			SolutionSequence bestSol;
+			mutable std::mutex bestSolMutex;	// protects both bestSol and bestHeur
+
 			// Heuristic of the best solution
 			float bestHeur;
-
-
 		};
 	}
 }

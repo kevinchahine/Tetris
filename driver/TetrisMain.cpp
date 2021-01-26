@@ -1,7 +1,7 @@
 // Include runtime files
 #include "run_game.h"
 #include "training.h"
-#include "ClParser.h"
+#include "CLHandler.h"
 
 // Include test files
 #include "TestIndividual.h"
@@ -36,17 +36,17 @@ int main(int argc, char** argv)
 		<< iocolor::setfg(iocolor::BLUE) << "==================\n"
 		<< iocolor::pop();
 
-	tetris::driver::ClParser clParser;
-
 	try
 	{
+		tetris::driver::CLHandler clHandler;
+
 		//tetris::driver::train1();
 		//tetris::core::Game game;
 		//tetris::core::ColoredConsoleDisplay disp;
 		//disp.rasterize(game);
 		//disp.show();
 
-		//clParser.handle(argc, argv);
+		clHandler.handle(argc, argv);
 	}
 	catch (const std::exception& e)
 	{
@@ -59,7 +59,9 @@ int main(int argc, char** argv)
 	chrono::seconds waitTime(2);
 	cout << "Closing in " << waitTime.count() << " seconds...";
 	this_thread::sleep_for(waitTime);
+	
 	//cout << "Press any key to continue";
 	//cin.get();
+
 	return 0;
 }

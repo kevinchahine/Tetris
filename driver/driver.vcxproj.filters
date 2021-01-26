@@ -36,7 +36,7 @@
     <ClCompile Include="TestIndividual.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClParser.cpp">
+    <ClCompile Include="CLHandler.cpp">
       <Filter>ProgramOptions</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,7 +53,7 @@
     <ClInclude Include="TestIndividual.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ClParser.h">
+    <ClInclude Include="CLHandler.h">
       <Filter>ProgramOptions</Filter>
     </ClInclude>
   </ItemGroup>

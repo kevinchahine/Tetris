@@ -16,28 +16,22 @@
 #include <memory>
 #include <functional>
 
-#include <boost/program_options.hpp>	// Break this down into only the headers we need (or remove it)
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/variables_map.hpp>
 
 namespace tetris
 {
 	namespace driver
 	{
-		// Sets up, parses and handles program options.
-		class ClParser
+		class CLHandler
 		{
 		public:		// ---------------- PUBLIC METHODS ------------------------
-			ClParser();
-			ClParser(const ClParser &) = default;
-			ClParser(ClParser &&) noexcept = default;
-			virtual ~ClParser() noexcept = default;
-			ClParser & operator=(const ClParser &) = default;
-			ClParser & operator=(ClParser &&) noexcept = default;
+			CLHandler();
 
 			void handle(int argc, char ** argv);
 
-		public:
-
 		private:	// ---------------- PRIVATE METHODS -----------------------
+
 
 			// ------------------------ SWITCHES ------------------------------
 
@@ -68,7 +62,7 @@ namespace tetris
 
 			void setPopulationSize(int populationSize);
 
-			void setTimeLimit(int timeLimit);
+			void setTimeLimit(const string & timeLimit);
 
 			void setOutputDir(const std::string & outDir);
 
@@ -82,7 +76,7 @@ namespace tetris
 
 			boost::program_options::options_description switchesDesc = boost::program_options::options_description("Switches");
 			boost::program_options::options_description optionsDesc = boost::program_options::options_description("Options");
-			boost::program_options::options_description desc = boost::program_options::options_description("Tetris Yay :) !!!");
+			boost::program_options::options_description desc = boost::program_options::options_description("Description");
 
 			std::unique_ptr<tetris::core::DisplayBase> m_displayPtr;
 			std::unique_ptr<tetris::core::ControllerBase> m_controllerPtr;
@@ -98,4 +92,3 @@ namespace tetris
 		};
 	}
 }
-
