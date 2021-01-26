@@ -127,7 +127,12 @@ namespace tetris
 		{
 			if (m_moveSequence.empty()) {
 
+				cout << "Solving...";
 				m_moveSequence = solve(game).sequence();
+
+				cout << "Solution: ";
+				for (const auto & a : m_moveSequence)
+					cout << a << '\n';
 
 				if (m_moveSequence.empty()) {
 					throw std::exception("No solution was found\n");
