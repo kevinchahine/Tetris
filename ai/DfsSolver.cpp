@@ -30,7 +30,11 @@ namespace tetris
 		{
 			if (m_moveSequence.empty()) {
 				
+				chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
 				m_moveSequence = solve(game).sequence();
+				auto finish = chrono::high_resolution_clock::now();
+				auto solveTimee = (finish - start);
+				cout << "Solve time: " << solveTimee.count() << " nSec\n";
 
 				if (m_moveSequence.empty()) {
 					throw std::exception("No solution was found\n");
@@ -81,11 +85,11 @@ namespace tetris
 				SolutionSequence seq = move(frontier.top());
 				frontier.pop();
 
-				// 2-1.) --- Put sequence in explored list ---
+				// 2-2.) --- Put sequence in explored list ---
 				// so that we don't analyze it again 
 				explored.insert(hash<SolutionSequence>{}(seq));
 
-				// 2-2.) --- Is this a goal state? ---
+				// 2-3.) --- Is this a goal state? ---
 				// It is a goal state if the falling piece is laying on something
 				if (game.board().isLaying(seq.falling())) {
 					float heur = calcHeuristic(game.board(), seq.falling());
@@ -96,7 +100,7 @@ namespace tetris
 					}
 				}
 
-				// 2-3.) See if there are any moves we can do from here
+				// 2-4.) See if there are any moves we can do from here
 				branchValidMoves(frontier, explored, game.board(), seq);
 			}
 			

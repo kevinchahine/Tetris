@@ -68,6 +68,8 @@ namespace tetris
 
 			void move(core::Move move, const core::Board& board);
 
+			void clear();
+
 			// Puts a swap move to the beginning of the sequence.
 			// Does not affect the falling piece
 			void prependSwap();

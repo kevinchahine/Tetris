@@ -27,6 +27,8 @@ namespace tetris
 
 			bool empty() const { return m_states.empty(); }
 
+			void clear();
+
 			size_t size() const { return m_states.size(); }
 
 			// Determines if state is already in the frontier
@@ -51,6 +53,15 @@ namespace tetris
 			// been added
 			std::set<size_t> m_hashes;
 		};
+
+		template<typename STATE>
+		void FrontierStack<STATE>::clear()
+		{
+			std::stack<STATE> emptyStack; 
+			m_states.swap(emptyStack);
+
+			m_hashes.clear();
+		}
 
 		template<typename STATE>
 		bool FrontierStack<STATE>::contains(const STATE& state) const

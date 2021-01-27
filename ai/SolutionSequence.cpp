@@ -64,6 +64,11 @@ namespace tetris
 				m_falling.move(move, board);
 		}
 
+		void SolutionSequence::clear()
+		{
+			m_sequence.clear();
+		}
+
 		void SolutionSequence::prependSwap()
 		{
 			m_sequence.push_front(Move::SWAP);
