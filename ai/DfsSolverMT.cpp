@@ -258,9 +258,9 @@ namespace tetris
 
 				// 2-2.) --- Put sequence in explored list ---
 				// so that we don't analyze it again
-				auto h = hash<SolutionSequence>{}(seq);				// O(n)
+				auto seqHash = hash<SolutionSequence>{}(seq);		// O(n)
 				exploredMutex.lock();								// vvvvv
-				explored.insert(h);									// O(log(n))
+				explored.insert(seqHash);							// O(log(n))
 				exploredMutex.unlock();								// ^^^^^
 
 				// 2-3.) --- Is this a goal state? --- 
@@ -270,10 +270,7 @@ namespace tetris
 
 					bestSolMutex.lock();							// vvvvv
 					
-					if (
-						(heur > bestHeur)/* || */
-					//	(fabs(heur - bestHeur) <= 0.2f * fabs(heur) && seq.sequence().size() < bestSol.sequence().size())
-					) 			
+					if (heur > bestHeur)
 					{
 						bestHeur = heur;							// O(1)
 						bestSol = seq;								// O(n)	!!! This should be optimized with move if possible

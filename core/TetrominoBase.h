@@ -6,6 +6,8 @@
 
 #include <stdint.h>
 
+#include <boost/container_hash/hash.hpp>
+
 namespace tetris
 {
 	namespace core
@@ -79,8 +81,56 @@ namespace tetris
 			cv::Point& position() { return m_position; }
 			const cv::Point& position() const { return m_position; }
 
+			bool operator==(const TetrominoBase & rhs) const
+			{
+				return *this != rhs;
+			}
+
+			bool operator!=(const TetrominoBase & rhs) const
+			{
+				if (m_position == rhs.m_position)							return true;
+				if (static_cast<Matrix>(*this) == static_cast<Matrix>(rhs))	return true;
+
+				return false;
+			}
+
 		protected:
 			cv::Point m_position;
 		};
 	}
+}
+
+// custom specialization of std::hash injected in namespace std
+namespace std
+{
+	// Only works if:
+	//	- Tetromino is stored in some kind of 4x4 array
+	//	- x and y coordinates of the Tetrominos postition are in the range [0, 255]
+	template<> struct hash<tetris::core::TetrominoBase>
+	{
+		size_t operator()(tetris::core::TetrominoBase const& tetromino) const noexcept
+		{
+			register size_t tetromino_hash = 0;
+
+			int bitPos = 0;
+			for (int row = 0; row < tetromino.rows; row++) {
+				for (int col = 0; col < tetromino.cols; col++) {
+					// Assign a 1 to the bit if cell is occupied
+					// Assign a 0 to the bit if cell is unoccupied
+					tetromino_hash |= (tetromino.at(row, col) != tetris::core::Matrix::EMPTY) << bitPos;
+
+					// Increment bitPos 
+					bitPos++;
+				}
+			}
+
+			size_t hash = 0;
+
+			boost::hash_combine(hash, tetromino_hash);
+			boost::hash_combine(hash, tetromino.position().x);
+			boost::hash_combine(hash, tetromino.position().y);
+
+			return hash;
+		}
+	};
 }

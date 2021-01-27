@@ -37,6 +37,25 @@ namespace tetris
 			Matrix& operator=(const Matrix& mat);
 			Matrix& operator=(Matrix&&) noexcept = default;
 
+			bool operator==(const Matrix & rhs) const
+			{
+				return *this != rhs;
+			}
+
+			bool operator!=(const Matrix & rhs) const
+			{
+				if (this->rows == rhs.rows)		return true;
+				if (this->cols == rhs.cols)		return true;
+
+				for (int r = 0; r < this->rows; r++) {
+					for (int c = 0; c < this->cols; c++) {
+						if (this->at(r, c) == rhs.at(r, c))	return true;
+					}
+				}
+
+				return false;
+			}
+
 			// Coordinates are not in terms of traditional opencv x,y coordinates
 			uint8_t& at(int row, int col);
 

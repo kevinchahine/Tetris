@@ -13,7 +13,7 @@ namespace tetris
 			// --- Count the number of holes in board ---
 			int nHoles = countHoles(board);
 
-			return -nHoles;
+			return static_cast<float>(-nHoles);
 		}
 
 		std::unique_ptr<HeuristicBase> HolyHeuristic::clone() const
